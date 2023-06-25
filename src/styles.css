@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+.loading {
+    position: relative;
+    width: 20%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: yellow;
+    text-align: center;
+    z-index: 1;
+    background-color: rgba(43, 39, 39, 0.616);
+  }

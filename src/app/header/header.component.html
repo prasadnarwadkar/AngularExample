@@ -1,0 +1,26 @@
+<header>
+  <mat-toolbar color="primary">
+    <a routerLink="/" class="logo"></a>
+    <a class="navbar-brand" href="#">{{title}}</a>
+
+    <span class="example-spacer"></span>
+    <a class="links side" routerLink="/auth/login" *ngIf="!user">Login</a>
+    <div>
+      <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>{{ user.fullname }}
+      </a>
+      <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu2">
+        Menu
+      </a>
+
+      <mat-menu #menu2="matMenu">
+        <button mat-menu-item routerLink="/dashboard">Dashboard</button>
+        <button mat-menu-item routerLink="/heroes">Heroes</button>
+      </mat-menu>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/admin">admin</button>
+        <button mat-menu-item (click)="logout()">Sign Out</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+</header>
