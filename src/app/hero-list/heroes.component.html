@@ -3,8 +3,8 @@
     <div class="col-md-4">
       <h2>My Heroes</h2>
     </div>
-    <div class="col-md-4"><a class="btn btn-success" style="margin-top: 10px;" (click)="gotoDetail(true)">Add New
-        Hero</a></div>
+    <!-- <div class="col-md-4"><a class="btn btn-success" style="margin-top: 10px;" (click)="gotoDetail(true)">Add New
+        Hero</a></div> -->
 
   </div>
   <div class="row">
@@ -44,10 +44,10 @@
 
     </div>
     <div class="col-md-4">
-      <!-- <button class="btn btn-primary" (click)="addHero()">Add New Hero</button> -->
+      <button class="btn btn-primary" (click)="addHero()">Add New Hero</button>
 
       <div *ngIf="addingHero">
-        <my-hero-detail (close)="close(selectedHero!)"></my-hero-detail>
+        <my-hero-detail (closeTheHeroSaveDlg)="closedSaveHeroDlg($event)"></my-hero-detail>
       </div>
 
       <div *ngIf="selectedHero">

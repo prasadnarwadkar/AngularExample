@@ -56,9 +56,10 @@ export class HeroesComponent implements OnInit {
     this.selectedHero = undefined;
   }
 
-  close(savedHero: Hero): void {
+  closedSaveHeroDlg(savedHero: Hero): void {
     this.addingHero = false;
     if (savedHero) {
+      //window.location.reload();
       this.getHeroes();
     }
   }
