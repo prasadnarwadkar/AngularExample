@@ -51,7 +51,7 @@ export class HeroDetailComponent implements OnInit {
   }
 
   goBack(savedHero: Hero | undefined): void {
-    console.log("Saved Hero is: " + savedHero);
+    console.log("Saved Hero is: " + JSON.stringify(savedHero));
 
     if (!savedHero) {
       this.closeTheHeroSaveDlg.emit(undefined);

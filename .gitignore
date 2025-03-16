@@ -42,3 +42,5 @@ testem.log
 Thumbs.db
 
 .fake
+run-api.bat
+run-auth-sever.bat
