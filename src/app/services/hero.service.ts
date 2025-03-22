@@ -21,7 +21,7 @@ export class HeroService {
   async getHeroesUsingHttpClient() {
 
     return this.http
-      .get(`${config.apiBaseUrl}gethero`)
+      .get(`${config.apiBaseUrl}getHero`)
       .pipe(map(data => (data as any).data), catchError(this.handleError));
 
   }

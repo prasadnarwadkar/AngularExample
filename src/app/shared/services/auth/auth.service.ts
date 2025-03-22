@@ -111,7 +111,8 @@ export class AuthService {
 
   getAuthorizationHeaders() {
     const token: string | null = this.tokenStorage.getToken() || '';
-    return { Authorization: `Bearer ${token}` };
+    return { Authorization: `Bearer ${token}`, 'X-Permissions':"CanRead" };
+    
   }
 
   /**

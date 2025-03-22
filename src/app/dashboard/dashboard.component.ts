@@ -19,7 +19,9 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     (await this.heroService.getHeroesUsingHttpClient())
-      .subscribe((heroes: any) => this.heroes = (heroes as any));//.slice(1, 5));
+      .subscribe((heroes: any) => {
+        this.heroes = (heroes as any);
+      })//.slice(1, 5));
   }
 
   gotoDetail(hero: Hero): void {
