@@ -24,7 +24,7 @@ export class HeroesComponent implements OnInit {
   addingHero = false;
   error: any;
   showNgFor = false;
-  displayedColumns = ["id", "name"];
+  displayedColumns = [ "name"];
 
   constructor(private router: Router, private route: ActivatedRoute,
     private loader: LoaderService) {

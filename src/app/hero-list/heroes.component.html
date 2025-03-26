@@ -20,15 +20,16 @@
     <div class="col-md-8">
       <mat-table class="mat-elevation-z8" [dataSource]="ds">
 
-        <ng-container matColumnDef="id">
+        <!-- <ng-container matColumnDef="id" >
           <mat-header-cell class="mat-header-cell" *matHeaderCellDef>ID</mat-header-cell>
           <mat-cell class="link" *matCellDef="let hero" (click)="onSelect(hero)"
             [class.selected]="hero === selectedHero">{{hero.id}}</mat-cell>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-          <mat-cell class="description-cell" *matCellDef="let hero">{{hero.name}}</mat-cell>
+          <mat-cell class="link" *matCellDef="let hero" (click)="onSelect(hero)"
+            [class.selected]="hero === selectedHero">{{hero.name}}</mat-cell>
 
         </ng-container>
 
