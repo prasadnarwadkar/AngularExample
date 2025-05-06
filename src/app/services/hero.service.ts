@@ -5,8 +5,9 @@ import { catchError, map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Hero } from './hero';
 import { config } from '../config/config';
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import settings from '../../assets/settings.json';
+import axios from 'axios';
 
 const apiBaseUrl = settings.apiBaseUrl;
 console.log(apiBaseUrl);
@@ -21,9 +22,55 @@ export class HeroService {
   async getHeroesUsingHttpClient() {
 
     return this.http
-      .get(`${config.apiBaseUrl}gethero`)
+      .get(`${apiBaseUrl}gethero`)
       .pipe(map(data => (data as any).data), catchError(this.handleError));
 
+  }
+
+  saveHero = async (hero: Hero) => {
+    try {
+      let data = {};  
+      let response: AxiosResponse<any>;
+
+      if (hero.id) {
+        data = JSON.stringify({
+          "heroItem": {
+            "name": hero.name,
+            "id": hero.id
+          }
+        });
+
+        response = await axios.post(`${apiBaseUrl}updateHero`, data, {
+          headers: {
+            'accept': '*/*',
+            'Content-Type': 'application/json'
+          }
+        });
+      }
+      else {
+        data = JSON.stringify({
+          "heroItem": {
+            "name": hero.name
+          }
+        });
+
+        response = await axios.post(`${apiBaseUrl}addHero`, data, {
+          headers: {
+            'accept': '*/*',
+            'Content-Type': 'application/json'
+          }
+        });
+      }
+
+
+      
+
+      console.log(JSON.stringify(response.data));
+      return response.data;
+    } catch (error) {
+      console.error("Error saving hero:", error);
+      throw error;
+    }
   }
 
   async getHeroesUsingAxios(): Promise<any> {
@@ -39,18 +86,10 @@ export class HeroService {
   }
 
   async getHero(id: any): Promise<Observable<Hero>> {
-    return await (await this.getHeroesUsingHttpClient()).pipe(
+    let promise = await this.getHeroesUsingHttpClient();
+    return promise.pipe(
       map(heroes => (heroes as any).find((hero: { id: any; }) => hero.id == id))
     );
-  }
-
-  save(hero: Hero) {
-    if (hero.id != undefined && hero.id.length > 0) {
-
-      return this.http.post(`${config.apiBaseUrl}updateHero`, { "heroItem": { 'name': hero.name, 'id': hero.id } })
-    }
-
-    return this.http.post(`${config.apiBaseUrl}addHero`, { "heroItem": { 'name': hero.name } }) // Node.js API connecting to a MongoDB db.
   }
 
   delete(hero: Hero) {

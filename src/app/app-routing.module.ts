@@ -5,6 +5,7 @@ import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { HeroesComponent } from './hero-list/heroes.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { OnlyAdminUsersGuard } from './admin/admin-user-guard';
+import { CounterComponent } from './counter/counter.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'detail/:id', component: HeroDetailComponent,canActivate: [AuthGuard] },
   { path: 'detail', component: HeroDetailComponent,canActivate: [AuthGuard] },
   { path: 'heroes', component: HeroesComponent,canActivate: [AuthGuard] },
+  { path: 'counter-component', component: CounterComponent },
 ];
 
 @NgModule({

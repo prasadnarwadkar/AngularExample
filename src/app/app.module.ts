@@ -5,7 +5,6 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { HeroSearchComponent } from './search/hero-search.component';
 import { HeroService } from './services/hero.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthHeaderInterceptor } from './interceptors/header.interceptor';
@@ -32,7 +31,6 @@ export function appInitializerFactory(authService: AuthService) {
   declarations: [
     AppComponent,
     DashboardComponent,
-    HeroSearchComponent,
     HeroDetailComponent,
     HeroesComponent,
     HeaderComponent, 
