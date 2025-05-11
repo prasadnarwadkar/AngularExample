@@ -21,13 +21,15 @@ describe('Hero Detail Tests', () => {
   let fixture: ComponentFixture<HeroDetailComponent>;
 
 
-  function expectTextToBeSetTo(text: string): void {
-    expectText(fixture, 'hero-name-text', text);
+
+  function expectTextToBeSetToAlt(text: string): void {
+    let textInTheComponent = fixture.nativeElement.childNodes[0].childNodes[1].childNodes[1].childNodes[1].getAttribute("ng-reflect-model")
+
+    expect(text).toEqual(textInTheComponent!)
   }
 
-  //(await this.heroService.getHero(id)).subscribe((hero: any) => (this.hero = hero));
   const id = 'db892938-8b19-4565-a44f-9dcd1d5573da';
-  let startText = 'Spiderman X 11';
+  let startText = 'Spiderman';
 
   let routerStub: { navigate: any; };
 
@@ -84,7 +86,7 @@ describe('Hero Detail Tests', () => {
 
 
   it('displays the hero name', () => {
-    expectTextToBeSetTo(startText);
+    expectTextToBeSetToAlt(startText);
   });
 
   function sleep(ms: number) {
