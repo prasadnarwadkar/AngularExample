@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, BehaviorSubject, EMPTY, throwError, of } from 'rxjs';
+import { Observable, BehaviorSubject, EMPTY, throwError, of, merge } from 'rxjs';
 import { tap, pluck, catchError } from 'rxjs/operators';
 
 import { User } from '../../interfaces/';
 
 import { TokenStorage } from './token.storage';
 
-import {config} from '../../../../app/config/config';
+import { config } from '../../../../app/config/config';
 import { Router } from '@angular/router';
 
 interface AuthResponse {
@@ -18,9 +18,9 @@ interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private user$ = new BehaviorSubject<User | null>(null);
+  private user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
-  constructor(private router: Router, private http: HttpClient, private tokenStorage: TokenStorage) {}
+  constructor(private router: Router, private http: HttpClient, private tokenStorage: TokenStorage) { }
 
   login(email: string, password: string): Observable<User> {
     return this.http
@@ -29,9 +29,12 @@ export class AuthService {
         tap(({ token, user }) => {
           this.setUser(user);
           this.tokenStorage.saveToken(token);
+          this.tokenStorage.saveUser(user)
         }),
         pluck('user')
-      );
+      ).pipe(
+        catchError(err => { this.handleError(err); return of('error', err) })
+      );;
   }
 
   register(
@@ -51,14 +54,17 @@ export class AuthService {
         tap(({ token, user }) => {
           this.setUser(user);
           this.tokenStorage.saveToken(token);
+          this.tokenStorage.saveUser(user)
         }),
         pluck('user')
       );
   }
 
   setUser(user: User | null): void {
-    
 
+    if (this.tokenStorage.getUser() == null) {
+      this.tokenStorage.saveUser(user!)
+    }
     if (user) {
       console.log('setUser()');
       console.log('user: ' + JSON.stringify(user));
@@ -71,6 +77,14 @@ export class AuthService {
 
   getUser(): Observable<User | null> {
     console.log('getUser()');
+
+    if (this.user$.value != null) {
+      return this.user$.asObservable();
+    }
+    else {
+     this.user$.next(this.tokenStorage.getUser());
+    }
+
     return this.user$.asObservable();
   }
 
@@ -96,11 +110,16 @@ export class AuthService {
       return EMPTY;
     }
 
+    let user = this.tokenStorage.getUser()
+    if (user != null) {
+      return of(user);
+    }
+
     return this.http.get<AuthResponse>(`${config.apiBaseUrl2}auth/me`).pipe(
       tap(({ user }) => this.setUser(user)),
       pluck('user')
     ).pipe(
-      catchError(err => of('error', err))
+      catchError(err => { this.handleError(err); return of('error', err) })
     );
   }
 
@@ -111,8 +130,8 @@ export class AuthService {
 
   getAuthorizationHeaders() {
     const token: string | null = this.tokenStorage.getToken() || '';
-    return { Authorization: `Bearer ${token}`, 'X-Permissions':"CanRead" };
-    
+    return { Authorization: `Bearer ${token}`, 'X-Permissions': "CanRead" };
+
   }
 
   /**
@@ -120,7 +139,7 @@ export class AuthService {
    * thus we can ensure that the user is able to access the `/` (home) page.
    */
   checkTheUserOnTheFirstLoad(): Promise<User | undefined> {
-    let promise = this.me().toPromise()?? undefined;
+    let promise = this.me().toPromise() ?? undefined;
     return promise;
   }
 }
