@@ -44,7 +44,7 @@ export class PatientsComponent implements OnInit {
     { position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K' },
     { position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
   ];
-  displayedColumns = ['firstName', 'lastName', 'phone', 'email'];
+  displayedColumns = ['firstName', 'lastName', 'phone', 'email', 'dob', 'address', 'action'];
 
   dataSource2 = new MatTableDataSource<ExpandedPatient>([]);
 
@@ -127,7 +127,9 @@ export class PatientsComponent implements OnInit {
 
 
   async deletePatient(id: string) {
-    await this.apiService.delete('patients', id);
+    if (confirm("Would you like to delete this patient?")){
+      await this.apiService.delete('patients', id);
+    }
     this.loadPatients();
   }
 

@@ -17,12 +17,12 @@ This app doesn't talk to the `MongoDB` db directly. Rather, it talks to an API t
 - The API URI should be configured in this `Angular` `(MEAN)` app in the `config.js` file like below. Please update this as per the port your MongoDB NodeJS API is running on. For me, it was `3002` on the local host. The `config.js` file is in the `assets` sub-directory under `src` which itself is under the `root` directory of this Web API.
 
     `apiBaseUrl` points to the Web API deployment.
-    `apiBaseUrl2` points to the `authentication` server which is run as explained in the last bullet point below.
+    `authApiExternal` points to the `authentication` server which is run as explained in the last bullet point below.
     
     ```
     var config = {
       apiBaseUrl: "http://localhost:3002/api/",
-      apiBaseUrl2: "http://localhost:1337/api/"
+      authApiExternal: "http://localhost:1337/api/"
     }
       
     function getConfig()

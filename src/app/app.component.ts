@@ -22,7 +22,7 @@ import { merge } from "rxjs";
   styleUrls: ['..//styles.scss']
 })
 export class AppComponent {
-  title = 'Tour of Heroes';
+  title = 'Hospital Management System';
 	user$: Observable<User | null> = merge(
     // Init on startup
     this.authService.me(),

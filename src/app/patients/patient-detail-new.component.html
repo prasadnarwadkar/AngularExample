@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-4">
+            <h3>Register A New Patient</h3>
+            <form [formGroup]="patientDetailNewForm" [noValidate]="false" (ngSubmit)="save()">
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="firstName">First Name</label>
+                            <input class="form-control" formControlName="firstName" id="firstName"
+                                placeholder="First Name" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="lastName">Last Name</label>
+                            <input class="form-control" formControlName="lastName" id="lastName" placeholder="Last Name"
+                                required>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="dob">Birth Date</label>
+                            <input formControlName="dob" id="dob" class="form-control" type="date">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" formControlName="gender" id="gender" title="Gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="nodisclosure">No Disclosure</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="phone">Phone</label>
+                            <input formControlName="phone" class="form-control" id="phone" type="tel" required
+                                pattern="\+?[0-9]{1,3}-?[0-9]{10}" placeholder="+91-12345 67890">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="email">Email</label>
+                            <input formControlName="email" class="form-control" type="email" id="email"
+                                placeholder="Email">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="address">Address</label>
+                            <input formControlName="address" class="form-control" type="text" id="address"
+                                placeholder="Address" required>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="save-button" type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <a href="/patients">Cancel</a>
+        </div>
+    </div>
+</div>

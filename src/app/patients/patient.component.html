@@ -12,12 +12,13 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
+            <a class="btn btn-primary"
+                            href="/newpatient">Register A New Patient</a>
             <mat-table #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="firstName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.firstName}} <a class="btn btn-primary"
-                            href="/patient-detail/{{element.id}}">Details</a></mat-cell>
+                    <mat-cell *matCellDef="let element"> <a class="btn btn-primary" href="/patient-detail/{{element.id}}">{{element.firstName}}</a> </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="lastName">
@@ -35,6 +36,21 @@
                     <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
                 </ng-container>
 
+                <ng-container matColumnDef="dob">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Date Of Birth </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.dob}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="address">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger" (click)="deletePatient(element.id)" href="#">Delete</a>  </mat-cell>
+                </ng-container>
+
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
@@ -42,62 +58,6 @@
             <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
             </mat-paginator>            
         </div>
-        <div class="col-md-4">
-            <h3>Register a New Patient</h3>
-            <form [formGroup]="patientForm" [noValidate]="false" (ngSubmit)="addPatient()">
-                <div class="container">
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="firstName">First Name</label>
-                            <input class="form-control" formControlName="firstName" id="firstName"
-                                placeholder="First Name" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="lastName">Last Name</label>
-                            <input class="form-control" formControlName="lastName" id="lastName" placeholder="Last Name"
-                                required>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="dob">Birth Date</label>
-                            <input formControlName="dob" id="dob" class="form-control" type="date">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="gender">Gender</label>
-                            <select class="form-control" formControlName="gender" id="gender" title="Gender" required>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="nodisclosure">No Disclosure</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="phone">Phone</label>
-                            <input formControlName="phone" class="form-control" id="phone" type="tel" required
-                                pattern="\+?[0-9]{1,3}-?[0-9]{10}" placeholder="+91-12345 67890">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="email">Email</label>
-                            <input formControlName="email" class="form-control" type="email" id="email"
-                                placeholder="Email">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="address">Address</label>
-                            <input formControlName="address" class="form-control" type="text" id="address"
-                                placeholder="Address" required>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3 btn-group">
-                            <button data-testid="save-button" type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+        
     </div>
 </div>

@@ -3,16 +3,13 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroService } from './services/hero.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthService } from './shared/services/auth/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { HeroesComponent } from './hero-list/heroes.component';
 import { HeaderComponent } from './header/header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
@@ -22,6 +19,8 @@ import { PatientDetailComponent } from './patients/patient-detail.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
+import { PatientDetailNewComponent } from './patients/patient-detail-new.component';
+import { GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -31,12 +30,10 @@ export function appInitializerFactory(authService: AuthService) {
 
   declarations: [
     AppComponent,
-    DashboardComponent,
-    HeroDetailComponent,
-    HeroesComponent,
     HeaderComponent,
     PatientDetailComponent,
-    PatientsComponent
+    PatientsComponent,
+    PatientDetailNewComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +53,21 @@ export function appInitializerFactory(authService: AuthService) {
     MatIconModule,
     MatMenuModule
   ],
-  providers: [HeroService,
+  providers: [HeroService, SocialAuthService, 
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('<Google client id here>'),
+          },
+        ],
+        onError: (err) => console.error(err),
+      } as SocialAuthServiceConfig,
+    },
+
     { provide: Window, useValue: window },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     {
@@ -67,6 +78,6 @@ export function appInitializerFactory(authService: AuthService) {
     },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [HeroesComponent, PatientsComponent, PatientDetailComponent]
+  entryComponents: [PatientsComponent, PatientDetailComponent, PatientDetailNewComponent]
 })
 export class AppModule { }

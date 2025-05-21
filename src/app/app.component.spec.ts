@@ -38,10 +38,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Tour of Heroes'`, () => {
+  it(`should have as title 'Hospital Management System'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Tour of Heroes');
+    expect(app.title).toEqual('Hospital Management System');
   });
 
   

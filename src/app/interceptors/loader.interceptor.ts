@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
 import { LoaderService } from '../services/loader.service';
@@ -14,7 +14,6 @@ export class LoaderInterceptor implements HttpInterceptor {
       setHeaders: this.authService.getAuthorizationHeaders(),
     });
 
-    
     return next.handle(req).pipe(
       finalize(async () => {
         await this.delay(2000);

@@ -2,19 +2,21 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../shared/services';
-import { HttpClient } from '@angular/common/http';
+
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['../auth.component.scss'],
+  styleUrls: ['../auth.component.scss', './login.component.css'],
+
 })
 export class LoginComponent {
-  [x: string]: any;
   email: string | null = null;
   password: string | null = null;
 
-  constructor(private router: Router, private http: HttpClient, private authService: AuthService) { }
+
+  constructor(private router: Router, private authService: AuthService) { }
 
   login(): void {
 
@@ -22,12 +24,9 @@ export class LoginComponent {
       this.router.navigateByUrl('/');
     },
       (error) => {
-
-
         if (error?.status == 401) {
           alert("Either user name or password or both are incorrect. Please input valid username and password.");
         }
-
       })
   }
 }

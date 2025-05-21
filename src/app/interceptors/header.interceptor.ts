@@ -15,9 +15,6 @@ export class AuthHeaderInterceptor implements HttpInterceptor {
       setHeaders: this.authService.getAuthorizationHeaders(),
     });
 
-    
-    //return next.handle(req);
-
     this.loader.show();
     return next.handle(req).pipe(
       finalize(() => {
