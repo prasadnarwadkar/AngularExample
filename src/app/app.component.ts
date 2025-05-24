@@ -4,7 +4,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { Observable } from "rxjs/internal/Observable";
 import { AuthService } from "./shared/services/auth/auth.service";
 import { User } from "./shared/interfaces/user.interface";
-import { merge } from "rxjs";
+import { merge,of } from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -24,9 +24,8 @@ import { merge } from "rxjs";
 export class AppComponent {
   title = 'Hospital Management System';
 	user$: Observable<User | null> = merge(
-    // Init on startup
     this.authService.me(),
-    // Update after login/register/logout
+
     this.authService.getUser()
   );
 	constructor(

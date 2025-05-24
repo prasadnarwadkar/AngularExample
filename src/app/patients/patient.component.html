@@ -13,12 +13,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10">
-            <a class="btn btn-primary"
+            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
                             href="/newpatient">Register A New Patient</a>
             <mat-table #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="firstName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <a class="btn btn-primary" href="/patient-detail/{{element.id}}">{{element.firstName}}</a> </mat-cell>
+                    <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest" class="btn btn-primary" href="/patient-detail/{{element.id}}">{{element.firstName}}</a> </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="lastName">
@@ -48,7 +48,7 @@
 
                 <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger" (click)="deletePatient(element.id)" href="#">Delete</a>  </mat-cell>
+                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="deletePatient(element.id, $event)" href="/patients">Delete</a>  </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

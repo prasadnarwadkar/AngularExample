@@ -11,7 +11,7 @@ import testvars from '../../assets/testvars.json'
 const heroText = testvars.heroText;
 
 const apiBaseUrl = settings.apiBaseUrl;
-console.log(apiBaseUrl);
+
 
 describe('Http Calls to API directly', () => {
   let httpClient: HttpClient;
@@ -38,7 +38,7 @@ describe('Http Calls to API directly', () => {
     if (!config) {
       await Axios.get(`${apiBaseUrl}getherodirect`)
         .then(data => {
-          console.log(data.data);
+
           // When observable resolves, result should match test data
           // When observable resolves, result should match test data
          const mappedData = data.data.map((item: { name: string; id: string; }) => {
@@ -62,7 +62,6 @@ describe('Http Calls to API directly', () => {
     else {
       await Axios.get(`${config.apiBaseUrl}getherodirect`)
         .then(data => {
-          console.log(data.data);
           // When observable resolves, result should match test data
          const mappedData = data.data.map((item: { name: string; id: string; }) => {
             return {

@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+            <h3>Add a New Role</h3>
+            <form [formGroup]="roleDetailForm" [noValidate]="false" (ngSubmit)="createRole()">
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="role">Role</label>
+                            <input class="form-control" formControlName="role" id="role" placeholder="role"
+                                required>
+                        </div>
+                       
+                    </div>
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="save-button" type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <a href="/roles">Cancel</a>
+        </div>
+    </div>
+</div>

@@ -5,17 +5,23 @@
 
     <span class="example-spacer"></span>
     <a class="links side" routerLink="/auth/login" *ngIf="!user">Login</a>
+    <a class="links side" routerLink="/auth/register" *ngIf="!user">Register</a>
     <div>
       <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu">
-        <mat-icon>account_circle</mat-icon>{{ user.fullname }}
+        <mat-icon *ngIf="!user.picture">account_circle</mat-icon><img *ngIf="user.picture" alt="user image" src={{user.picture}} width="64" height="64" />{{ user.fullname }}
       </a>
       <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu2">
         Menu
       </a>
 
       <mat-menu #menu2="matMenu">
-        <button mat-menu-item routerLink="/patients">Patients</button>
+        <button mat-menu-item routerLink="/patients">Manage Patients</button>
+        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/users">Manage Users</button>
+        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roles">Manage Roles</button>
+        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/pages">Manage Pages</button>
+        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps">Manage Role Action Maps</button>
       </mat-menu>
+      
       <mat-menu #menu="matMenu">
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/admin">admin</button>
         <button mat-menu-item (click)="logout()">Sign Out</button>

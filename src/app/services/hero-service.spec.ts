@@ -38,8 +38,6 @@ describe('HeroService', () => {
 
       await service.getHeroesUsingAxios()
         .then(data => {
-          console.log(data);
-          // When observable resolves, result should match test data
           const mappedData = data.map((item: { name: string; id: string; }) => {
             return {
               name: item.name,

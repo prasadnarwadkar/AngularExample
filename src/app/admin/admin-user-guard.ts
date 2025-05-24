@@ -11,7 +11,7 @@ export class OnlyAdminUsersGuard implements CanActivate {
   constructor(private authService: AuthService) {}
 
   canActivate(): Observable<boolean> {
-    console.log('OnlyAdminUsersGuard.canActivate()');
+    
     return this.authService.getUser().pipe(map(user => {
       
       if (user !== null && 

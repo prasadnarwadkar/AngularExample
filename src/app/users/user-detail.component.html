@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+            <h3>Modify an Existing User</h3>
+            <form [formGroup]="userDetailForm" [noValidate]="false" (ngSubmit)="updateUser()">
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="fullname">Full Name</label>
+                            <input class="form-control" formControlName="fullname" id="fullname" placeholder="Full Name"
+                                required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="email">Email</label>
+                            <input class="form-control" formControlName="email" id="email" placeholder="Email" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <h4>User's Roles:</h4>
+                            <mat-selection-list [disabled]="true" #userRoles
+                                (selectionChange)="onUserRolesListSelectionChange($event)">
+                                <mat-list-option [selected]="true" *ngFor="let shoe of user?.roles">
+                                    {{shoe}}
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <h4>All Roles:</h4>
+                            <mat-selection-list #allOfTheRoles
+                                (selectionChange)="onAllRolesListSelectionChange($event)">
+                                <mat-list-option [selected]="role.selectedForUser" *ngFor="let role of allRoles">
+                                    {{role.role}}
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="save-button" type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <a href="/users">Cancel</a>
+        </div>
+    </div>
+</div>

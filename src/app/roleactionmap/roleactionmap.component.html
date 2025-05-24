@@ -1,0 +1,48 @@
+<h2>Patients</h2>
+<div class="container">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <!-- Search Bar -->
+            <label class="glyphicon glyphicon-search"></label><input type="text"
+                class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterPatients()"
+                placeholder="Search by name or phone">
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
+                            href="/newroleactionmap">Register A New Role Action Map</a>
+            <mat-table #table [dataSource]="dataSource2" matSort="sort">
+                <ng-container matColumnDef="rolename">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <a class="btn btn-primary" href="/roleactionmaps-detail/{{element.rolename}}/{{element.pageName}}">{{element.rolename}}</a> </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pageName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Page </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.pageName}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.actions}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="deletePatient(element.id, $event)" href="/patients">Delete</a>  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>            
+        </div>
+        
+    </div>
+</div>

@@ -20,6 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from "@angular/material/table";
+import { MyDisableIfUnauthorizedDirective } from '../directives/disable';
 
 @NgModule({
   exports: [
@@ -45,6 +46,8 @@ import { MatTableModule } from "@angular/material/table";
     MatFormFieldModule,
     MatProgressBarModule,
     
+    
   ],
+  declarations: []
 })
 export class SharedModule {}

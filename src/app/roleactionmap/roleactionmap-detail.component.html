@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+            <h3>Modify an Existing Role Action Map</h3>
+            <form [formGroup]="roleActionMapDetailForm" [noValidate]="false" (ngSubmit)="update()">
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="rolename">Role Name</label>
+                            <input class="form-control" formControlName="rolename" id="rolename"
+                                placeholder="Role Name" readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="pageName">Page Name</label>
+                            <input class="form-control" formControlName="pageName" id="pageName" placeholder="Page Name"
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <h4>User's Roles:</h4>
+                            <mat-selection-list [disabled]="true" #userActions >
+                                <mat-list-option  [selected]="true" *ngFor="let shoe of roleActionMap?.actions">
+                                    {{shoe}}
+                                </mat-list-option>
+                            </mat-selection-list>                           
+                        </div>
+                        <div class="form-group col-md-4">
+                            <h4>All Roles:</h4>
+                            <mat-selection-list #allOfTheActions (selectionChange)="onAllActionsListSelectionChange($event)">
+                                <mat-list-option [selected]="action.selected" *ngFor="let action of allActions">
+                                    {{action.action}}
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="save-button" type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <a href="/roleactionmaps">Cancel</a>
+        </div>
+    </div>
+</div>

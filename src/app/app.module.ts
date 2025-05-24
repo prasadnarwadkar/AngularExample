@@ -21,6 +21,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { PatientDetailNewComponent } from './patients/patient-detail-new.component';
 import { GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
+import { MyDisableIfUnauthorizedDirective } from './directives/disable';
+import { UserDetailComponent } from './users/user-detail.component';
+import { UsersComponent } from './users/users.component';
+import { MatListModule } from '@angular/material/list';
+import { RolesComponent } from './roles/roles.component';
+import { RoleDetailComponent } from './roles/role-detail.component';
+import { PagesComponent } from './pages/pages.component';
+import { PageDetailComponent } from './pages/page-detail.component';
+import { RoleActionMapComponent } from './roleactionmap/roleactionmap.component';
+import { RoleActionMapDetailComponent } from './roleactionmap/roleactionmap-detail.component';
+import { RoleActionMapNewComponent } from './roleactionmap/roleactionmap-detail-new.component';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -33,7 +44,17 @@ export function appInitializerFactory(authService: AuthService) {
     HeaderComponent,
     PatientDetailComponent,
     PatientsComponent,
-    PatientDetailNewComponent
+    PatientDetailNewComponent,
+    MyDisableIfUnauthorizedDirective,
+    UserDetailComponent,
+    UsersComponent,
+    RolesComponent,
+    RoleDetailComponent,
+    PagesComponent,
+    PageDetailComponent,
+    RoleActionMapComponent,
+    RoleActionMapDetailComponent,
+    RoleActionMapNewComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +72,8 @@ export function appInitializerFactory(authService: AuthService) {
     HttpClientModule,
     ReactiveFormsModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatListModule
   ],
   providers: [HeroService, SocialAuthService, 
     {
@@ -78,6 +100,14 @@ export function appInitializerFactory(authService: AuthService) {
     },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [PatientsComponent, PatientDetailComponent, PatientDetailNewComponent]
+  entryComponents: [PatientsComponent, 
+    PatientDetailComponent, 
+    PatientDetailNewComponent, 
+    UsersComponent, 
+    UserDetailComponent, 
+    RolesComponent, 
+    RoleDetailComponent,
+    PagesComponent,
+    PageDetailComponent]
 })
 export class AppModule { }

@@ -16,14 +16,14 @@ import { AuthService } from '../../shared/services';
   styleUrls: ['../auth.component.scss'],
 })
 export class RegisterComponent {
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   passwordsMatchValidator(control: FormControl): ValidationErrors | null {
     const password = control.root.get('password');
     return password && control.value !== password.value
       ? {
-          passwordMatch: true,
-        }
+        passwordMatch: true,
+      }
       : null;
   }
 
@@ -32,6 +32,7 @@ export class RegisterComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     repeatPassword: new FormControl('', [Validators.required, this.passwordsMatchValidator]),
+    picture: new FormControl(''),
   });
 
   get fullname(): AbstractControl {
@@ -52,13 +53,31 @@ export class RegisterComponent {
 
   register(): void {
     if (this.userForm.invalid) {
+      if (this.userForm?.controls?.fullname?.errors?.required) {
+        alert("Full name is needed")
+      }
+
+      if (this.userForm?.controls?.repeatPassword?.errors?.required) {
+        alert("Confirm Password is needed")
+      }
+
+      if (this.userForm?.controls?.repeatPassword?.errors?.passwordMatch) {
+        alert("Confirm Password doesn't match Password field")
+      }
+
+
       return;
     }
 
-    const { fullname, email, password, repeatPassword } = this.userForm.getRawValue();
+    const { fullname, email, password, repeatPassword, picture } = this.userForm.getRawValue();
 
-    this.authService.register(fullname!, email!, password!, repeatPassword!).subscribe(data => {
-      this.router.navigate(['']);
-    });
+    this.authService.register(fullname!, email!, password!, repeatPassword!, picture!).subscribe({
+      next: (v) => this.router.navigate(['']),
+      error: (e) => {console.error(e); 
+        if (e.message.indexOf('duplicate key error')>= 0){
+        alert("Email has already been used");
+      }},
+      complete: () => console.info('complete')
+    })
   }
 }

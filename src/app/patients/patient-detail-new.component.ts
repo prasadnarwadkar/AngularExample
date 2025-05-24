@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
+import { AuthService } from '../shared/services';
+import { PermissionRequest } from '../models/models';
 
 @Component({
     selector: 'patient-detail-new',
@@ -10,11 +12,12 @@ import { ApiService } from '../services/hospital.service';
 })
 export class PatientDetailNewComponent implements OnInit {
     patientDetailNewForm: FormGroup;
-
+    createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "patients" }
+    
     constructor(
         private router: Router,
         private apiService: ApiService,
-
+        private authService: AuthService,
         private route: ActivatedRoute,
         private fb: FormBuilder
     ) {
@@ -31,26 +34,31 @@ export class PatientDetailNewComponent implements OnInit {
 
 
     async ngOnInit(): Promise<void> {
-        
+
     }
 
     async save(): Promise<any> {
-        console.log(this.patientDetailNewForm.value)
+        if (await this.authService.hasPermission(this.createPermissionRequest.action, this.createPermissionRequest.pageName)) {
+            
 
-        if (this.patientDetailNewForm.value.firstName.length > 0) {
+            if (this.patientDetailNewForm.value.firstName.length > 0) {
 
-            try {
-                await this.apiService.create("patients", this.patientDetailNewForm.value).then((res) => {
-                    this.router.navigate(['/patients']);
-                });
+                try {
+                    await this.apiService.create("patients", this.patientDetailNewForm.value).then((res) => {
+                        this.router.navigate(['/patients']);
+                    });
+                }
+                catch (error) {
+                    alert(error)
+                }
             }
-            catch (error) {
-                alert(error)
+            else {
+                alert('Name of the hero can\'t be blank');
+
             }
         }
-        else {
-            alert('Name of the hero can\'t be blank');
-
+        else{
+            alert('You are not authorized to register a new patient');
         }
     }
 }

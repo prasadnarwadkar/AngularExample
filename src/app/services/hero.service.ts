@@ -10,7 +10,6 @@ import settings from '../../assets/settings.json';
 import axios from 'axios';
 
 const apiBaseUrl = settings.apiBaseUrl;
-console.log(apiBaseUrl);
 
 @Injectable()
 export class HeroService {
@@ -62,10 +61,6 @@ export class HeroService {
         });
       }
 
-
-      
-
-      console.log(JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       console.error("Error saving hero:", error);
