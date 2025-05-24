@@ -1,7 +1,7 @@
-import { Component, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../services/hospital.service';
-import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Patient, ExpandedPatient, RoleActionMap, ExpandedRoleActionMap } from '../models/othermodels';
+import { FormBuilder } from '@angular/forms';
+import { RoleActionMap, ExpandedRoleActionMap } from '../models/othermodels';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -38,9 +38,9 @@ export class RoleActionMapComponent implements OnInit {
   paginator!: MatPaginator;
   data: RoleActionMap[] = [];
   
-  filteredPatients: RoleActionMap[] = [];
+  filteredRoleActionMaps: RoleActionMap[] = [];
   searchTerm: string = '';
-  selectedPatient: Patient | undefined;
+  
 
   constructor(private router: Router, private authService: AuthService, private apiService: ApiService, private fb: FormBuilder) {
   }
@@ -53,7 +53,7 @@ export class RoleActionMapComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    this.setDataSource(this.filteredPatients)
+    this.setDataSource(this.filteredRoleActionMaps)
   }
 
 
@@ -61,18 +61,18 @@ export class RoleActionMapComponent implements OnInit {
   async loadData() {
     this.data = await this.authService.getAllRoleActionmaps();
     
-    this.filteredPatients = this.data;
+    this.filteredRoleActionMaps = this.data;
 
   }
 
-  filterPatients() {
-    this.filteredPatients = this.data.filter(patient =>
-      patient.rolename?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      patient.pageName?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      patient.actions?.includes(this.searchTerm)
+  filterData() {
+    this.filteredRoleActionMaps = this.data.filter(roleactionmap =>
+      roleactionmap.rolename?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      roleactionmap.pageName?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      roleactionmap.actions?.includes(this.searchTerm)
     );
 
-    this.setDataSource(this.filteredPatients)
+    this.setDataSource(this.filteredRoleActionMaps)
   }
 
   setDataSource(list: RoleActionMap[]) {
@@ -89,11 +89,11 @@ export class RoleActionMapComponent implements OnInit {
   }
 
 
-  async deletePatient(id: string, e: Event) {
+  async delete(id: string, e: Event) {
     e.preventDefault();
     if (await this.authService.hasPermission(this.deletePermissionRequest.action, this.deletePermissionRequest.pageName)) {
-      if (confirm("Would you like to delete this patient?")) {
-        await this.apiService.delete('patients', id);
+      if (confirm("Would you like to delete this role action map?")) {
+        //todo
       }
     }
     this.loadData();

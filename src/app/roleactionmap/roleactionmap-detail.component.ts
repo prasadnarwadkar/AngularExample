@@ -8,6 +8,7 @@ import { Patient, RoleActionMap } from '../models/othermodels';
 import { AuthService } from '../shared/services';
 import { MatSelectionListChange } from '@angular/material/list';
 import { Action } from '../shared/interfaces';
+import { PermissionRequest } from '../models/models';
 
 
 @Component({
@@ -17,12 +18,17 @@ import { Action } from '../shared/interfaces';
 })
 export class RoleActionMapDetailComponent implements OnInit {
     roleActionMapDetailForm: FormGroup;
+    updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "roleactionmaps" }
     async update() {
-
-        await this.authService.updateRoleActionMap(this.roleActionMap!._id!,
-            this.roleActionMap!).then((res) => {
-                this.router.navigate(['/roleactionmaps']);
-            });
+        if (await this.authService.hasPermission(this.updatePermissionRequest.action, this.updatePermissionRequest.pageName)) {
+            await this.authService.updateRoleActionMap(this.roleActionMap!._id!,
+                this.roleActionMap!).then((res) => {
+                    this.router.navigate(['/roleactionmaps']);
+                });
+        }
+        else{
+            alert('You are not authorized to modify data');
+        }
     }
     @Input() public roleActionMap: RoleActionMap | undefined;
     @Output() closeTheHeroSaveDlg = new EventEmitter<Hero>();
@@ -64,7 +70,7 @@ export class RoleActionMapDetailComponent implements OnInit {
         if (this.roleActionMap) {
             this.roleActionMap.actions = event.source.selectedOptions.selected.map(option => option._elementRef.nativeElement.innerText)
         }
-        
+
     }
 
     async ngOnInit(): Promise<void> {
@@ -76,7 +82,7 @@ export class RoleActionMapDetailComponent implements OnInit {
                 && page !== undefined) {
                 this.navigated = true;
                 this.roleActionMap = (await this.authService.getRoleActionsByRoleAndPage(role, page))[0];
-                
+
                 this.roleActionMapDetailForm = this.fb.group({
                     rolename: this.roleActionMap?.rolename!,
                     pageName: this.roleActionMap?.pageName,

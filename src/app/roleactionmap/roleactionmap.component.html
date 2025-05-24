@@ -1,10 +1,10 @@
-<h2>Patients</h2>
+<h2>Role Action Maps</h2>
 <div class="container">
     <div class="row">
         <div class="form-group col-md-4">
             <!-- Search Bar -->
             <label class="glyphicon glyphicon-search"></label><input type="text"
-                class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterPatients()"
+                class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterData()"
                 placeholder="Search by name or phone">
 
         </div>
@@ -18,7 +18,7 @@
             <mat-table #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="rolename">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <a class="btn btn-primary" href="/roleactionmaps-detail/{{element.rolename}}/{{element.pageName}}">{{element.rolename}}</a> </mat-cell>
+                    <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest" class="btn btn-primary" href="/roleactionmaps-detail/{{element.rolename}}/{{element.pageName}}">{{element.rolename}}</a> </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="pageName">
@@ -33,7 +33,7 @@
 
                 <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="deletePatient(element.id, $event)" href="/patients">Delete</a>  </mat-cell>
+                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="delete(element.id, $event)" href="#">Delete</a>  </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

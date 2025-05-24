@@ -50,3 +50,13 @@ button {
 .mat-header-cell.mat-sort-header-sorted {
   color: black;
 }
+
+a[disabled], a[disabled]:hover {
+   pointer-events: none;
+   color: #e1e1e1;
+}
+
+button[disabled], button[disabled]:hover {
+   pointer-events: none;
+   color: #e1e1e1;
+}
