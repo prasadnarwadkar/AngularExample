@@ -1,13 +1,12 @@
 import { Component, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../services/hospital.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ExpandedRole } from '../models/othermodels';
+import { ExpandedRole, Role } from '../models/othermodels';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { PermissionRequest } from '../models/models';
-import { Role } from '../shared/interfaces';
 import { AuthService } from '../shared/services';
 
 @Component({

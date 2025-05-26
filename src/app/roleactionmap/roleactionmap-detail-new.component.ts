@@ -3,9 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
 import { AuthService } from '../shared/services';
-import { RoleActionMap, RoleActionMapNew } from '../models/othermodels';
+import { Action, Page, Role, RoleActionMap, RoleActionMapNew } from '../models/othermodels';
 import { MatSelectionListChange } from '@angular/material/list';
-import { Action, Page, Role } from '../shared/interfaces';
 
 @Component({
     selector: 'roleactionmap-detail-new',

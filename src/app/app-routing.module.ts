@@ -10,8 +10,6 @@ import { UsersComponent } from './users/users.component';
 import { UserDetailComponent } from './users/user-detail.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoleDetailComponent } from './roles/role-detail.component';
-import { PagesComponent } from './pages/pages.component';
-import { PageDetailComponent } from './pages/page-detail.component';
 import { RoleActionMapComponent } from './roleactionmap/roleactionmap.component';
 import { RoleActionMapDetailComponent } from './roleactionmap/roleactionmap-detail.component';
 import { RoleActionMapNewComponent } from './roleactionmap/roleactionmap-detail-new.component';
@@ -36,8 +34,6 @@ const routes: Routes = [
   { path: 'user-detail/:id', component: UserDetailComponent,canActivate: [AuthGuard] },
   { path: 'roles', component: RolesComponent,canActivate: [AuthGuard] },
   { path: 'role-detail/new', component: RoleDetailComponent,canActivate: [AuthGuard] },
-  { path: 'pages', component: PagesComponent,canActivate: [AuthGuard] },
-  { path: 'page-detail/new', component: PageDetailComponent,canActivate: [AuthGuard] },
   { path: 'roleactionmaps-detail/:role/:page', component: RoleActionMapDetailComponent,canActivate: [AuthGuard] },
   { path: 'roleactionmaps', component: RoleActionMapComponent,canActivate: [AuthGuard] },
   { path: 'newroleactionmap', component: RoleActionMapNewComponent,canActivate: [AuthGuard] },

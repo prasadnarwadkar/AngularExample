@@ -43,7 +43,14 @@ export class AuthService {
   }
 
   async getAllPages() {
-    return axios.get(`${config.authApiExternal}auth/pages`).then(res => res.data);
+    // Update newly added pages here
+    return [
+      { page: 'roles' },
+      { page: 'users' },
+      { page: 'patients' },
+      { page: 'admin' },
+      { page: 'roleactionmaps' }
+    ]
   }
 
   async createPage(page: string) {
@@ -115,7 +122,7 @@ export class AuthService {
         );
     }
     catch (e: any) {
-      if (e.response.status == 401){
+      if (e.response.status == 401) {
         alert("Login failed. Either username or password or both are invalid.")
       }
       alert("No permissions found for the current user")
@@ -181,14 +188,14 @@ export class AuthService {
     else {
       this.user$.next(this.tokenStorage.getUser());
       if (this.user$.value != null) {
-        
+
       }
       else {
         if (this.user$.asObservable() != null) {
           return this.user$.asObservable();
         }
         else {
-          
+
           return of(null)
         }
       }
@@ -222,7 +229,7 @@ export class AuthService {
     }
 
     return this.http.get<AuthResponse>(`${config.authApiExternal}auth/me`).pipe(
-      tap(({ user }) => 
+      tap(({ user }) =>
         this.setUser(user)),
       map(x => x.user)
     ).pipe(

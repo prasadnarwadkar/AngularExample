@@ -27,8 +27,6 @@ import { UsersComponent } from './users/users.component';
 import { MatListModule } from '@angular/material/list';
 import { RolesComponent } from './roles/roles.component';
 import { RoleDetailComponent } from './roles/role-detail.component';
-import { PagesComponent } from './pages/pages.component';
-import { PageDetailComponent } from './pages/page-detail.component';
 import { RoleActionMapComponent } from './roleactionmap/roleactionmap.component';
 import { RoleActionMapDetailComponent } from './roleactionmap/roleactionmap-detail.component';
 import { RoleActionMapNewComponent } from './roleactionmap/roleactionmap-detail-new.component';
@@ -50,8 +48,6 @@ export function appInitializerFactory(authService: AuthService) {
     UsersComponent,
     RolesComponent,
     RoleDetailComponent,
-    PagesComponent,
-    PageDetailComponent,
     RoleActionMapComponent,
     RoleActionMapDetailComponent,
     RoleActionMapNewComponent
@@ -106,8 +102,6 @@ export function appInitializerFactory(authService: AuthService) {
     UsersComponent, 
     UserDetailComponent, 
     RolesComponent, 
-    RoleDetailComponent,
-    PagesComponent,
-    PageDetailComponent]
+    RoleDetailComponent]
 })
 export class AppModule { }

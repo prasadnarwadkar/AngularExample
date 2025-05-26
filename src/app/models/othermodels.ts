@@ -92,3 +92,18 @@ export interface User {
   hashedPassword:string
   createdAt: Date
 }
+
+export interface Role {
+  _id: string;
+  role: string;
+  selectedForUser: boolean
+}
+
+export interface Action {
+  action: string;
+  selected: boolean
+}
+
+export interface Page {
+  page: string;
+}

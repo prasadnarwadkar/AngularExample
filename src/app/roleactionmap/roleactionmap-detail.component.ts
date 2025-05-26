@@ -4,10 +4,9 @@ import { Hero } from '../services/hero';
 import { HeroService } from '../services/hero.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
-import { Patient, RoleActionMap } from '../models/othermodels';
+import { Action, Patient, RoleActionMap } from '../models/othermodels';
 import { AuthService } from '../shared/services';
 import { MatSelectionListChange } from '@angular/material/list';
-import { Action } from '../shared/interfaces';
 import { PermissionRequest } from '../models/models';
 
 
