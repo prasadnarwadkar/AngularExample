@@ -2,17 +2,19 @@
   <mat-toolbar color="primary">
     <a routerLink="/" class="logo"></a>
     <a class="navbar-brand" href="#">{{title}}</a>
-
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <span class="example-spacer"></span>
     <a class="links side" routerLink="/auth/login" *ngIf="!user">Login</a>
     <a class="links side" routerLink="/auth/register" *ngIf="!user">Register</a>
     <div>
       <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu">
-        <mat-icon *ngIf="!user.picture">account_circle</mat-icon><img *ngIf="user.picture" alt="user image" src={{user.picture}} width="64" height="64" />{{ user.fullname }}
+        <mat-icon *ngIf="!user.picture">account_circle</mat-icon><img *ngIf="user.picture" alt="user image"
+          src={{user.picture}} width="64" height="64" />Welcome, {{ user.fullname }}
       </a>
-      <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu2">
-        Menu
-      </a>
+      
+      <button mat-icon-button  [matMenuTriggerFor]="menu2" aria-label="Menu">
+        <mat-icon color="primary">list</mat-icon>
+      </button>
 
       <mat-menu #menu2="matMenu">
         <button mat-menu-item routerLink="/patients">Manage Patients</button>
@@ -20,11 +22,12 @@
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roles">Manage Roles</button>
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps">Manage Role Action Maps</button>
       </mat-menu>
-      
+
       <mat-menu #menu="matMenu">
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/admin">admin</button>
         <button mat-menu-item (click)="logout()">Sign Out</button>
       </mat-menu>
     </div>
   </mat-toolbar>
+  <h6 *ngIf="user?.roles != null && user?.roles?.length! > 0">You are: {{user?.roles![0]}}</h6>
 </header>

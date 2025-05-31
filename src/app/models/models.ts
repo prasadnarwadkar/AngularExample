@@ -25,3 +25,11 @@ export interface RoleRequest {
 export interface PageRequest {
   page: string
 }
+
+export interface EmailRequest {
+  email: string
+}
+
+export interface PasswordRequest {
+  password: string
+}

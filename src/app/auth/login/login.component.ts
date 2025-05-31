@@ -22,12 +22,12 @@ export class LoginComponent {
 
   constructor(private router: Router, private authService: AuthService, private tokenStorage: TokenStorage) { }
 
-  async handleCredentialResponse(response: any) {
+  async handleGoogleAuthResponse(response: any) {
     if (response && response.credential) {
       this.tokenStorage.saveGoogleIdToken(response.credential)
       let googleUserInfoUrl = 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='
       await Axios.get(`${googleUserInfoUrl}${response.credential}`)
-        .then(data => {
+        .then(async data => {
           if (data.status === 200) {
             let googleUser: GoogleUser = data.data as unknown as GoogleUser
 
@@ -39,7 +39,19 @@ export class LoginComponent {
                 roles: [],
                 isAdmin: false,
                 email: googleUser.email,
-                picture: googleUser.picture
+                picture: googleUser.picture,
+                token: ""
+              }
+              try {
+                // Create local user for this google user
+                let localUserCreatedForGoogleUser = await this.authService.registerwithoutlogin(googleUser.name, googleUser.email, "test123", "test123", googleUser.picture);
+                
+                user.roles = localUserCreatedForGoogleUser?.data?.user?.roles!
+                user.token = localUserCreatedForGoogleUser?.data?.token!
+                this.tokenStorage.saveUser(user)
+              }
+              catch (Exception) {
+                console.error(Exception)
               }
 
               this.tokenStorage.saveUser(user)
@@ -57,8 +69,8 @@ export class LoginComponent {
   ngOnInit() {
     // @ts-ignore
     google.accounts.id.initialize({
-      client_id: "<client_id>",
-      callback: this.handleCredentialResponse.bind(this),
+      client_id: "<google_client_id>",
+      callback: this.handleGoogleAuthResponse.bind(this),
       auto_select: false,
       cancel_on_tap_outside: true,
 

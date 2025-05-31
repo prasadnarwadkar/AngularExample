@@ -13,6 +13,8 @@ import { RoleDetailComponent } from './roles/role-detail.component';
 import { RoleActionMapComponent } from './roleactionmap/roleactionmap.component';
 import { RoleActionMapDetailComponent } from './roleactionmap/roleactionmap-detail.component';
 import { RoleActionMapNewComponent } from './roleactionmap/roleactionmap-detail-new.component';
+import { ForgotPasswordComponent } from './users/forgot-password.component';
+import { ResetPasswordComponent } from './users/reset-password.component';
 
 const routes: Routes = [
   {
@@ -37,6 +39,8 @@ const routes: Routes = [
   { path: 'roleactionmaps-detail/:role/:page', component: RoleActionMapDetailComponent,canActivate: [AuthGuard] },
   { path: 'roleactionmaps', component: RoleActionMapComponent,canActivate: [AuthGuard] },
   { path: 'newroleactionmap', component: RoleActionMapNewComponent,canActivate: [AuthGuard] },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
 ];
 
 @NgModule({

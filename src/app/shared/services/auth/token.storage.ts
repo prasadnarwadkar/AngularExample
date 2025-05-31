@@ -12,6 +12,8 @@ export class TokenStorage {
   signOut(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
+    localStorage.removeItem(this.userActionsKey);
+    localStorage.removeItem(this.googleIdTokenKey);
     localStorage.clear();
   }
 

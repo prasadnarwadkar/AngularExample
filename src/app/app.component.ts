@@ -13,9 +13,9 @@ import { merge,of } from "rxjs";
     
     <hr/>
     <app-header [user]="user$ | async"></app-header>
-    <div class="container">
+    
     <router-outlet></router-outlet>
-    </div>
+
     
   `,
   

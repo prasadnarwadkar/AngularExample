@@ -16,7 +16,12 @@ interface Element {
   symbol: string;
 }
 
-
+export interface Tile {
+  color: string;
+  cols: number;
+  rows: number;
+  text: string;
+}
 
 @Component({
   selector: 'app-patients',
@@ -24,10 +29,17 @@ interface Element {
   styleUrls: ['./patient.component.css']
 })
 export class PatientsComponent implements OnInit {
+  tiles: Tile[] = [
+    // {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
+    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
+    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
+    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
+  ];
   deletePermissionRequest: PermissionRequest = { "action": "delete", "pageName": "patients" }
   createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "patients" }
   updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "patients" }
-  
+  readPermissionRequest: PermissionRequest = { "action": "read", "pageName": "patients" }
+
   displayedColumns = ['firstName', 'lastName', 'phone', 'email', 'dob', 'address', 'action'];
 
   dataSource2 = new MatTableDataSource<ExpandedPatient>([]);
@@ -53,25 +65,38 @@ export class PatientsComponent implements OnInit {
       address: ['']
     });
 
+    var token = this.authService.getJwt()
+
+    if (!token) {
+      //window.location.reload()
+    }
   }
 
   async ngOnInit(): Promise<void> {
     await this.loadPatients();
 
     this.setDataSource(this.patients)
+
+
   }
 
 
   ngAfterViewInit() {
     this.setDataSource(this.filteredPatients)
+
+
   }
 
 
 
   async loadPatients() {
-    this.patients = await this.apiService.getAll('patients');
-
-    this.filteredPatients = this.patients;
+    if (await this.authService.hasPermission(this.readPermissionRequest.action, this.readPermissionRequest.pageName)) {
+      this.patients = await this.apiService.getAll('patients');
+      this.filteredPatients = this.patients;
+    }
+    else{
+      alert("You are not authorized to view data on this page.")
+    }
 
   }
 

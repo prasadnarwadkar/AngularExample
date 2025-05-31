@@ -25,6 +25,7 @@
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "types":["gapi", "gapi.auth2"]
   },
   "allowSyntheticDefaultImports": true,
   "angularCompilerOptions": {

@@ -30,6 +30,10 @@ import { RoleDetailComponent } from './roles/role-detail.component';
 import { RoleActionMapComponent } from './roleactionmap/roleactionmap.component';
 import { RoleActionMapDetailComponent } from './roleactionmap/roleactionmap-detail.component';
 import { RoleActionMapNewComponent } from './roleactionmap/roleactionmap-detail-new.component';
+import { ForgotPasswordComponent } from './users/forgot-password.component';
+import { ResetPasswordComponent } from './users/reset-password.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -50,7 +54,9 @@ export function appInitializerFactory(authService: AuthService) {
     RoleDetailComponent,
     RoleActionMapComponent,
     RoleActionMapDetailComponent,
-    RoleActionMapNewComponent
+    RoleActionMapNewComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +75,9 @@ export function appInitializerFactory(authService: AuthService) {
     ReactiveFormsModule,
     MatIconModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    MatGridListModule,
+    MatExpansionModule
   ],
   providers: [HeroService, SocialAuthService, 
     {

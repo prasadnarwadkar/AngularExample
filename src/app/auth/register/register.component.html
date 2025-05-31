@@ -15,7 +15,7 @@
         <tr>
           <td>
             <mat-form-field>
-              <input matInput placeholder="Email" formControlName="email" name="email" required>
+              <input matInput placeholder="Email" type="email" formControlName="email" name="email" required>
               <mat-error *ngIf="email.invalid && email.hasError('email')">Invalid email address</mat-error>
             </mat-form-field>
           </td>

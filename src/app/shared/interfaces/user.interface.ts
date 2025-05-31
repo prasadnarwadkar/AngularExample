@@ -6,6 +6,7 @@ export interface User {
   isAdmin: boolean;
   email: string;
   picture: string;
+  token:string;
 }
 
 

@@ -100,7 +100,8 @@ export class UserDetailComponent implements OnInit {
                     fullname: "",
                     createdAt: "",
                     isAdmin: false,
-                    picture: ""
+                    picture: "",
+                    token:""
                 }
             }
         }
@@ -123,7 +124,8 @@ export class UserDetailComponent implements OnInit {
                     fullname: "",
                     createdAt: "",
                     isAdmin: false,
-                    picture: ""
+                    picture: "",
+                    token:""
                 }
             }
         }
