@@ -1,22 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../services/hospital.service';
 import { FormBuilder } from '@angular/forms';
-import { RoleActionMap, ExpandedRoleActionMap } from '../models/othermodels';
+import { RoleActionMap } from '../models/othermodels';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { PermissionRequest } from '../models/models';
 import { AuthService } from '../shared/services';
-
-interface Element {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-
 
 @Component({
   selector: 'app-roleactionmaps',
@@ -28,9 +19,9 @@ export class RoleActionMapComponent implements OnInit {
   createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "roleactionmaps" }
   updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "roleactionmaps" }
 
-  displayedColumns = ['rolename', 'pageName', 'actions','action'];
+  displayedColumns = ['role', 'pageName', 'actions','action'];
 
-  dataSource2 = new MatTableDataSource<ExpandedRoleActionMap>([]);
+  dataSource2 = new MatTableDataSource<RoleActionMap>([]);
 
   @ViewChild(MatSort, { static: false })
   sort!: MatSort;
@@ -60,6 +51,17 @@ export class RoleActionMapComponent implements OnInit {
 
   async loadData() {
     this.data = await this.authService.getAllRoleActionmaps();
+
+    this.authService.getUser().subscribe(x=> {
+        console.log(x)
+        let thisUserRoleMatches = this.data.filter(u=> x?.roles.includes(u.role));
+        thisUserRoleMatches.forEach((value, index) => {
+          if (x?.roles.includes(value.role))
+          {
+            this.data.splice(this.data.findIndex(y=> y.role == value.role), 1)
+          }
+        });
+      });
     
     this.filteredRoleActionMaps = this.data;
 
@@ -67,7 +69,7 @@ export class RoleActionMapComponent implements OnInit {
 
   filterData() {
     this.filteredRoleActionMaps = this.data.filter(roleactionmap =>
-      roleactionmap.rolename?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      roleactionmap.role?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       roleactionmap.pageName?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       roleactionmap.actions?.includes(this.searchTerm)
     );
@@ -78,12 +80,12 @@ export class RoleActionMapComponent implements OnInit {
   setDataSource(list: RoleActionMap[]) {
     const expandedList = list.map(p => ({
       pageName: p.pageName,
-      rolename: p.rolename,
+      role: p.role,
       actions: p.actions,
       _id: p._id
     }));
 
-    this.dataSource2 = new MatTableDataSource<ExpandedRoleActionMap>(expandedList);
+    this.dataSource2 = new MatTableDataSource<RoleActionMap>(expandedList);
     this.dataSource2.paginator = this.paginator
     this.dataSource2.sort = this.sort;
   }

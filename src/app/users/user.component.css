@@ -60,3 +60,14 @@ button[disabled], button[disabled]:hover {
    pointer-events: none;
    color: #e1e1e1;
 }
+
+.mat-column-email {
+   word-break: break-word;
+   width: 25% !important;
+}
+
+.width-textArea {  
+     width: 150px;  
+     max-width: 150px;  
+     word-wrap: break-word;
+}

@@ -7,8 +7,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="form-group col-md-4">
-                            <h4><label for="rolename">Select Role:</label></h4>
-                            <mat-selection-list (selectionChange)="onRoleSelectionChange($event)" formControlName="rolename" id="rolename" [multiple]="false" #rolename>
+                            <h4><label for="role">Select Role:</label></h4>
+                            <mat-selection-list (selectionChange)="onRoleSelectionChange($event)" formControlName="role" id="role" [multiple]="false" #role>
                                 <mat-list-option *ngFor="let role of roles">
                                     {{role.role}}
                                 </mat-list-option>
@@ -28,8 +28,8 @@
                         <div class="form-group col-md-4">
                             <h4>User's Roles:</h4>
                             <mat-selection-list [disabled]="true" #userActions>
-                                <mat-list-option [selected]="true" *ngFor="let shoe of roleActionMap?.actions">
-                                    {{shoe}}
+                                <mat-list-option [selected]="true" *ngFor="let action of roleActionMap?.actions">
+                                    {{action}}
                                 </mat-list-option>
                             </mat-selection-list>
                            

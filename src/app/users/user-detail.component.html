@@ -21,8 +21,8 @@
                             <h4>User's Roles:</h4>
                             <mat-selection-list [disabled]="true" #userRoles
                                 (selectionChange)="onUserRolesListSelectionChange($event)">
-                                <mat-list-option [selected]="true" *ngFor="let shoe of user?.roles">
-                                    {{shoe}}
+                                <mat-list-option [selected]="true" *ngFor="let role of user?.roles">
+                                    {{role}}
                                 </mat-list-option>
                             </mat-selection-list>
                         </div>

@@ -40,7 +40,8 @@ export class LoginComponent {
                 isAdmin: false,
                 email: googleUser.email,
                 picture: googleUser.picture,
-                token: ""
+                token: "",
+                enabled:false
               }
               try {
                 // Create local user for this google user

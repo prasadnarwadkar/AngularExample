@@ -7,8 +7,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="form-group col-md-4">
-                            <label for="rolename">Role Name</label>
-                            <input class="form-control" formControlName="rolename" id="rolename"
+                            <label for="role">Role Name</label>
+                            <input class="form-control" formControlName="role" id="role"
                                 placeholder="Role Name" readonly>
                         </div>
                         <div class="form-group col-md-4">
@@ -21,8 +21,8 @@
                         <div class="form-group col-md-4">
                             <h4>User's Roles:</h4>
                             <mat-selection-list [disabled]="true" #userActions >
-                                <mat-list-option  [selected]="true" *ngFor="let shoe of roleActionMap?.actions">
-                                    {{shoe}}
+                                <mat-list-option  [selected]="true" *ngFor="let action of roleActionMap?.actions">
+                                    {{action}}
                                 </mat-list-option>
                             </mat-selection-list>                           
                         </div>

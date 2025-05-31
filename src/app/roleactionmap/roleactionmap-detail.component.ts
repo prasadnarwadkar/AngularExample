@@ -58,7 +58,7 @@ export class RoleActionMapDetailComponent implements OnInit {
         private fb: FormBuilder
     ) {
         this.roleActionMapDetailForm = this.fb.group({
-            rolename: [''],
+            role: [''],
             pageName: [''],
             _id: [],
             actions: []
@@ -81,9 +81,9 @@ export class RoleActionMapDetailComponent implements OnInit {
                 && page !== undefined) {
                 this.navigated = true;
                 this.roleActionMap = (await this.authService.getRoleActionsByRoleAndPage(role, page))[0];
-
+                
                 this.roleActionMapDetailForm = this.fb.group({
-                    rolename: this.roleActionMap?.rolename!,
+                    role: this.roleActionMap?.role!,
                     pageName: this.roleActionMap?.pageName,
                     _id: this.roleActionMap?._id,
                     actions: [this.roleActionMap?.actions]
@@ -92,7 +92,7 @@ export class RoleActionMapDetailComponent implements OnInit {
                 this.navigated = false;
                 this.roleActionMap = {
                     _id: "",
-                    rolename: "",
+                    role: "",
                     pageName: "",
                     actions: []
                 }
@@ -106,7 +106,7 @@ export class RoleActionMapDetailComponent implements OnInit {
                 this.navigated = true;
                 this.roleActionMap = await this.authService.getRoleActionsByRoleAndPage(role!, page!);
                 this.roleActionMapDetailForm = this.fb.group({
-                    rolename: this.roleActionMap?.rolename,
+                    role: this.roleActionMap?.role,
                     pageName: this.roleActionMap?.pageName,
                     _id: this.roleActionMap?._id,
                     actions: this.roleActionMap?.actions
@@ -115,7 +115,7 @@ export class RoleActionMapDetailComponent implements OnInit {
                 this.navigated = false;
                 this.roleActionMap = {
                     _id: "",
-                    rolename: "",
+                    role: "",
                     pageName: "",
                     actions: []
                 }
@@ -131,23 +131,5 @@ export class RoleActionMapDetailComponent implements OnInit {
                 value.selected = true
             }
         })
-    }
-
-    async save(): Promise<any> {
-        //todo
-        if (this.roleActionMap && this.roleActionMap.rolename
-            && this.roleActionMap.pageName.length > 0) {
-
-            try {
-                //todo
-            }
-            catch (error) {
-                alert(error)
-            }
-        }
-        else {
-            alert('Name of the hero can\'t be blank');
-
-        }
     }
 }

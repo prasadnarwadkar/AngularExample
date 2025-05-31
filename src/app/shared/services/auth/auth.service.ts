@@ -9,9 +9,9 @@ import { User } from '../../interfaces/';
 import { TokenStorage } from './token.storage';
 
 import { config } from '../../../../app/config/config';
-import { AuthResponse, EmailRequest, PageRequest, PasswordRequest, Permission, RoleRequest } from '../../../models/models'
+import { AuthResponse, EmailRequest,  PasswordRequest, Permission, RoleRequest } from '../../../models/models'
 import axios from 'axios';
-import { RoleActionMap, RoleActionMapNew } from 'src/app/models/othermodels';
+import { Page, RoleActionMap, RoleActionMapNew } from 'src/app/models/othermodels';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   async createPage(page: string) {
-    var roleObj: PageRequest = { page: page }
+    var roleObj: Page = { page: page }
 
     return axios.post(`${config.authApiExternal}auth/pages`, roleObj).then(res => res.data);
   }
@@ -109,6 +109,14 @@ export class AuthService {
     return axios.delete(`${config.authApiExternal}auth/users/${id}`).then(res => res.data);
   }
 
+  async disableUser(id: string) {
+    return axios.delete(`${config.authApiExternal}auth/users/disable/${id}`).then(res => res.data);
+  }
+
+  async enableUser(id: string) {
+    return axios.delete(`${config.authApiExternal}auth/users/enable/${id}`).then(res => res.data);
+  }
+
   async deleteRole(id: string) {
     return axios.delete(`${config.authApiExternal}auth/roles/${id}`).then(res => res.data);
   }
@@ -147,7 +155,8 @@ export class AuthService {
         isAdmin: false,
         picture: '',
         roles: [],
-        token: ""
+        token: "",
+        enabled:false
 
 
       }

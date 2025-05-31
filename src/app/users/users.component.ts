@@ -21,7 +21,7 @@ export class UsersComponent implements OnInit {
   updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "users" }
   readPermissionRequest: PermissionRequest = { "action": "read", "pageName": "users" }
 
-  displayedColumns = ['email', 'fullname', 'roles', 'action'];
+  displayedColumns = ['email', 'fullname', 'roles', 'action', 'action2','action3'];
 
   dataSource2 = new MatTableDataSource<ExpandedUser>([]);
 
@@ -54,6 +54,12 @@ export class UsersComponent implements OnInit {
     if (await this.authService.hasPermission(this.readPermissionRequest.action, this.readPermissionRequest.pageName)) {
       this.users = await this.authService.getAllUsers();
 
+      this.authService.getUser().subscribe(x=> {
+        console.log(x)
+        this.users.splice(this.users.findIndex(u=> u.email.toLowerCase() == x?.email.toLocaleLowerCase()),1)
+      });
+      console.log(this.users)
+
       this.filteredUsers = this.users;
     }
     else{
@@ -75,7 +81,8 @@ export class UsersComponent implements OnInit {
       fullname: p.fullname,
       email: p.email,
       roles: p.roles.join(','),
-      _id: p._id
+      _id: p._id,
+      enabled: p.enabled
     }));
 
     this.dataSource2 = new MatTableDataSource<ExpandedUser>(expandedList);
@@ -91,6 +98,32 @@ export class UsersComponent implements OnInit {
         await this.authService.deleteUser(id);
       }
     }
-    this.loadUsers();
+    await this.loadUsers();
+
+    this.setDataSource(this.users)
+  }
+
+  async disableUser(id: string, e: Event) {
+    e.preventDefault()
+    if (await this.authService.hasPermission(this.deletePermissionRequest.action, this.deletePermissionRequest.pageName)) {
+      if (confirm("Would you like to disable this user?")) {
+        await this.authService.disableUser(id);
+      }
+    }
+    await this.loadUsers();
+
+    this.setDataSource(this.users)
+  }
+
+  async enableUser(id: string, e: Event) {
+    e.preventDefault()
+    if (await this.authService.hasPermission(this.deletePermissionRequest.action, this.deletePermissionRequest.pageName)) {
+      if (confirm("Would you like to enable this user?")) {
+        await this.authService.enableUser(id);
+      }
+    }
+    await this.loadUsers();
+
+    this.setDataSource(this.users)
   }
 }

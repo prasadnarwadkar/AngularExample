@@ -1,4 +1,5 @@
 import { User } from "../shared/interfaces";
+import { Role } from "./othermodels";
 
 export interface AuthResponse {
   token: string;
@@ -13,17 +14,12 @@ export interface Permission {
   pageName: string
 }
 
-export interface PermissionRequest {
+export interface PermissionRequest extends Omit<Permission,"actions"| "email">{
   action: string,
-  pageName: string
 }
 
-export interface RoleRequest {
+export interface RoleRequest extends Omit<Role, "selectedForUser" | "_id"> {
   role: string
-}
-
-export interface PageRequest {
-  page: string
 }
 
 export interface EmailRequest {

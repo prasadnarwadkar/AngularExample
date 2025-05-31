@@ -17,9 +17,9 @@
             <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
                             href="/newroleactionmap">Register A New Role Action Map</a>
             <mat-table #table [dataSource]="dataSource2" matSort="sort">
-                <ng-container matColumnDef="rolename">
+                <ng-container matColumnDef="role">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest" class="btn btn-primary" href="/roleactionmaps-detail/{{element.rolename}}/{{element.pageName}}">{{element.rolename}}</a> </mat-cell>
+                    <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest" class="btn btn-primary" href="/roleactionmaps-detail/{{element.role}}/{{element.pageName}}">{{element.role}}</a> </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="pageName">

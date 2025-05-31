@@ -12,22 +12,11 @@ export interface Patient {
 export interface RoleActionMap {
   _id: string
   pageName: string
-  rolename: string
+  role: string
   actions: string[]
 }
 
-export interface RoleActionMapNew {
-  pageName: string
-  rolename: string
-  actions: string[]
-}
-
-export interface ExpandedRoleActionMap {
-  _id: string
-  pageName: string
-  rolename: string
-  actions: string[]
-}
+export interface RoleActionMapNew extends Omit<RoleActionMap, "_id"> {}
 
 export interface ExpandedPatient {
   _id: string
@@ -55,10 +44,7 @@ export interface ExpandedPage{
   _id: string
 }
 
-export interface ExpandedRole{
-  role: string
-  _id: string
-}
+export interface ExpandedRole extends Omit<Role, "selectedForUser">{}
 
 export interface Name {
   first: string

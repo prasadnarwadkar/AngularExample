@@ -16,7 +16,7 @@ export class RoleActionMapNewComponent implements OnInit {
     roleActionMap: RoleActionMapNew = {
         actions: [],
         pageName: '',
-        rolename: ''
+        role: ''
     };
 
     allActions: Action[] = [{
@@ -49,7 +49,7 @@ export class RoleActionMapNewComponent implements OnInit {
             _id: '',
             actions: [],
             pageName: '',
-            rolename: ''
+            role: ''
         });
     }
 
@@ -57,60 +57,61 @@ export class RoleActionMapNewComponent implements OnInit {
         if (this.roleActionMap) {
             this.roleActionMap.actions = event.source.selectedOptions.selected.map(option => option._elementRef.nativeElement.innerText)
         }
-        
+
     }
 
     onRoleSelectionChange(event: MatSelectionListChange) {
         if (this.roleActionMap) {
-            this.roleActionMap.rolename = event.source.selectedOptions.selected.map(option => option._elementRef.nativeElement.innerText)[0]
+            this.roleActionMap.role = event.source.selectedOptions.selected.map(option => option._elementRef.nativeElement.innerText)[0]
         }
-        
+
     }
 
     onPageSelectionChange(event: MatSelectionListChange) {
         if (this.roleActionMap) {
             this.roleActionMap.pageName = event.source.selectedOptions.selected.map(option => option._elementRef.nativeElement.innerText)[0]
         }
-        
+
     }
 
+    mapRole(x:any) {
+        let newMap = x;
+
+        newMap.rolename = x.role;
+        delete newMap.role;
+        return newMap;
+    }
+
+    unmapRole(x:any) {
+        let newMap = x;
+
+        newMap.role = x.rolename;
+        delete newMap.rolename;
+        return newMap;
+    }
+
+
     async create() {
+        this.roleActionMap = this.mapRole(this.roleActionMap)
+        console.log(this.roleActionMap)
         
         await this.authService.createRoleActionMap(this.roleActionMap!).then((res) => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                else {
-                    this.router.navigate(['/roleactionmaps']);
-                }
-            }).catch(error => {
-                console.error("An error occurred:", error);
-                alert(error.response.data.message)
-            });
+            if (!res.ok) {
+                this.roleActionMap = this.unmapRole(this.roleActionMap)
+                throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+            else {
+                this.router.navigate(['/roleactionmaps']);
+            }
+        }).catch(error => {
+            this.roleActionMap = this.unmapRole(this.roleActionMap)
+            console.error("An error occurred:", error);
+            alert(error.response.data.message)
+        });
     }
 
     async ngOnInit(): Promise<void> {
         this.roles = await this.authService.getAllRoles();
         this.pages = await this.authService.getAllPages();
-    }
-
-    async save(): Promise<any> {
- 
-
-        if (this.roleActionMapDetailNewForm.value.firstName.length > 0) {
-
-            try {
-                await this.apiService.create("roleactionmaps", this.roleActionMapDetailNewForm.value).then((res) => {
-                    this.router.navigate(['/roleactionmaps']);
-                });
-            }
-            catch (error) {
-                alert(error)
-            }
-        }
-        else {
-            alert('Name of the hero can\'t be blank');
-
-        }
     }
 }

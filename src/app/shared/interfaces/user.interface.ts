@@ -7,6 +7,7 @@ export interface User {
   email: string;
   picture: string;
   token:string;
+  enabled:boolean;
 }
 
 

@@ -22,7 +22,7 @@
 
                 <ng-container matColumnDef="email">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+                    <mat-cell class="width-textArea"  *matCellDef="let element"> {{element.email}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="roles">
@@ -35,6 +35,14 @@
                     <mat-cell *matCellDef="let element"> <a class="btn btn-danger" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="deleteUser(element._id, $event)" href="/users">Delete</a>  </mat-cell>
                 </ng-container>
 
+                <ng-container matColumnDef="action2" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+                    <mat-cell  *matCellDef="let element"> <a class="btn btn-danger" *ngIf="element.enabled! == true" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="disableUser(element._id, $event)" href="/users">Disable</a>  </mat-cell>
+                </ng-container>
+                 <ng-container matColumnDef="action3" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+                    <mat-cell  *matCellDef="let element"> <a class="btn btn-info" *ngIf="element.enabled == undefined || element.enabled == false" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="enableUser(element._id, $event)" href="/users">Enable</a>  </mat-cell>
+                </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
