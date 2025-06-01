@@ -9,7 +9,7 @@ import { User } from '../../interfaces/';
 import { TokenStorage } from './token.storage';
 
 import { config } from '../../../../app/config/config';
-import { AuthResponse, EmailRequest,  PasswordRequest, Permission, RoleRequest } from '../../../models/models'
+import { AuthResponse, EmailRequest, IdRequest, PasswordRequest, Permission, RoleAndDesc, RoleRequest } from '../../../models/models'
 import axios from 'axios';
 import { Page, RoleActionMap, RoleActionMapNew } from 'src/app/models/othermodels';
 
@@ -67,8 +67,8 @@ export class AuthService {
     return axios.get(`${config.authApiExternal}auth/roleactions`).then(res => res.data);
   }
 
-  async createRole(role: string) {
-    var roleObj: RoleRequest = { role: role }
+  async createRole(role: RoleRequest) {
+    var roleObj: RoleRequest = { role: role.role, desc: role.desc }
 
     return axios.post(`${config.authApiExternal}auth/roles`, roleObj).then(res => res.data);
   }
@@ -79,7 +79,17 @@ export class AuthService {
     return axios.post(`${config.authApiExternal}forgot-password`, emailObj).then(res => res.data);
   }
 
-   async resetPassword(token: string, password:string) {
+  async getProfilePic(id: string) {
+    var obj: IdRequest = { id: id }
+
+    return axios.post(`${config.authApiExternal}getProfilePic`, obj).then(res => res.data);
+  }
+
+  async uploadProfilePic(formData: FormData) {
+    return axios.post(`${config.authApiExternal}uploadProfilePic2`, formData).then(res => res.data);
+  }
+
+  async resetPassword(token: string, password: string) {
     var obj: PasswordRequest = { password: password }
 
     return axios.post(`${config.authApiExternal}reset-password/${token}`, obj).then(res => res.data);
@@ -156,7 +166,8 @@ export class AuthService {
         picture: '',
         roles: [],
         token: "",
-        enabled:false
+        enabled: false,
+        picData: new ArrayBuffer(0)
 
 
       }
@@ -204,6 +215,10 @@ export class AuthService {
     this.user$.next(user);
   }
 
+  setUserEx(user: User | null): void {
+    this.tokenStorage.saveUser(user!)
+  }
+
   getUser(): Observable<User | null> {
 
     if (this.user$.value != null) {
@@ -236,7 +251,10 @@ export class AuthService {
         `Backend returned code ${error.status}, body was: `, error.error);
     }
 
+    alert(error.error.message);
     throw error.error
+
+
   }
 
   me(): Observable<User> {
@@ -295,13 +313,13 @@ export class AuthService {
       let permissionsByRole = await axios.post(`${config.authApiExternal}auth/getpermissionsbyrole`, user.roles).then(res => res.data);
       this.tokenStorage.saveUserActionsPermitted(permissionsByRole)
     }
-    else{
+    else {
 
       console.log('registerwithoutlogin: user token length: ', result?.data?.token!.length)
 
 
       let permissionsByRole = await axios.post(`${config.authApiExternal}auth/getpermissionsbyrole`, result?.data?.user?.roles!).then(res => res.data);
-      
+
       this.tokenStorage.saveUserActionsPermitted(permissionsByRole)
     }
     return result;
@@ -311,7 +329,7 @@ export class AuthService {
     return this.tokenStorage.getToken()
   }
 
-   getGoogleToken() {
+  getGoogleToken() {
     return this.tokenStorage.getGoogleIdToken()
   }
 

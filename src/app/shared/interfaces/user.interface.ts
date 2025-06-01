@@ -1,4 +1,5 @@
 export interface User {
+  picData: ArrayBuffer;
   _id: string;
   fullname: string;
   createdAt: string;

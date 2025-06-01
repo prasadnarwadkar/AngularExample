@@ -63,11 +63,12 @@ button[disabled], button[disabled]:hover {
 
 .mat-column-email {
    word-break: break-word;
-   width: 25% !important;
 }
 
-.width-textArea {  
-     width: 150px;  
-     max-width: 150px;  
-     word-wrap: break-word;
+.mat-table{
+  background-color: cyan;
+}
+
+.bold-header {
+  font-weight: bold;
 }

@@ -13,12 +13,18 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-4">
             <a href="/role-detail/new">Add a new role</a>
-            <mat-table #table [dataSource]="dataSource2" matSort="sort">
+            <hr />
+            <mat-table class="mat-table" #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="role">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.role}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
+                    <mat-cell  *matCellDef="let element"> <span>{{element.desc}}</span> </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

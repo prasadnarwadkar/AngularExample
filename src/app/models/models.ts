@@ -18,12 +18,21 @@ export interface PermissionRequest extends Omit<Permission,"actions"| "email">{
   action: string,
 }
 
-export interface RoleRequest extends Omit<Role, "selectedForUser" | "_id"> {
-  role: string
+export interface RoleRequest extends Omit<RoleAndDesc, "selectedForUser" | "_id"> {
 }
+
+export interface Desc{
+  desc: string;
+}
+
+export type RoleAndDesc = Role & Desc
 
 export interface EmailRequest {
   email: string
+}
+
+export interface IdRequest {
+  id: string
 }
 
 export interface PasswordRequest {

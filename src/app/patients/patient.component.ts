@@ -1,4 +1,4 @@
-import { Component, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../services/hospital.service';
 import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Patient, ExpandedPatient } from '../models/othermodels';
@@ -8,13 +8,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { PermissionRequest } from '../models/models';
 import { AuthService } from '../shared/services';
-
-interface Element {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subject, takeUntil } from 'rxjs';
 
 export interface Tile {
   color: string;
@@ -29,18 +24,29 @@ export interface Tile {
   styleUrls: ['./patient.component.css']
 })
 export class PatientsComponent implements OnInit {
+  currentScreenSize!: string;
+  destroyed = new Subject<void>();
+
+  displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
+
   tiles: Tile[] = [
     // {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
+    { text: 'Two', cols: 1, rows: 2, color: 'lightgreen' },
+    { text: 'Three', cols: 1, rows: 1, color: 'lightpink' },
+    { text: 'Four', cols: 2, rows: 1, color: '#DDBDF1' },
   ];
   deletePermissionRequest: PermissionRequest = { "action": "delete", "pageName": "patients" }
   createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "patients" }
   updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "patients" }
   readPermissionRequest: PermissionRequest = { "action": "read", "pageName": "patients" }
 
-  displayedColumns = ['firstName', 'lastName', 'phone', 'email', 'dob', 'address', 'action'];
+  displayedColumns = ['firstName', 'lastName', 'phone', 'dob', 'address', 'email', 'action'];
 
   dataSource2 = new MatTableDataSource<ExpandedPatient>([]);
 
@@ -70,6 +76,42 @@ export class PatientsComponent implements OnInit {
     if (!token) {
       //window.location.reload()
     }
+
+    inject(BreakpointObserver)
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(result => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
+
+            switch (this.currentScreenSize) {
+              case "XSmall":
+                this.displayedColumns = ['firstName', 'lastName', 'phone'];
+                break;
+              case "Small":
+                this.displayedColumns = ['firstName', 'lastName', 'phone', 'dob'];
+                break;
+              case "Medium":
+                this.displayedColumns = ['firstName', 'lastName', 'phone', 'dob','address'];
+                break;
+              case "Large":
+                this.displayedColumns = ['firstName', 'lastName', 'phone', 'dob', 'address', 'email', 'action'];
+                break;
+              default:
+                break;
+            }
+
+
+          }
+        }
+      });
   }
 
   async ngOnInit(): Promise<void> {
@@ -94,7 +136,7 @@ export class PatientsComponent implements OnInit {
       this.patients = await this.apiService.getAll('patients');
       this.filteredPatients = this.patients;
     }
-    else{
+    else {
       alert("You are not authorized to view data on this page.")
     }
 

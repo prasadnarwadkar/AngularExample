@@ -3,7 +3,7 @@ import { ExpandedRole, Role } from '../models/othermodels';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { PermissionRequest } from '../models/models';
+import { PermissionRequest, RoleAndDesc } from '../models/models';
 import { AuthService } from '../shared/services';
 
 @Component({
@@ -14,7 +14,7 @@ import { AuthService } from '../shared/services';
 export class RolesComponent implements OnInit {
   deletePermissionRequest: PermissionRequest = { "action": "delete", "pageName": "roles" }
 
-  displayedColumns = ['role'];
+  displayedColumns = ['role', 'desc'];
 
   dataSource2 = new MatTableDataSource<ExpandedRole>([]);
 
@@ -22,16 +22,19 @@ export class RolesComponent implements OnInit {
   sort!: MatSort;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
-  roles: Role[] = [];
+  roles: RoleAndDesc[] = [];
 
-  filteredRoles: Role[] = [];
+  filteredRoles: RoleAndDesc[] = [];
   searchTerm: string = '';
- 
+
   constructor(private authService: AuthService) {
   }
 
   async ngOnInit(): Promise<void> {
     await this.loadRoles();
+
+    
+    console.log(this.roles)
 
     this.setDataSource(this.roles)
   }
@@ -45,7 +48,7 @@ export class RolesComponent implements OnInit {
 
   async loadRoles() {
     this.roles = await this.authService.getAllRoles();
-    
+
     this.filteredRoles = this.roles;
 
   }
@@ -58,10 +61,11 @@ export class RolesComponent implements OnInit {
     this.setDataSource(this.filteredRoles)
   }
 
-  setDataSource(list: Role[]) {
+  setDataSource(list: RoleAndDesc[]) {
     const expandedList = list.map(p => ({
       role: p.role,
-      _id: p._id
+      _id: p._id,
+      desc: p.desc
     }));
 
     this.dataSource2 = new MatTableDataSource<ExpandedRole>(expandedList);
@@ -70,7 +74,7 @@ export class RolesComponent implements OnInit {
   }
 
 
-  async deleteRole(id: string, e:Event) {
+  async deleteRole(id: string, e: Event) {
     e.preventDefault()
     if (await this.authService.hasPermission(this.deletePermissionRequest.action, this.deletePermissionRequest.pageName)) {
       if (confirm("Would you like to delete this role?")) {

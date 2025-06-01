@@ -21,7 +21,7 @@ export class UsersComponent implements OnInit {
   updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "users" }
   readPermissionRequest: PermissionRequest = { "action": "read", "pageName": "users" }
 
-  displayedColumns = ['email', 'fullname', 'roles', 'action', 'action2','action3'];
+  displayedColumns = [ 'fullname','email', 'roles',  'action2','action3'];
 
   dataSource2 = new MatTableDataSource<ExpandedUser>([]);
 

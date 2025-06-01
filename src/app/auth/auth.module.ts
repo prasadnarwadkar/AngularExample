@@ -6,9 +6,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProfileComponent } from './login/profile.component';
 
 @NgModule({
   imports: [SharedModule, AuthRoutingModule, FormsModule, ReactiveFormsModule],
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [LoginComponent, RegisterComponent, ProfileComponent],
 })
 export class AuthModule {}

@@ -54,13 +54,8 @@ export class RoleActionMapComponent implements OnInit {
 
     this.authService.getUser().subscribe(x=> {
         console.log(x)
-        let thisUserRoleMatches = this.data.filter(u=> x?.roles.includes(u.role));
-        thisUserRoleMatches.forEach((value, index) => {
-          if (x?.roles.includes(value.role))
-          {
-            this.data.splice(this.data.findIndex(y=> y.role == value.role), 1)
-          }
-        });
+        this.data.splice(this.data.findIndex(y=> y.pageName == "users"), 1)
+        this.data.splice(this.data.findIndex(y=> y.pageName == "roleactionmaps"), 1)
       });
     
     this.filteredRoleActionMaps = this.data;

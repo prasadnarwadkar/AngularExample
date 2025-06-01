@@ -102,7 +102,8 @@ export class UserDetailComponent implements OnInit {
                     isAdmin: false,
                     picture: "",
                     token:"",
-                    enabled:false
+                    enabled:false,
+                    picData:new ArrayBuffer(0)
                 }
             }
         }
@@ -127,7 +128,8 @@ export class UserDetailComponent implements OnInit {
                     isAdmin: false,
                     picture: "",
                     token:"",
-                    enabled:false
+                    enabled:false,
+                    picData:new ArrayBuffer(0)
                 }
             }
         }

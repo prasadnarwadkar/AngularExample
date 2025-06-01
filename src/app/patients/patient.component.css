@@ -42,10 +42,10 @@ button {
   min-width: 300px;
 }
 
-.mat-table {
+/* .mat-table {
   overflow: auto;
   max-height: 500px;
-}
+} */
 
 .mat-header-cell.mat-sort-header-sorted {
   color: black;
@@ -59,4 +59,31 @@ a[disabled], a[disabled]:hover {
 button[disabled], button[disabled]:hover {
    pointer-events: none;
    color: #e1e1e1;
+}
+
+.mat-column-email {
+   word-break: break-word;
+}
+
+.mat-column-firstName {
+   word-break: break-word;
+}
+
+.mat-column-lastName {
+   word-break: break-word;
+}
+
+.mat-column-address {
+   word-break: break-word;
+}
+
+
+
+.mat-table{
+  background-color: cyan;
+  overflow: auto;
+}
+
+.bold-header {
+  font-weight: bold;
 }

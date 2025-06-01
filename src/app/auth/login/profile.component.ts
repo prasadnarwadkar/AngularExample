@@ -10,18 +10,49 @@ import { GoogleUser } from 'src/app/models/google-user';
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
   styleUrls: ['../auth.component.scss', './login.component.css'],
 
 })
-export class LoginComponent {
+export class ProfileComponent {
   email: string | null = null;
   password: string | null = null;
-
+  currentFile?: File;
+  message = '';
 
   constructor(private router: Router, private authService: AuthService, private tokenStorage: TokenStorage) { }
 
+  upload(): void {
+    if (this.currentFile) {
+      const fileReader = new FileReader();
+      fileReader.onload = async () => {
+        const form = new FormData();
+        this.authService.getUser().subscribe(async x => {
+
+          form.append("data", x?._id!)
+          const blob = new Blob([fileReader.result!], { type: 'application/octet-stream' });
+          form.append('file', blob, this.currentFile?.name);
+
+          await this.authService.uploadProfilePic(form).then((res) => {
+            if (res == 'OK') {
+              alert("Profile pic has been updated. Please sign out and sign back in to see your updated profile.")
+            }
+            else {
+              alert("There was an error while updating your Profile picture")
+            }
+          });
+        });
+
+
+      };
+      fileReader.readAsArrayBuffer(this.currentFile);
+    }
+  }
+
+  selectFile(event: any): void {
+    this.currentFile = event.target.files.item(0);
+  }
   async handleGoogleAuthResponse(response: any) {
     if (response && response.credential) {
       this.tokenStorage.saveGoogleIdToken(response.credential)
@@ -41,13 +72,13 @@ export class LoginComponent {
                 email: googleUser.email,
                 picture: googleUser.picture,
                 token: "",
-                enabled:false,
-                picData:new ArrayBuffer(0)
+                enabled: false,
+                picData: new ArrayBuffer(0)
               }
               try {
                 // Create local user for this google user
                 let localUserCreatedForGoogleUser = await this.authService.registerwithoutlogin(googleUser.name, googleUser.email, "test123", "test123", googleUser.picture);
-                
+
                 user.roles = localUserCreatedForGoogleUser?.data?.user?.roles!
                 user.token = localUserCreatedForGoogleUser?.data?.token!
                 this.tokenStorage.saveUser(user)
@@ -69,52 +100,13 @@ export class LoginComponent {
   }
 
   ngOnInit() {
-    // @ts-ignore
-    google.accounts.id.initialize({
-      client_id: "<google_client_id>",
-      callback: this.handleGoogleAuthResponse.bind(this),
-      auto_select: false,
-      cancel_on_tap_outside: true,
-
-    });
-    // @ts-ignore
-    google.accounts.id.renderButton(
-      // @ts-ignore
-      document.getElementById("google-button"),
-      { theme: "outline", size: "large", width: "100%" }
-    );
-    // @ts-ignore
-    google.accounts.id.prompt((notification: PromptMomentNotification) => { });
-
     let user: User;
 
     this.authService.getUser().subscribe(async x => {
-
-      user = x!
-
-      await this.authService.getProfilePic(x?._id!).then((res) => {
-
-        
-
-        if (user != null) {
-          user.picData = res
-        }
-      });
-
-      this.authService.setUserEx(user)
-
+      if (x == null || x == undefined){
+        this.router.navigateByUrl('/auth/login');
+      }
     });
   }
 
-  async login(): Promise<void> {
-
-    await (await this.authService.login(this.email!, this.password!)).subscribe(() => {
-      this.router.navigateByUrl('/');
-    },
-      (error) => {
-        if (error?.status == 401) {
-          alert("Either user name or password or both are incorrect. Please input valid username and password.");
-        }
-      })
-  }
 }

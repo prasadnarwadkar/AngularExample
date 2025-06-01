@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthService } from '../shared/services';
+import { RoleAndDesc, RoleRequest } from '../models/models';
 
 @Component({
     selector: 'role-detail',
@@ -19,7 +20,11 @@ export class RoleDetailComponent implements OnInit {
 
         if (this.roleDetailForm.value.role.length > 0) {
             try {
-                await this.authService.createRole(this.roleDetailForm.value.role!).then((res) => {
+                let roleAndDesc: RoleRequest = {
+                    role: this.roleDetailForm.value.role,
+                    desc: this.roleDetailForm.value.desc
+                }
+                await this.authService.createRole(roleAndDesc!).then((res) => {
                     this.router.navigate(['/roles']);
                 });
             }
@@ -41,7 +46,8 @@ export class RoleDetailComponent implements OnInit {
         private fb: FormBuilder
     ) {
         this.roleDetailForm = this.fb.group({
-            role: ['']
+            role: [''],
+            desc:['']
         });
     }
 

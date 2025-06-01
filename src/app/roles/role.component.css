@@ -60,3 +60,11 @@ button[disabled], button[disabled]:hover {
    pointer-events: none;
    color: #e1e1e1;
 }
+
+.mat-table{
+  background-color: cyan;
+}
+
+.bold-header {
+  font-weight: bold;
+}
