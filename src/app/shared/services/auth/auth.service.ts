@@ -9,7 +9,7 @@ import { User } from '../../interfaces/';
 import { TokenStorage } from './token.storage';
 
 import { config } from '../../../../app/config/config';
-import { AuthResponse, EmailRequest, IdRequest, PasswordRequest, Permission, RoleAndDesc, RoleRequest } from '../../../models/models'
+import { AuditLogRequest, AuthResponse, EmailRequest, IdRequest, PasswordRequest, Permission, RoleAndDesc, RoleRequest } from '../../../models/models'
 import axios from 'axios';
 import { Page, RoleActionMap, RoleActionMapNew } from 'src/app/models/othermodels';
 
@@ -49,7 +49,8 @@ export class AuthService {
       { page: 'users' },
       { page: 'patients' },
       { page: 'admin' },
-      { page: 'roleactionmaps' }
+      { page: 'roleactionmaps' },
+      { page: 'auditlogs' }
     ]
   }
 
@@ -63,6 +64,10 @@ export class AuthService {
     return axios.get(`${config.authApiExternal}auth/roles`).then(res => res.data);
   }
 
+  async getAllAuditLogs() {
+    return axios.get(`${config.authApiExternal}auth/auditlogs`).then(res => res.data);
+  }
+
   async getAllRoleActionmaps() {
     return axios.get(`${config.authApiExternal}auth/roleactions`).then(res => res.data);
   }
@@ -71,6 +76,13 @@ export class AuthService {
     var roleObj: RoleRequest = { role: role.role, desc: role.desc }
 
     return axios.post(`${config.authApiExternal}auth/roles`, roleObj).then(res => res.data);
+  }
+
+  async createAuditLog(auditLog: AuditLogRequest) {
+
+    if (auditLog?.valueChanged?.newvalue != auditLog?.valueChanged?.oldvalue) {
+      return axios.post(`${config.authApiExternal}auth/auditlogs`, auditLog).then(res => res.data);
+    }
   }
 
   async forgotPassword(email: string) {
@@ -132,25 +144,23 @@ export class AuthService {
   }
 
   async login(email: string, password: string): Promise<Observable<User>> {
-    let result
+    let result, userToReturn: User
     try {
-      result = await axios.post(`${config.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
-      let permission: Permission[] = result as unknown as Permission[]
-      this.tokenStorage.saveUserActionsPermitted(permission);
 
-      return this.http
-        .post<AuthResponse>(`${config.authApiExternal}auth/login`, { email, password })
-        .pipe(
-          tap(({ token, user }) => {
-            this.setUser(user);
-            this.tokenStorage.saveToken(token);
-            console.log('login: user token length: ', token.length)
-            this.tokenStorage.saveUser(user)
-          }),
-          map(x => x.user)
-        ).pipe(
-          catchError(err => { this.handleError(err); return of('error', err) })
-        );
+
+      let authLoginResponse = await axios.post<AuthResponse>(`${config.authApiExternal}auth/login`, { email, password }).then(res => res.data);
+      authLoginResponse.user.picData = new ArrayBuffer(0)
+      this.setUser(authLoginResponse.user);
+      this.tokenStorage.saveToken(authLoginResponse.token);
+      console.log('login: user token length: ', authLoginResponse.token.length);
+      this.tokenStorage.saveUser(authLoginResponse.user);
+
+      result = await axios.post(`${config.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
+      let permission: Permission[] = result as unknown as Permission[];
+      this.tokenStorage.saveUserActionsPermitted(permission);
+      userToReturn = authLoginResponse.user;
+      return of(authLoginResponse.user);
+
     }
     catch (e: any) {
       if (e.response.status == 401) {

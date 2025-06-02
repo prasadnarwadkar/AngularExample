@@ -3,7 +3,6 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeroService } from './services/hero.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthService } from './shared/services/auth/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,6 +33,7 @@ import { ForgotPasswordComponent } from './users/forgot-password.component';
 import { ResetPasswordComponent } from './users/reset-password.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { AuditLogsComponent } from './auditlogs/auditlogs.component';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -57,6 +57,7 @@ export function appInitializerFactory(authService: AuthService) {
     RoleActionMapNewComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    AuditLogsComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +80,7 @@ export function appInitializerFactory(authService: AuthService) {
     MatGridListModule,
     MatExpansionModule
   ],
-  providers: [HeroService, SocialAuthService, 
+  providers: [ SocialAuthService, 
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
@@ -110,6 +111,7 @@ export function appInitializerFactory(authService: AuthService) {
     UsersComponent, 
     UserDetailComponent, 
     RolesComponent, 
-    RoleDetailComponent]
+    RoleDetailComponent,
+  AuditLogsComponent]
 })
 export class AppModule { }

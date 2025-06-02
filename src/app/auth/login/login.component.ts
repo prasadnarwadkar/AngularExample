@@ -41,13 +41,13 @@ export class LoginComponent {
                 email: googleUser.email,
                 picture: googleUser.picture,
                 token: "",
-                enabled:false,
-                picData:new ArrayBuffer(0)
+                enabled: false,
+                picData: new ArrayBuffer(0)
               }
               try {
                 // Create local user for this google user
                 let localUserCreatedForGoogleUser = await this.authService.registerwithoutlogin(googleUser.name, googleUser.email, "test123", "test123", googleUser.picture);
-                
+
                 user.roles = localUserCreatedForGoogleUser?.data?.user?.roles!
                 user.token = localUserCreatedForGoogleUser?.data?.token!
                 this.tokenStorage.saveUser(user)
@@ -94,7 +94,7 @@ export class LoginComponent {
 
       await this.authService.getProfilePic(x?._id!).then((res) => {
 
-        
+
 
         if (user != null) {
           user.picData = res
@@ -106,15 +106,37 @@ export class LoginComponent {
     });
   }
 
-  async login(): Promise<void> {
+  async doLogin()
+  {
+    let result = await this.login();
 
-    await (await this.authService.login(this.email!, this.password!)).subscribe(() => {
+    if (result == true)
+    {
       this.router.navigateByUrl('/');
-    },
-      (error) => {
-        if (error?.status == 401) {
-          alert("Either user name or password or both are incorrect. Please input valid username and password.");
-        }
-      })
+    }
+  }
+
+  async login(): Promise<boolean> {
+    try {
+      await new Promise<void>(async (resolve, reject) => {
+        (await this.authService.login(this.email!, this.password!)).subscribe({
+          next: (v) => {
+            console.log(v);
+            resolve();
+          },
+          error: (e) => {
+            console.error(e);
+            if (e?.status == 401) {
+              alert("Either user name or password or both are incorrect. Please input valid username and password.");
+            }
+            reject(e);
+          },
+          complete: () => { console.info('complete'); }
+        });
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

@@ -14,6 +14,28 @@ export interface Permission {
   pageName: string
 }
 
+export interface FieldOldValueNewValue {
+  field: string;
+  oldvalue: string,
+  newvalue: string
+}
+
+export interface AuditLogRequest {
+  email: string;
+  action: string,
+  pageName: string,
+  entity:string,
+  valueChanged:FieldOldValueNewValue,
+  createdAt: Date
+}
+
+export interface AuditLog extends Omit<AuditLogRequest,"valueChanged">{
+  field:string,
+  oldvalue:string,
+  newvalue:string,
+  createdAtDate:string
+}
+
 export interface PermissionRequest extends Omit<Permission,"actions"| "email">{
   action: string,
 }

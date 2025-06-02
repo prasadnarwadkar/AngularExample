@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Hero } from '../services/hero';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ApiService } from '../services/hospital.service';
 import { AuthService } from '../shared/services';
 import { MatSelectionListChange } from '@angular/material/list';
 import { Role } from '../models/othermodels';
@@ -51,7 +49,6 @@ export class UserDetailComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private apiService: ApiService,
         private authService: AuthService,
         private route: ActivatedRoute,
         private fb: FormBuilder
@@ -160,23 +157,6 @@ export class UserDetailComponent implements OnInit {
         else {
             alert('Name can\'t be blank');
 
-        }
-    }
-
-    goBack(savedHero: Hero | undefined): void {
-        if (!savedHero) {
-            this.route.url.subscribe((val) => {
-                if (val.length > 0) {
-                    if (val[0].path == "detail") {
-                        this.router.navigate(['/heroes']);
-                    }
-                }
-            },
-                (error) => {
-                });
-        }
-        else {
-            this.router.navigate(['/users']);
         }
     }
 }

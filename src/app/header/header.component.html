@@ -46,6 +46,7 @@
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/users">Manage Users</button>
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roles">Manage Roles</button>
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps">Manage Role Action Maps</button>
+        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/auditlogs">Manage Audit Logs</button>
       </mat-menu>
 
       <mat-menu #menu="matMenu">
@@ -54,5 +55,5 @@
       </mat-menu>
     </div>
   </mat-toolbar>
-  <h6 *ngIf="user?.roles != null && user?.roles?.length! > 0">You are: {{user?.roles![0]}}</h6>
+  <h6 *ngIf="user?.roles != null && user?.roles?.length! > 0">You are: {{user?.roles?.join(',')}}</h6>
 </header>

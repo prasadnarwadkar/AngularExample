@@ -1,10 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Hero } from '../services/hero';
-import { HeroService } from '../services/hero.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
-import { Action, Patient, RoleActionMap } from '../models/othermodels';
+import { Action, RoleActionMap } from '../models/othermodels';
 import { AuthService } from '../shared/services';
 import { MatSelectionListChange } from '@angular/material/list';
 import { PermissionRequest } from '../models/models';
@@ -26,11 +24,11 @@ export class RoleActionMapDetailComponent implements OnInit {
                 });
         }
         else{
-            alert('You are not authorized to modify data');
+            alert('You are not authorized to modify data. Please contact system administrator so they can give you permissions.');
         }
     }
     @Input() public roleActionMap: RoleActionMap | undefined;
-    @Output() closeTheHeroSaveDlg = new EventEmitter<Hero>();
+    
 
     navigated = false; // true if navigated here
     allActions: Action[] = [{

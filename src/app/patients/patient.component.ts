@@ -35,12 +35,7 @@ export class PatientsComponent implements OnInit {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
-  tiles: Tile[] = [
-    // {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    { text: 'Two', cols: 1, rows: 2, color: 'lightgreen' },
-    { text: 'Three', cols: 1, rows: 1, color: 'lightpink' },
-    { text: 'Four', cols: 2, rows: 1, color: '#DDBDF1' },
-  ];
+
   deletePermissionRequest: PermissionRequest = { "action": "delete", "pageName": "patients" }
   createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "patients" }
   updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "patients" }
@@ -137,7 +132,7 @@ export class PatientsComponent implements OnInit {
       this.filteredPatients = this.patients;
     }
     else {
-      alert("You are not authorized to view data on this page.")
+      alert("You are not authorized to view data on this page. Please contact system administrator so they can give you permissions.")
     }
 
   }

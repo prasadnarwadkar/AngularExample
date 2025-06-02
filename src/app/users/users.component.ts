@@ -45,7 +45,7 @@ export class UsersComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    this.setDataSource(this.filteredUsers)
+    
   }
 
 
@@ -57,13 +57,19 @@ export class UsersComponent implements OnInit {
       this.authService.getUser().subscribe(x=> {
         console.log(x)
         this.users.splice(this.users.findIndex(u=> u.email.toLowerCase() == x?.email.toLocaleLowerCase()),1)
+        // No admin user should be updated.
+        let adminUsers = this.users.filter(u=> u.roles?.includes('admin'))
+
+        adminUsers.forEach((value, index)=>{
+          this.users.splice(this.users.findIndex(u=> u == value), 1)
+        });
       });
       console.log(this.users)
 
       this.filteredUsers = this.users;
     }
     else{
-      alert("You are not authorized to view data on this page.")
+      alert("You are not authorized to view data on this page. Please contact system administrator so they can give you permissions.")
     }
   }
 
@@ -80,7 +86,7 @@ export class UsersComponent implements OnInit {
     const expandedList = list.map(p => ({
       fullname: p.fullname,
       email: p.email,
-      roles: p.roles.join(','),
+      roles: p.roles?.join(','),
       _id: p._id,
       enabled: p.enabled
     }));

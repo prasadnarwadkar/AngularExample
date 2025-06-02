@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { v4 } from 'uuid'
+import { config } from '../../app/config/config';
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:82'; // Update API URL as needed
+  private apiUrl = config.apiBaseUrl
 
   async getAll(endpoint: string) {
     return axios.get(`${this.apiUrl}/${endpoint}`).then(res => res.data);

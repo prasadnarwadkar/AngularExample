@@ -53,12 +53,12 @@ export class PatientDetailNewComponent implements OnInit {
                 }
             }
             else {
-                alert('Name of the hero can\'t be blank');
+                alert('Name of the Patient can\'t be blank');
 
             }
         }
         else{
-            alert('You are not authorized to register a new patient');
+            alert('You are not authorized to register a new patient. Please contact system administrator so they can give you permissions.');
         }
     }
 }

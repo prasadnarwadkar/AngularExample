@@ -15,6 +15,7 @@ import { RoleActionMapDetailComponent } from './roleactionmap/roleactionmap-deta
 import { RoleActionMapNewComponent } from './roleactionmap/roleactionmap-detail-new.component';
 import { ForgotPasswordComponent } from './users/forgot-password.component';
 import { ResetPasswordComponent } from './users/reset-password.component';
+import { AuditLogsComponent } from './auditlogs/auditlogs.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'newroleactionmap', component: RoleActionMapNewComponent,canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
+  { path: 'auditlogs', component: AuditLogsComponent,canActivate: [AuthGuard] },
 ];
 
 @NgModule({

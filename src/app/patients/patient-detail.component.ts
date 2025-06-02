@@ -1,11 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Hero } from '../services/hero';
-import { HeroService } from '../services/hero.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
 import { Patient } from '../models/othermodels';
-import { PermissionRequest } from '../models/models';
+import { PermissionRequest, AuditLogRequest, FieldOldValueNewValue } from '../models/models';
 import { AuthService } from '../shared/services';
 
 
@@ -16,18 +14,54 @@ import { AuthService } from '../shared/services';
 })
 export class PatientDetailComponent implements OnInit {
     updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "patients" }
+    auditLogFirstName: FieldOldValueNewValue = {
+        field: "FirstName",
+        newvalue: "",
+        oldvalue: ""
+    }
     patientDetailForm: FormGroup;
     async updatePatient() {
         if (await this.authService.hasPermission(this.updatePermissionRequest.action, this.updatePermissionRequest.pageName)) {
             await this.apiService.update('patients', this.patientDetailForm.value.id, this.patientDetailForm.value);
+            alert('Patient details saved successfully.');
             this.router.navigate(['/patients']);
+
+            this.authService.getUser().subscribe(async x => {
+                let req: AuditLogRequest = {
+                    action: "update",
+                    createdAt: new Date(),
+                    email: x?.email!,
+                    entity: "patient",
+                    valueChanged: {
+                        field: this.auditLogFirstName.field,
+                        newvalue: this.auditLogFirstName.newvalue,
+                        oldvalue: this.auditLogFirstName.oldvalue
+                    },
+                    pageName: "patients",
+                }
+
+                await this.authService.createAuditLog(req!).then((res) => {
+                    
+                });
+            })
+
+
         }
-        else{
-            alert('You are not authorized to modify an existing patient');
+        else {
+            alert('You are not authorized to modify an existing patient. Please contact system administrator so they can give you permissions.');
         }
     }
     @Input() public patient: Patient | undefined;
-    @Output() closeTheHeroSaveDlg = new EventEmitter<Hero>();
+    oldValue: string = '';
+    newValue: string = '';
+
+    onFirstNameChange(newValue: string): void {
+        this.oldValue = this.patient?.name.first!;
+        this.newValue = newValue;
+        this.auditLogFirstName.newvalue = this.newValue;
+        this.auditLogFirstName.oldvalue = this.oldValue;
+    }
+
     error: any;
     navigated = false; // true if navigated here
     patientForm: any;
