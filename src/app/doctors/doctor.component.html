@@ -2,7 +2,7 @@
     <div class="row">
 
         <div class="form-group col-md-4">
-            <h2>Patients</h2>
+            <h2>Doctors</h2>
             <!-- Search Bar -->
             <label class="glyphicon glyphicon-search"></label><input type="text"
                 class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterPatients()"
@@ -14,15 +14,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10" style="width: 100%;overflow-x: auto;">
-            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary" href="/newpatient">Register A
-                New Patient</a>
+            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary" href="/newdoctor">Register A
+                New Doctor</a>
             <hr />
             <mat-table class="mat-table responsive-table" #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="firstName">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> First Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest"
-                            class="btn btn-primary" href="/patient-detail/{{element.id}}">{{element.firstName}}</a>
+                            class="btn btn-primary" href="/doctor-detail/{{element.id}}">{{element.firstName}}</a>
                     </mat-cell>
                 </ng-container>
 
@@ -50,6 +50,16 @@
                 <ng-container matColumnDef="address">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+                </ng-container>
+
+                 <ng-container matColumnDef="specialization">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Specialization</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.specialization}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="qualification">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Qualification</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.qualification}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="action">

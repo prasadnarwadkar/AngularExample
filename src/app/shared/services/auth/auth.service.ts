@@ -50,7 +50,8 @@ export class AuthService {
       { page: 'patients' },
       { page: 'admin' },
       { page: 'roleactionmaps' },
-      { page: 'auditlogs' }
+      { page: 'auditlogs' },
+      { page: 'doctors' }
     ]
   }
 

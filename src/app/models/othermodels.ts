@@ -9,6 +9,17 @@ export interface Patient {
   appointments: Appointment[]
 }
 
+export interface Doctor {
+  _id: string
+  id: string
+  name: Name
+  dob: string
+  gender: string
+  contact: Contact
+  specialization:string
+  qualification:string
+}
+
 export interface RoleActionMap {
   _id: string
   pageName: string
@@ -17,6 +28,20 @@ export interface RoleActionMap {
 }
 
 export interface RoleActionMapNew extends Omit<RoleActionMap, "_id"> {}
+
+export interface ExpandedDoctor {
+  _id: string
+  id: string
+  firstName:string
+  lastName: string
+  phone: string
+  email: string
+  address:string
+  dob: string
+  gender: string
+  specialization:string
+  qualification:string
+}
 
 export interface ExpandedPatient {
   _id: string

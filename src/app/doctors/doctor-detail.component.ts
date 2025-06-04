@@ -2,17 +2,17 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
-import { Patient } from '../models/othermodels';
+import { Doctor } from '../models/othermodels';
 import { PermissionRequest, AuditLogRequest, FieldOldValueNewValue } from '../models/models';
 import { AuthService } from '../shared/services';
 
 
 @Component({
-    selector: 'patient-detail',
-    templateUrl: './patient-detail.component.html',
-    styleUrls: ['././patient.component.css']
+    selector: 'doctor-detail',
+    templateUrl: './doctor-detail.component.html',
+    styleUrls: ['././doctor.component.css']
 })
-export class PatientDetailComponent implements OnInit {
+export class DoctorDetailComponent implements OnInit {
     auditLogGender: FieldOldValueNewValue = {
         field: "Gender",
         newvalue: "",
@@ -20,19 +20,19 @@ export class PatientDetailComponent implements OnInit {
     };
 
     onGenderChange(newValue: string) {
-        this.oldValue = this.patient?.gender!;
+        this.oldValue = this.doctor?.gender!;
         this.newValue = newValue;
         this.auditLogGender.newvalue = this.newValue;
         this.auditLogGender.oldvalue = this.oldValue;
     }
 
-    updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "patients" }
+    updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "doctors" }
     auditLogFirstName: FieldOldValueNewValue = {
         field: "FirstName",
         newvalue: "",
         oldvalue: ""
     }
-    patientDetailForm: FormGroup;
+    detailForm: FormGroup;
     user: import("c:/Work/Angular/MeanAppExample/src/app/shared/interfaces/user.interface").User | null | undefined;
 
     auditLogLastName: FieldOldValueNewValue = {
@@ -65,23 +65,23 @@ export class PatientDetailComponent implements OnInit {
         oldvalue: ""
     };
 
-    async updatePatient() {
+    async update() {
         if (await this.authService.hasPermission(this.updatePermissionRequest.action, this.updatePermissionRequest.pageName)) {
-            await this.apiService.update('patients', this.patientDetailForm.value.id, this.patientDetailForm.value);
-            alert('Patient details saved successfully.');
-            this.router.navigate(['/patients']);
+            await this.apiService.update('doctors', this.detailForm.value.id, this.detailForm.value);
+            alert('Doctor details saved successfully.');
+            this.router.navigate(['/doctors']);
 
             let req: AuditLogRequest = {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
-                entity: "patient",
+                entity: "doctor",
                 valueChanged: {
                     field: this.auditLogFirstName.field,
                     newvalue: this.auditLogFirstName.newvalue,
                     oldvalue: this.auditLogFirstName.oldvalue
                 },
-                pageName: "patients",
+                pageName: "doctors",
             }
 
             await this.authService.createAuditLog(req!).then((res) => {
@@ -92,13 +92,13 @@ export class PatientDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
-                entity: "patient",
+                entity: "doctor",
                 valueChanged: {
                     field: this.auditLogLastName.field,
                     newvalue: this.auditLogLastName.newvalue,
                     oldvalue: this.auditLogLastName.oldvalue
                 },
-                pageName: "patients",
+                pageName: "doctors",
             }
 
             await this.authService.createAuditLog(req!).then((res) => {
@@ -109,13 +109,13 @@ export class PatientDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
-                entity: "patient",
+                entity: "doctor",
                 valueChanged: {
                     field: this.auditLogDob.field,
                     newvalue: this.auditLogDob.newvalue,
                     oldvalue: this.auditLogDob.oldvalue
                 },
-                pageName: "patients",
+                pageName: "doctors",
             }
 
             await this.authService.createAuditLog(req!).then((res) => {
@@ -126,13 +126,13 @@ export class PatientDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
-                entity: "patient",
+                entity: "doctor",
                 valueChanged: {
                     field: this.auditLogPhone.field,
                     newvalue: this.auditLogPhone.newvalue,
                     oldvalue: this.auditLogPhone.oldvalue
                 },
-                pageName: "patients",
+                pageName: "doctors",
             }
 
             await this.authService.createAuditLog(req!).then((res) => {
@@ -143,13 +143,13 @@ export class PatientDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
-                entity: "patient",
+                entity: "doctor",
                 valueChanged: {
                     field: this.auditLogAddress.field,
                     newvalue: this.auditLogAddress.newvalue,
                     oldvalue: this.auditLogAddress.oldvalue
                 },
-                pageName: "patients",
+                pageName: "doctors",
             }
 
             await this.authService.createAuditLog(req!).then((res) => {
@@ -160,13 +160,13 @@ export class PatientDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
-                entity: "patient",
+                entity: "doctor",
                 valueChanged: {
                     field: this.auditLogEmail.field,
                     newvalue: this.auditLogEmail.newvalue,
                     oldvalue: this.auditLogEmail.oldvalue
                 },
-                pageName: "patients",
+                pageName: "doctors",
             }
 
             await this.authService.createAuditLog(req!).then((res) => {
@@ -177,13 +177,13 @@ export class PatientDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
-                entity: "patient",
+                entity: "doctor",
                 valueChanged: {
                     field: this.auditLogGender.field,
                     newvalue: this.auditLogGender.newvalue,
                     oldvalue: this.auditLogGender.oldvalue
                 },
-                pageName: "patients",
+                pageName: "doctors",
             }
 
             await this.authService.createAuditLog(req!).then((res) => {
@@ -191,50 +191,50 @@ export class PatientDetailComponent implements OnInit {
             });
         }
         else {
-            alert('You are not authorized to modify an existing patient. Please contact system administrator so they can give you permissions.');
+            alert('You are not authorized to modify an existing doctor. Please contact system administrator so they can give you permissions.');
         }
     }
-    @Input() public patient: Patient | undefined;
+    @Input() public doctor: Doctor | undefined;
     oldValue: string = '';
     newValue: string = '';
 
     onFirstNameChange(newValue: string): void {
-        this.oldValue = this.patient?.name.first!;
+        this.oldValue = this.doctor?.name.first!;
         this.newValue = newValue;
         this.auditLogFirstName.newvalue = this.newValue;
         this.auditLogFirstName.oldvalue = this.oldValue;
     }
 
     onLastNameChange(newValue: string): void {
-        this.oldValue = this.patient?.name.last!;
+        this.oldValue = this.doctor?.name.last!;
         this.newValue = newValue;
         this.auditLogLastName.newvalue = this.newValue;
         this.auditLogLastName.oldvalue = this.oldValue;
     }
 
     onDobChange(newValue: string): void {
-        this.oldValue = this.patient?.dob!;
+        this.oldValue = this.doctor?.dob!;
         this.newValue = newValue;
         this.auditLogDob.newvalue = this.newValue;
         this.auditLogDob.oldvalue = this.oldValue;
     }
 
     onPhoneChange(newValue: string): void {
-        this.oldValue = this.patient?.contact.phone!;
+        this.oldValue = this.doctor?.contact.phone!;
         this.newValue = newValue;
         this.auditLogPhone.newvalue = this.newValue;
         this.auditLogPhone.oldvalue = this.oldValue;
     }
 
     onAddressChange(newValue: string): void {
-        this.oldValue = this.patient?.contact.address!;
+        this.oldValue = this.doctor?.contact.address!;
         this.newValue = newValue;
         this.auditLogAddress.newvalue = this.newValue;
         this.auditLogAddress.oldvalue = this.oldValue;
     }
 
     onEmailChange(newValue: string): void {
-        this.oldValue = this.patient?.contact.email!;
+        this.oldValue = this.doctor?.contact.email!;
         this.newValue = newValue;
         this.auditLogEmail.newvalue = this.newValue;
         this.auditLogEmail.oldvalue = this.oldValue;
@@ -242,7 +242,7 @@ export class PatientDetailComponent implements OnInit {
 
     error: any;
     navigated = false; // true if navigated here
-    patientForm: any;
+   
 
     constructor(
         private router: Router,
@@ -251,14 +251,16 @@ export class PatientDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private fb: FormBuilder
     ) {
-        this.patientDetailForm = this.fb.group({
+        this.detailForm = this.fb.group({
             firstName: [''],
             lastName: [''],
             dob: [''],
             gender: [''],
             phone: [''],
             email: [''],
-            address: ['']
+            address: [''],
+            specialization:[''],
+            qualification:['']
         });
     }
 
@@ -272,33 +274,33 @@ export class PatientDetailComponent implements OnInit {
 
             if (id !== undefined) {
                 this.navigated = true;
-                await this.apiService.getOne("patients", id).then((value: any) => {
-                    this.patient = value[0]!
+                await this.apiService.getOne("doctors", id).then((value: any) => {
+                    this.doctor = value[0]!
 
-                    this.patientDetailForm = this.fb.group({
+                    this.detailForm = this.fb.group({
                         id: value[0].id,
-                        firstName: this.patient?.name.first,
-                        lastName: this.patient?.name.last,
-                        dob: this.patient?.dob,
-                        gender: this.patient?.gender,
-                        phone: this.patient?.contact.phone,
-                        email: this.patient?.contact.email,
-                        address: this.patient?.contact.address,
+                        firstName: this.doctor?.name.first,
+                        lastName: this.doctor?.name.last,
+                        dob: this.doctor?.dob,
+                        gender: this.doctor?.gender,
+                        phone: this.doctor?.contact.phone,
+                        email: this.doctor?.contact.email,
+                        address: this.doctor?.contact.address,
+                        specialization:this.doctor?.specialization,
+                        qualification:this.doctor?.qualification
                     });
                 })
             } else {
                 this.navigated = false;
-                this.patient = {
+                this.doctor = {
                     id: "",
                     dob: "",
                     name: { first: "", last: "" },
                     gender: "",
                     contact: { phone: "", address: "", email: "" },
-                    appointments: [],
-                    medical_history: [],
-                    _id: ""
-
-
+                    _id: "",
+                    specialization:"",
+                    qualification:""
                 }
             }
         }
@@ -306,20 +308,18 @@ export class PatientDetailComponent implements OnInit {
             const id = this.route.snapshot.paramMap.get('id');
             if (id !== undefined) {
                 this.navigated = true;
-                (await this.apiService.getOne("patients", id!)).subscribe((patient: Patient) => (this.patient = patient));
+                (await this.apiService.getOne("doctors", id!)).subscribe((doctor: Doctor) => (this.doctor = doctor));
             } else {
                 this.navigated = false;
-                this.patient = {
+                this.doctor = {
                     id: "",
                     dob: "",
                     name: { first: "", last: "" },
                     gender: "",
                     contact: { phone: "", address: "", email: "" },
-                    appointments: [],
-                    medical_history: [],
-                    _id: ""
-
-
+                    _id: "",
+                     specialization:"",
+                    qualification:""
                 }
             }
         }

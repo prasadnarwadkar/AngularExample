@@ -34,6 +34,9 @@ import { ResetPasswordComponent } from './users/reset-password.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AuditLogsComponent } from './auditlogs/auditlogs.component';
+import { DoctorDetailComponent } from './doctors/doctor-detail.component';
+import { DoctorsComponent } from './doctors/doctor.component';
+import { DoctorDetailNewComponent } from './doctors/doctor-detail-new.component';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -57,7 +60,10 @@ export function appInitializerFactory(authService: AuthService) {
     RoleActionMapNewComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    AuditLogsComponent
+    AuditLogsComponent,
+    DoctorDetailComponent,
+    DoctorsComponent,
+    DoctorDetailNewComponent,
   ],
   imports: [
     BrowserModule,

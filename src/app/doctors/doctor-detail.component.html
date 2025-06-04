@@ -2,8 +2,8 @@
     <div class="row">
 
         <div class="col-md-4">
-            <h3>Modify an Existing Patient</h3>
-            <form [formGroup]="patientDetailForm" [noValidate]="false" (ngSubmit)="updatePatient()">
+            <h3>Modify an Existing Doctor</h3>
+            <form [formGroup]="detailForm" [noValidate]="false" (ngSubmit)="update()">
                 <div class="container">
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -53,6 +53,20 @@
                                 placeholder="Email" style="width: 300px;">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="specialization">Specialization</label>
+                            <input #specializationField formControlName="specialization" class="form-control" type="text" id="specialization"
+                                placeholder="Specialization" style="width: 300px;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="email">Qualification</label>
+                            <input #qualificationField formControlName="qualification" class="form-control" type="text" id="qualification"
+                                placeholder="Qualification" style="width: 300px;">
+                        </div>
+                    </div>
                     <hr />
                     <div class="row">
                         <div class="col-md-3 btn-group">
@@ -62,7 +76,7 @@
                     </div>
                 </div>
             </form>
-            <a href="/patients">Cancel</a>
+            <a href="/doctors">Cancel</a>
         </div>
     </div>
 </div>

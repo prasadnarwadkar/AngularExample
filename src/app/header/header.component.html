@@ -47,6 +47,7 @@
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roles">Manage Roles</button>
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps">Manage Role Action Maps</button>
         <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/auditlogs">Manage Audit Logs</button>
+        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/doctors">Manage Doctors</button>
       </mat-menu>
 
       <mat-menu #menu="matMenu">
