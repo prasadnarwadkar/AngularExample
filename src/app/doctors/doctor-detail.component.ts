@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
-import { Doctor } from '../models/othermodels';
+import { Doctor, User } from '../models/othermodels';
 import { PermissionRequest, AuditLogRequest, FieldOldValueNewValue } from '../models/models';
 import { AuthService } from '../shared/services';
 
@@ -33,7 +33,7 @@ export class DoctorDetailComponent implements OnInit {
         oldvalue: ""
     }
     detailForm: FormGroup;
-    user: import("c:/Work/Angular/MeanAppExample/src/app/shared/interfaces/user.interface").User | null | undefined;
+    user: User | null | undefined;
 
     auditLogLastName: FieldOldValueNewValue = {
         field: "LastName",
@@ -242,7 +242,7 @@ export class DoctorDetailComponent implements OnInit {
 
     error: any;
     navigated = false; // true if navigated here
-   
+
 
     constructor(
         private router: Router,
@@ -251,6 +251,10 @@ export class DoctorDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private fb: FormBuilder
     ) {
+        this.authService.getUser().subscribe(async x => {
+            this.user = x!
+        });
+
         this.detailForm = this.fb.group({
             firstName: [''],
             lastName: [''],
@@ -259,11 +263,19 @@ export class DoctorDetailComponent implements OnInit {
             phone: [''],
             email: [''],
             address: [''],
-            specialization:[''],
-            qualification:['']
+            specialization: [''],
+            qualification: ['']
         });
     }
 
+    async ngAfterViewInit(): Promise<void> {
+        if (this.route.snapshot.params != undefined) {
+            const id = this.route.snapshot.params['id'];
+            await this.apiService.getOne("doctors", id).then((value: any) => {
+                this.doctor = value[0]!
+            });
+        }
+    }
 
     async ngOnInit(): Promise<void> {
         this.authService.getUser().subscribe(async x => {
@@ -286,8 +298,8 @@ export class DoctorDetailComponent implements OnInit {
                         phone: this.doctor?.contact.phone,
                         email: this.doctor?.contact.email,
                         address: this.doctor?.contact.address,
-                        specialization:this.doctor?.specialization,
-                        qualification:this.doctor?.qualification
+                        specialization: this.doctor?.specialization,
+                        qualification: this.doctor?.qualification
                     });
                 })
             } else {
@@ -299,8 +311,8 @@ export class DoctorDetailComponent implements OnInit {
                     gender: "",
                     contact: { phone: "", address: "", email: "" },
                     _id: "",
-                    specialization:"",
-                    qualification:""
+                    specialization: "",
+                    qualification: ""
                 }
             }
         }
@@ -318,8 +330,8 @@ export class DoctorDetailComponent implements OnInit {
                     gender: "",
                     contact: { phone: "", address: "", email: "" },
                     _id: "",
-                     specialization:"",
-                    qualification:""
+                    specialization: "",
+                    qualification: ""
                 }
             }
         }

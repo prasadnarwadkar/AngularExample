@@ -89,19 +89,20 @@ export interface MedicalHistory {
 }
 
 export interface Appointment {
+  _id:string,
   doctor_id: string
-  date: string
-  time: string
-  reason: string
+  text: string,
+  patient_id:string,
+  room_id:string
+  start:string
+  end:string
 }
 
 export interface User {
   _id: string
   roles: string[]
-  fullName: string
   email: string
-  hashedPassword:string
-  createdAt: Date
+  createdAt: string
 }
 
 export interface Role {

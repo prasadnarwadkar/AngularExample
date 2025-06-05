@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "start": "ng serve --configuration=production",
+    "build": "ng build --configuration=production",
+    "watch": "ng build --watch --configuration=production",
     "test": "ng test"
   },
   "private": true,
@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^15.2.8",
     "@angular/platform-browser-dynamic": "^15.2.8",
     "@angular/router": "^15.2.8",
+    "@daypilot/daypilot-lite-angular": "^4.0.2",
     "@ng-bootstrap/ng-bootstrap": "^14.1.0",
     "@popperjs/core": "^2.11.6",
     "@types/gapi": "^0.0.47",

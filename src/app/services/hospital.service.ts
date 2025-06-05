@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { v4 } from 'uuid'
-import { config } from '../../app/config/config';
+import { environment } from 'src/environment/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = config.apiBaseUrl
+  private apiUrl = environment.apiBaseUrl
+
+  constructor() {
+    console.log("Entities API Base Url is ", this.apiUrl)
+  }
 
   async getAll(endpoint: string) {
     return axios.get(`${this.apiUrl}/${endpoint}`).then(res => res.data);
@@ -33,4 +38,6 @@ export class ApiService {
   async delete(endpoint: string, id: string) {
     return axios.delete(`${this.apiUrl}/${endpoint}/${id}`).then(res => res.data);
   }
+
+
 }

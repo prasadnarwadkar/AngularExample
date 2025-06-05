@@ -45,3 +45,4 @@ Thumbs.db
 run-api.bat
 run-auth-sever.bat
 
+src/environment/environment.production.ts

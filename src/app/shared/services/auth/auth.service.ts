@@ -1,24 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, BehaviorSubject, EMPTY, throwError, of } from 'rxjs';
+import { Observable, BehaviorSubject, EMPTY, of } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 
 import { User } from '../../interfaces/';
 
 import { TokenStorage } from './token.storage';
 
-import { config } from '../../../../app/config/config';
-import { AuditLogRequest, AuthResponse, EmailRequest, IdRequest, PasswordRequest, Permission, RoleAndDesc, RoleRequest } from '../../../models/models'
+import { AuditLogRequest, AuthResponse, EmailRequest, IdRequest, PasswordRequest, Permission, RoleRequest } from '../../../models/models'
 import axios from 'axios';
 import { Page, RoleActionMap, RoleActionMapNew } from 'src/app/models/othermodels';
+import { environment } from 'src/environment/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
-  constructor(private http: HttpClient, private tokenStorage: TokenStorage) {
+  private authApiExternal = environment.authApiExternal
 
+  constructor(private http: HttpClient, private tokenStorage: TokenStorage) {
+    console.log("Auth API Base Url is ", this.authApiExternal)
   }
 
   async hasPermission(action: string, pageName: string) {
@@ -39,11 +41,13 @@ export class AuthService {
   }
 
   async getAllUsers() {
-    return axios.get(`${config.authApiExternal}auth/users`).then(res => res.data);
+    return axios.get(`${this.authApiExternal}auth/users`).then(res => res.data);
   }
 
   async getAllPages() {
-    // Update newly added pages here
+    // Update newly added pages here.
+    // This is manual action so that no one 
+    // accidentally modifies something that will break the app.
     return [
       { page: 'roles' },
       { page: 'users' },
@@ -58,90 +62,90 @@ export class AuthService {
   async createPage(page: string) {
     var roleObj: Page = { page: page }
 
-    return axios.post(`${config.authApiExternal}auth/pages`, roleObj).then(res => res.data);
+    return axios.post(`${this.authApiExternal}auth/pages`, roleObj).then(res => res.data);
   }
 
   async getAllRoles() {
-    return axios.get(`${config.authApiExternal}auth/roles`).then(res => res.data);
+    return axios.get(`${this.authApiExternal}auth/roles`).then(res => res.data);
   }
 
   async getAllAuditLogs() {
-    return axios.get(`${config.authApiExternal}auth/auditlogs`).then(res => res.data);
+    return axios.get(`${this.authApiExternal}auth/auditlogs`).then(res => res.data);
   }
 
   async getAllRoleActionmaps() {
-    return axios.get(`${config.authApiExternal}auth/roleactions`).then(res => res.data);
+    return axios.get(`${this.authApiExternal}auth/roleactions`).then(res => res.data);
   }
 
   async createRole(role: RoleRequest) {
     var roleObj: RoleRequest = { role: role.role, desc: role.desc }
 
-    return axios.post(`${config.authApiExternal}auth/roles`, roleObj).then(res => res.data);
+    return axios.post(`${this.authApiExternal}auth/roles`, roleObj).then(res => res.data);
   }
 
   async createAuditLog(auditLog: AuditLogRequest) {
 
     if (auditLog?.valueChanged?.newvalue != auditLog?.valueChanged?.oldvalue) {
-      return axios.post(`${config.authApiExternal}auth/auditlogs`, auditLog).then(res => res.data);
+      return axios.post(`${this.authApiExternal}auth/auditlogs`, auditLog).then(res => res.data);
     }
   }
 
   async forgotPassword(email: string) {
     var emailObj: EmailRequest = { email: email }
 
-    return axios.post(`${config.authApiExternal}forgot-password`, emailObj).then(res => res.data);
+    return axios.post(`${this.authApiExternal}forgot-password`, emailObj).then(res => res.data);
   }
 
   async getProfilePic(id: string) {
     var obj: IdRequest = { id: id }
 
-    return axios.post(`${config.authApiExternal}getProfilePic`, obj).then(res => res.data);
+    return axios.post(`${this.authApiExternal}getProfilePic`, obj).then(res => res.data);
   }
 
   async uploadProfilePic(formData: FormData) {
-    return axios.post(`${config.authApiExternal}uploadProfilePic2`, formData).then(res => res.data);
+    return axios.post(`${this.authApiExternal}uploadProfilePic2`, formData).then(res => res.data);
   }
 
   async resetPassword(token: string, password: string) {
     var obj: PasswordRequest = { password: password }
 
-    return axios.post(`${config.authApiExternal}reset-password/${token}`, obj).then(res => res.data);
+    return axios.post(`${this.authApiExternal}reset-password/${token}`, obj).then(res => res.data);
   }
 
   async getUserById(id: string) {
-    return axios.get(`${config.authApiExternal}auth/users/${id}`).then(res => res.data);
+    return axios.get(`${this.authApiExternal}auth/users/${id}`).then(res => res.data);
   }
 
   async getRoleActionsByRoleAndPage(role: string, page: string) {
-    return axios.get(`${config.authApiExternal}auth/roleactions/${role}/${page}`).then(res => res.data);
+    return axios.get(`${this.authApiExternal}auth/roleactions/${role}/${page}`).then(res => res.data);
   }
 
   async updateUser(id: string, user: User) {
-    return axios.put(`${config.authApiExternal}auth/users/${id}`, user).then(res => res.data);
+    return axios.put(`${this.authApiExternal}auth/users/${id}`, user).then(res => res.data);
   }
 
   async updateRoleActionMap(id: string, roleActionMap: RoleActionMap) {
-    return axios.put(`${config.authApiExternal}auth/roleactions/${id}`, roleActionMap).then(res => res.data);
+    return axios.put(`${this.authApiExternal}auth/roleactions/${id}`, roleActionMap).then(res => res.data);
   }
 
   async createRoleActionMap(roleActionMap: RoleActionMapNew) {
-    return axios.post(`${config.authApiExternal}auth/roleactions`, roleActionMap).then(res => res.data);
+    return axios.post(`${this.authApiExternal}auth/roleactions`, roleActionMap).then(res => res.data);
   }
 
   async deleteUser(id: string) {
-    return axios.delete(`${config.authApiExternal}auth/users/${id}`).then(res => res.data);
+    return axios.delete(`${this.authApiExternal}auth/users/${id}`).then(res => res.data);
   }
 
   async disableUser(id: string) {
-    return axios.delete(`${config.authApiExternal}auth/users/disable/${id}`).then(res => res.data);
+    return axios.delete(`${this.authApiExternal}auth/users/disable/${id}`).then(res => res.data);
   }
 
   async enableUser(id: string) {
-    return axios.delete(`${config.authApiExternal}auth/users/enable/${id}`).then(res => res.data);
+    return axios.delete(`${this.authApiExternal}auth/users/enable/${id}`).then(res => res.data);
   }
 
   async deleteRole(id: string) {
-    return axios.delete(`${config.authApiExternal}auth/roles/${id}`).then(res => res.data);
+    return axios.delete(`${this.authApiExternal}auth/roles/${id}`).then(res => res.data);
   }
 
   async login(email: string, password: string): Promise<Observable<User>> {
@@ -149,14 +153,14 @@ export class AuthService {
     try {
 
 
-      let authLoginResponse = await axios.post<AuthResponse>(`${config.authApiExternal}auth/login`, { email, password }).then(res => res.data);
+      let authLoginResponse = await axios.post<AuthResponse>(`${this.authApiExternal}auth/login`, { email, password }).then(res => res.data);
       authLoginResponse.user.picData = new ArrayBuffer(0)
       this.setUser(authLoginResponse.user);
       this.tokenStorage.saveToken(authLoginResponse.token);
       console.log('login: user token length: ', authLoginResponse.token.length);
       this.tokenStorage.saveUser(authLoginResponse.user);
 
-      result = await axios.post(`${config.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
+      result = await axios.post(`${this.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
       let permission: Permission[] = result as unknown as Permission[];
       this.tokenStorage.saveUserActionsPermitted(permission);
       userToReturn = authLoginResponse.user;
@@ -194,7 +198,7 @@ export class AuthService {
     picture: string
   ): Observable<User> {
     return this.http
-      .post<AuthResponse>(`${config.authApiExternal}auth/register`, {
+      .post<AuthResponse>(`${this.authApiExternal}auth/register`, {
         fullname,
         email,
         password,
@@ -280,7 +284,7 @@ export class AuthService {
       return of(user);
     }
 
-    return this.http.get<AuthResponse>(`${config.authApiExternal}auth/me`).pipe(
+    return this.http.get<AuthResponse>(`${this.authApiExternal}auth/me`).pipe(
       tap(({ user }) =>
         this.setUser(user)),
       map(x => x.user)
@@ -296,7 +300,7 @@ export class AuthService {
     picture: string): Promise<any> {
     console.log('registerwithoutlogin')
     let token = this.tokenStorage.getToken()
-    let url = `${config.authApiExternal}auth/registerwithoutlogin`
+    let url = `${this.authApiExternal}auth/registerwithoutlogin`
     let result = await axios.post(url, {
       fullname, email, password, repeatPassword, picture
     }, {
@@ -321,7 +325,7 @@ export class AuthService {
       console.log('registerwithoutlogin: user token length: ', user.token.length)
       this.tokenStorage.saveUser(user)
 
-      let permissionsByRole = await axios.post(`${config.authApiExternal}auth/getpermissionsbyrole`, user.roles).then(res => res.data);
+      let permissionsByRole = await axios.post(`${this.authApiExternal}auth/getpermissionsbyrole`, user.roles).then(res => res.data);
       this.tokenStorage.saveUserActionsPermitted(permissionsByRole)
     }
     else {
@@ -329,7 +333,7 @@ export class AuthService {
       console.log('registerwithoutlogin: user token length: ', result?.data?.token!.length)
 
 
-      let permissionsByRole = await axios.post(`${config.authApiExternal}auth/getpermissionsbyrole`, result?.data?.user?.roles!).then(res => res.data);
+      let permissionsByRole = await axios.post(`${this.authApiExternal}auth/getpermissionsbyrole`, result?.data?.user?.roles!).then(res => res.data);
 
       this.tokenStorage.saveUserActionsPermitted(permissionsByRole)
     }
@@ -346,7 +350,7 @@ export class AuthService {
 
   async signOut(): Promise<any> {
     let token = this.tokenStorage.getToken()
-    let result = await axios.post(`${config.authApiExternal}auth/logout`, {}, {
+    let result = await axios.post(`${this.authApiExternal}auth/logout`, {}, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json, text/plain, */*',

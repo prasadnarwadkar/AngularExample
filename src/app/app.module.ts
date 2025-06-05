@@ -37,6 +37,9 @@ import { AuditLogsComponent } from './auditlogs/auditlogs.component';
 import { DoctorDetailComponent } from './doctors/doctor-detail.component';
 import { DoctorsComponent } from './doctors/doctor.component';
 import { DoctorDetailNewComponent } from './doctors/doctor-detail-new.component';
+import { DayPilotCalendarComponent, DayPilotModule, DayPilotNavigatorComponent } from '@daypilot/daypilot-lite-angular';
+import { CalendarComponent } from './doctors/calendar.component';
+import { DataService } from './services/Dataservice';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -64,6 +67,7 @@ export function appInitializerFactory(authService: AuthService) {
     DoctorDetailComponent,
     DoctorsComponent,
     DoctorDetailNewComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +88,8 @@ export function appInitializerFactory(authService: AuthService) {
     MatMenuModule,
     MatListModule,
     MatGridListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    DayPilotModule
   ],
   providers: [ SocialAuthService, 
     {
@@ -107,8 +112,9 @@ export function appInitializerFactory(authService: AuthService) {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFactory,
       multi: true,
-      deps: [AuthService, LoaderService],
+      deps: [AuthService, LoaderService, DataService],
     },
+    DataService
   ],
   bootstrap: [AppComponent],
   entryComponents: [PatientsComponent, 
@@ -118,6 +124,6 @@ export function appInitializerFactory(authService: AuthService) {
     UserDetailComponent, 
     RolesComponent, 
     RoleDetailComponent,
-  AuditLogsComponent]
+  AuditLogsComponent,CalendarComponent]
 })
 export class AppModule { }

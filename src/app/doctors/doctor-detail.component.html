@@ -1,8 +1,10 @@
 <div class="container">
+    
     <div class="row">
 
         <div class="col-md-4">
-            <h3>Modify an Existing Doctor</h3>
+            <h3>Dr. {{doctor?.name?.first!}} {{doctor?.name?.last!}}</h3>
+            
             <form [formGroup]="detailForm" [noValidate]="false" (ngSubmit)="update()">
                 <div class="container">
                     <div class="row">
@@ -77,6 +79,10 @@
                 </div>
             </form>
             <a href="/doctors">Cancel</a>
+        </div>
+        <div class="col-md-8">
+            <h3>Doctor's calendar</h3>
+            <calendar-component *ngIf="doctor?.id" doctor_id={{doctor?.id}}></calendar-component>
         </div>
     </div>
 </div>
