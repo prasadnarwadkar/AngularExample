@@ -14,14 +14,14 @@
     <div class="row">
         <div class="col-md-10">
             <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
-                href="/newroleactionmap">Register A New Role Action Map</a>
+                routerLink="/newroleactionmap">Register A New Role Action Map</a>
             <hr />
             <mat-table class="mat-table" #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="role">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
                     <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest"
                             class="btn btn-primary"
-                            href="/roleactionmaps-detail/{{element.role}}/{{element.pageName}}">{{element.role}}</a>
+                            routerLink="/roleactionmaps-detail/{{element.role}}/{{element.pageName}}">{{element.role}}</a>
                     </mat-cell>
                 </ng-container>
 

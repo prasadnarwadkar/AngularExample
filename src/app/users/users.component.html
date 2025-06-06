@@ -17,7 +17,7 @@
             <mat-table class="mat-table" #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="fullname">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest" class="btn btn-primary" href="/user-detail/{{element._id}}">{{element.fullname}}</a> </mat-cell>
+                    <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest" class="btn btn-primary" routerLink="/user-detail/{{element._id}}">{{element.fullname}}</a> </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="email">
@@ -32,11 +32,11 @@
 
                 <ng-container matColumnDef="action2" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
-                    <mat-cell  *matCellDef="let element"> <a class="btn btn-danger" *ngIf="element.enabled! == true" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="disableUser(element._id, $event)" href="/users">Disable</a>  </mat-cell>
+                    <mat-cell  *matCellDef="let element"> <a class="btn btn-danger" *ngIf="element.enabled! == true" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="disableUser(element._id, $event)" routerLink="/users">Disable</a>  </mat-cell>
                 </ng-container>
                  <ng-container matColumnDef="action3" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
-                    <mat-cell  *matCellDef="let element"> <a class="btn btn-info" *ngIf="element.enabled == undefined || element.enabled == false" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="enableUser(element._id, $event)" href="/users">Enable</a>  </mat-cell>
+                    <mat-cell  *matCellDef="let element"> <a class="btn btn-info" *ngIf="element.enabled == undefined || element.enabled == false" [myDisableIfUnauthorized]="deletePermissionRequest" (click)="enableUser(element._id, $event)" routerLink="/users">Enable</a>  </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

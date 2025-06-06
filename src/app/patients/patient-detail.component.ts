@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
-import { Patient } from '../models/othermodels';
+import { Patient, User } from '../models/othermodels';
 import { PermissionRequest, AuditLogRequest, FieldOldValueNewValue } from '../models/models';
 import { AuthService } from '../shared/services';
 
@@ -33,7 +33,7 @@ export class PatientDetailComponent implements OnInit {
         oldvalue: ""
     }
     patientDetailForm: FormGroup;
-    user: import("c:/Work/Angular/MeanAppExample/src/app/shared/interfaces/user.interface").User | null | undefined;
+    user: User | null | undefined;
 
     auditLogLastName: FieldOldValueNewValue = {
         field: "LastName",

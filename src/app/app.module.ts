@@ -40,6 +40,7 @@ import { DoctorDetailNewComponent } from './doctors/doctor-detail-new.component'
 import { DayPilotCalendarComponent, DayPilotModule, DayPilotNavigatorComponent } from '@daypilot/daypilot-lite-angular';
 import { CalendarComponent } from './doctors/calendar.component';
 import { DataService } from './services/Dataservice';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -108,6 +109,7 @@ export function appInitializerFactory(authService: AuthService) {
 
     { provide: Window, useValue: window },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFactory,

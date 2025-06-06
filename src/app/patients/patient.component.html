@@ -14,7 +14,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10" style="width: 100%;overflow-x: auto;">
-            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary" href="/newpatient">Register A
+            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary" routerLink="/newpatient">Register A
                 New Patient</a>
             <hr />
             <mat-table class="mat-table responsive-table" #table [dataSource]="dataSource2" matSort="sort">
@@ -22,7 +22,7 @@
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> First Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest"
-                            class="btn btn-primary" href="/patient-detail/{{element.id}}">{{element.firstName}}</a>
+                            class="btn btn-primary" routerLink="/patient-detail/{{element.id}}">{{element.firstName}}</a>
                     </mat-cell>
                 </ng-container>
 
@@ -56,7 +56,7 @@
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> </mat-header-cell>
                     <mat-cell *matCellDef="let element"> <a class="btn btn-danger"
                             [myDisableIfUnauthorized]="deletePermissionRequest"
-                            (click)="deletePatient(element.id, $event)" href="/patients">Delete</a> </mat-cell>
+                            (click)="deletePatient(element.id, $event)" routerLink="/patients">Delete</a> </mat-cell>
                 </ng-container>
 
                 <mat-header-row class="bold-header" *matHeaderRowDef="displayedColumns"></mat-header-row>
