@@ -8,10 +8,10 @@ import { User } from '../../interfaces/';
 
 import { TokenStorage } from './token.storage';
 
-import { AuditLogRequest, AuthResponse, EmailRequest, IdRequest, PasswordRequest, Permission, RoleRequest } from '../../../models/models'
+import { AuditLogRequest, AuthResponse, EmailAndDoctorIdRequest, EmailRequest, IdRequest, PasswordRequest, Permission, RoleRequest, SendEmailRequest } from '../../../models/models'
 import axios from 'axios';
 import { Page, RoleActionMap, RoleActionMapNew } from 'src/app/models/othermodels';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environment/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -55,7 +55,8 @@ export class AuthService {
       { page: 'admin' },
       { page: 'roleactionmaps' },
       { page: 'auditlogs' },
-      { page: 'doctors' }
+      { page: 'doctors' },
+      { page: 'records' }
     ]
   }
 
@@ -94,6 +95,18 @@ export class AuthService {
     var emailObj: EmailRequest = { email: email }
 
     return axios.post(`${this.authApiExternal}forgot-password`, emailObj).then(res => res.data);
+  }
+
+  async assignDocRoleToUser(emailAndDoctorId: EmailAndDoctorIdRequest) {
+    var emailObj: EmailAndDoctorIdRequest = { email: emailAndDoctorId.email, doctor_id: emailAndDoctorId.doctor_id }
+
+    return axios.post(`${this.authApiExternal}assignDocRoleToUser`, emailObj).then(res => res.data);
+  }
+
+  async sendEmail(recipient: string, cc: string, subject: string, text: string) {
+    var emailObj: SendEmailRequest = { recipient: recipient, cc: cc, subject: subject, text: text }
+
+    return axios.post(`${this.authApiExternal}sendEmail`, emailObj).then(res => res.data);
   }
 
   async getProfilePic(id: string) {
@@ -182,21 +195,21 @@ export class AuthService {
         roles: [],
         token: "",
         enabled: false,
-        picData: new ArrayBuffer(0)
-
-
+        picData: new ArrayBuffer(0),
+        doctor_id: "",
+        name: { first: "", last: "" }
       }
       return of(user)
     }
   }
 
-  register(
+  async register(
     fullname: string,
     email: string,
     password: string,
     repeatPassword: string,
     picture: string
-  ): Observable<User> {
+  ): Promise<Observable<User>> {
     return this.http
       .post<AuthResponse>(`${this.authApiExternal}auth/register`, {
         fullname,
@@ -206,8 +219,12 @@ export class AuthService {
         picture
       })
       .pipe(
-        tap(({ token, user }) => {
+        tap(async ({ token, user }) => {
           this.setUser(user);
+
+          let result = await axios.post(`${this.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
+          let permission: Permission[] = result as unknown as Permission[];
+          this.tokenStorage.saveUserActionsPermitted(permission);
           this.tokenStorage.saveToken(token);
           console.log('register: user token length: ', token.length)
           this.tokenStorage.saveUser(user)
@@ -224,7 +241,7 @@ export class AuthService {
       this.tokenStorage.saveUser(user!)
     }
     if (user) {
-      user.isAdmin = user.roles.includes('admin');
+      user.isAdmin = user.roles?.includes('admin');
     }
 
     this.user$.next(user);

@@ -84,7 +84,7 @@ export class UsersComponent implements OnInit {
 
   setDataSource(list: User[]) {
     const expandedList = list.map(p => ({
-      fullname: p.fullname,
+      fullname: p.name?.first! + " " + p.name?.last!,
       email: p.email,
       roles: p.roles?.join(','),
       _id: p._id,

@@ -1,0 +1,96 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <h3>{{patient_name}}</h3> record dated <h4 *ngIf="record?.origin">{{convertDateToLocale(record.origin)}}</h4>
+            <h6 class="text text-alert">Appointment and Patient cannot be modified once the record is created.</h6>
+        </div>
+    </div>
+
+
+
+    <form [formGroup]="detailForm" [noValidate]="false" (ngSubmit)="update()">
+        <div class="container">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <h4>Patient:</h4>
+                    <p>{{patient_name}}</p>
+                </div>
+                <div class="form-group col-md-4">
+                    <h4> Appointment:</h4>
+                    <p> {{appointment_text}}</p>                           
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="blood_pressure_systolic">Blood Pressure (Systolic)</label>
+                    <input #bpSys (input)="onBPSysChange(bpSys.value)" formControlName="blood_pressure_systolic" id="blood_pressure_systolic" class="form-control"
+                        type="number" min="100" max="180" required="">
+                </div>
+                
+                <div class="form-group col-md-3">
+                    <label for="blood_pressure_diastolic">Blood Pressure (Diastolic)</label>
+                    <input #bpDia (input)="onBPDiaChange(bpDia.value)" formControlName="blood_pressure_diastolic" id="blood_pressure_diastolic" class="form-control"
+                        type="number" min="70" max="120" required="">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="pulse_oximetry_spo2">Pulse Oximetry (SPO2)</label>
+                    <input #pulseSpo2 (input)="onPulseSpo2Change(pulseSpo2.value)" formControlName="pulse_oximetry_spo2" id="pulse_oximetry_spo2" class="form-control"
+                        type="number" min="92" max="99" required="">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="pulse_rate">Pulse Rate</label>
+                    <input #pulseRate (input)="onPulseRateChange(pulseRate.value)" formControlName="pulse_rate" id="pulse_rate" class="form-control" type="number" min="70"
+                        max="120" required="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="body_temperature">Body Temperature</label>
+                    <input #bodyTemp (input)="onBodyTempChange(bodyTemp.value)" formControlName="body_temperature" class="form-control" id="body_temperature" type="number"
+                        required>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="body_height">Body Height (In Cm)</label>
+                    <input #bodyHeight (input)="onBodyHeightChange(bodyHeight.value)" formControlName="body_height" class="form-control" type="number" id="body_height" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="body_weight">Body Weight (In Kg)</label>
+                    <input #bodyWeight (input)="onBodyWeightChange(bodyWeight.value)" formControlName="body_weight" class="form-control" type="number" id="body_weight" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="blood_group">Blood Group</label>
+                    <select   class="form-control" id="blood_group" readonly disabled>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="O">O</option>
+                        <option value="AB">AB</option>
+                    </select>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="blood_antigen">Blood Antigen</label>
+                    <select class="form-control" id="blood_antigen" readonly disabled>
+                        <option value="positive">Positive</option>
+                        <option value="negative">negative</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 btn-group">
+                    <button [myDisableIfUnauthorized]="updatePermissionRequest" data-testid="save-button" type="submit"
+                        class="btn btn-primary">Save</button>
+                </div>
+                <div class="col-md-3 btn-group">
+                    <button routerLink="/records" data-testid="cancel-button" type="button"
+                        class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>

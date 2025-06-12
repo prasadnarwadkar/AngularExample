@@ -132,7 +132,7 @@ export class PatientsComponent implements OnInit {
       this.filteredPatients = this.patients;
     }
     else {
-      alert("You are not authorized to view data on this page. Please contact system administrator so they can give you permissions.")
+      alert("You are not authorized to view data on this page. Please contact system administrator so they can give you permissions. If you have just registered and this is your first login, please sign out and back in.")
     }
 
   }

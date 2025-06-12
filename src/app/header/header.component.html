@@ -1,60 +1,56 @@
 <header>
-  <mat-toolbar color="primary">
+  <mat-toolbar class="example-header">
     <a routerLink="/" class="logo"></a>
     <a class="navbar-brand" href="#">{{title}}</a>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
       crossorigin="anonymous"></script>
-    <script>
-      $(document).ready(function(){
-        alert('ready')
-        // Example binary buffer (Uint8Array)
-      const userData = localStorage.getItem(this.userKey);
-      let userPicData = userData ? (JSON.parse(userData)).picData : null;
-      const buffer = userPicData;// new Uint8Array([137, 80, 78, 71, ...]); // Truncated for brevity
-      const base64Image = `data:image/png;base64,${buffer}`
 
-      // Create a Blob and generate a URL
-      const blob = new Blob([buffer], { type: "image/png" });
-      const url = URL.createObjectURL(blob);
-
-      // Set the image source
-      document.getElementById("image").src = base64Image;
-
-      // Optional: Revoke the URL when no longer needed
-      //setTimeout(() => URL.revokeObjectURL(url), 60000); // Revoke after 60 seconds
-      });
-      
-    </script>
     <span class="example-spacer"></span>
     <a class="links side" routerLink="/auth/login" *ngIf="!user">Login</a>
     <a class="links side" routerLink="/auth/register" *ngIf="!user">Register</a>
     <a class="links side" routerLink="/auth/profile" *ngIf="user">Manage Profile</a>
     <div>
       <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu">
-        <mat-icon *ngIf="!user.picture && !user.picData">account_circle</mat-icon><img *ngIf="user.picData" id="image" alt="Dynamic Image" width="64px" height="64px" src="data:image/png;base64,{{ user.picData }}"><img *ngIf="user.picture" alt="user image"
-          src={{user.picture}} width="64" height="64" />Welcome, {{ user.fullname }}
+        <mat-icon *ngIf="!user.picture && !user.picData">account_circle</mat-icon><img *ngIf="user.picData" id="image"
+          alt="Dynamic Image" width="64px" height="64px" src="data:image/png;base64,{{ user.picData }}" /><img
+          *ngIf="user.picture" alt="user image" src={{user.picture}} width="64" height="64" /><span *ngIf="user.name">Welcome, {{ user.name.first }} {{ user.name.last  }}</span><span *ngIf="!user.name && user.fullname">Welcome, {{user.fullname}}</span>
       </a>
-      
-      <button mat-icon-button [matMenuTriggerFor]="menu2" aria-label="Menu">
-        <mat-icon color="primary">list</mat-icon>
-      </button>
-
-      <mat-menu #menu2="matMenu">
-        <button mat-menu-item routerLink="/patients">Manage Patients</button>
-        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/users">Manage Users</button>
-        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roles">Manage Roles</button>
-        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps">Manage Role Action Maps</button>
-        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/auditlogs">Manage Audit Logs</button>
-        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/doctors">Manage Doctors</button>
-      </mat-menu>
-
       <mat-menu #menu="matMenu">
-        <button mat-menu-item *ngIf="user?.isAdmin" routerLink="/admin">admin</button>
+
         <button mat-menu-item (click)="logout()">Sign Out</button>
       </mat-menu>
     </div>
   </mat-toolbar>
-  <h6 *ngIf="user?.roles != null && user?.roles?.length! > 0">You are: {{user?.roles?.join(',')}}</h6>
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/" routerLinkActive="active">Home</a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/doctors" routerLinkActive="active">Manage Doctors</a>
+        <a mat-list-item *ngIf="user?.roles?.includes('nurse') || user?.roles?.includes('admin')" routerLink="/records" routerLinkActive="active">Manage Records</a>
+        <a mat-list-item routerLink="/patients" routerLinkActive="active">Manage Patients</a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/users" routerLinkActive="active">Manage Users</a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/roles" routerLinkActive="active">Manage Roles</a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps" routerLinkActive="active">Manage
+          Permissions</a>
+        <a mat-list-item *ngIf="user?.roles?.includes('doctor')" routerLink="/manageschedule"
+          routerLinkActive="active">Manage
+          My Schedule</a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/auditlogs" routerLinkActive="active">Manage Audit Logs</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <button matButton (click)="sidenav.toggle()"><mat-icon color="">menu</mat-icon></button>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <div class="fixed-toolbar">
+    <h6 *ngIf="user?.roles != null && user?.roles?.length! > 0">You are:
+      {{user?.roles?.join(',')}}</h6>
+    <a routerLink="/sendemail">Contact System Administrator</a>&nbsp;<a routerLink="/help">Help</a>
+  </div>
+
 </header>

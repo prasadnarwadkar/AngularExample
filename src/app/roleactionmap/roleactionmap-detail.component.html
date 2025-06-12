@@ -35,15 +35,16 @@
                             </mat-selection-list>
                         </div>
                     </div>
-                    <hr />
                     <div class="row">
                         <div class="col-md-3 btn-group">
                             <button data-testid="save-button" [myDisableIfUnauthorized]="updatePermissionRequest" type="submit" class="btn btn-primary">Save</button>
                         </div>
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="cancel-button" class="btn btn-danger" routerLink="/roleactionmaps">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </form>
-            <a routerLink="/roleactionmaps">Cancel</a>
         </div>
     </div>
 </div>

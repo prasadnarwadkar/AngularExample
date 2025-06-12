@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+            <h3>Send Email To The Administrator</h3>
+            <form [formGroup]="userDetailForm" [noValidate]="false" (ngSubmit)="sendEmail()">
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="subject">From</label>
+                            <input type="email" *ngIf="!user?.email" class="form-control" formControlName="from" id="from" placeholder="from">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="subject">Subject</label>
+                            <input class="form-control" formControlName="subject" id="subject" placeholder="subject" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="emailbody">Body</label>
+                            <textarea class="form-control" type="text" formControlName="emailbody" id="emailbody" placeholder="body" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="save-button" type="submit" class="btn btn-primary">Send Email</button>
+                        </div>
+                        <div class="col-md-3 btn-group">
+                            <button routerLink="/" data-testid="cancel-button" type="submit" class="btn btn-danger">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

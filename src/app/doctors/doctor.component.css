@@ -80,7 +80,6 @@ button[disabled], button[disabled]:hover {
 
 
 .mat-table{
-  background-color: cyan;
   overflow: auto;
 }
 

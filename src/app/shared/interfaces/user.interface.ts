@@ -1,3 +1,5 @@
+import { Name } from "src/app/models/othermodels";
+
 export interface User {
   picData: ArrayBuffer;
   _id: string;
@@ -9,6 +11,8 @@ export interface User {
   picture: string;
   token:string;
   enabled:boolean;
+  doctor_id:string;
+  name:Name;
 }
 
 

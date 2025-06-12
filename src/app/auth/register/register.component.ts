@@ -51,7 +51,7 @@ export class RegisterComponent {
     return this.userForm.get('repeatPassword')!;
   }
 
-  register(): void {
+  async register(): Promise<void> {
     if (this.userForm.invalid) {
       if (this.userForm?.controls?.fullname?.errors?.required) {
         alert("Full name is needed")
@@ -71,7 +71,7 @@ export class RegisterComponent {
 
     const { fullname, email, password, repeatPassword, picture } = this.userForm.getRawValue();
 
-    this.authService.register(fullname!, email!, password!, repeatPassword!, picture!).subscribe({
+    (await this.authService.register(fullname!, email!, password!, repeatPassword!, picture!)).subscribe({
       next: (v) => this.router.navigate(['']),
       error: (e) => {console.error(e); 
         if (e.message.indexOf('duplicate key error')>= 0){

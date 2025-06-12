@@ -73,7 +73,9 @@ export class ProfileComponent {
                 picture: googleUser.picture,
                 token: "",
                 enabled: false,
-                picData: new ArrayBuffer(0)
+                picData: new ArrayBuffer(0),
+                doctor_id:'',
+                name:{first:"", last:""}
               }
               try {
                 // Create local user for this google user

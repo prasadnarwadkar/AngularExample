@@ -1,21 +1,26 @@
 <div class="container">
     <div class="row">
-        <div class="form-group col-md-4">
-            <h2>Role Action Maps</h2>
+        <div class="form-group col-md-3">
+            <h2>Permissions</h2>
+            
+
+        </div>
+        <div class="form-group col-md-5">
             <!-- Search Bar -->
             <label class="glyphicon glyphicon-search"></label><input type="text"
                 class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterData()"
-                placeholder="Search by name or phone">
-
+                placeholder="Search by page name or role or action">
+        </div>
+        <div class="form-group col-md-4">
+             <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
+                routerLink="/newroleactionmap">Register A New Permission</a>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-md-10">
-            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
-                routerLink="/newroleactionmap">Register A New Role Action Map</a>
-            <hr />
+           
             <mat-table class="mat-table" #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="role">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Role </mat-header-cell>

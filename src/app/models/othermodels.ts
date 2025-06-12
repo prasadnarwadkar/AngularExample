@@ -16,8 +16,8 @@ export interface Doctor {
   dob: string
   gender: string
   contact: Contact
-  specialization:string
-  qualification:string
+  specialization: string
+  qualification: string
 }
 
 export interface RoleActionMap {
@@ -27,20 +27,20 @@ export interface RoleActionMap {
   actions: string[]
 }
 
-export interface RoleActionMapNew extends Omit<RoleActionMap, "_id"> {}
+export interface RoleActionMapNew extends Omit<RoleActionMap, "_id"> { }
 
 export interface ExpandedDoctor {
   _id: string
   id: string
-  firstName:string
+  firstName: string
   lastName: string
   phone: string
   email: string
-  address:string
+  address: string
   dob: string
   gender: string
-  specialization:string
-  qualification:string
+  specialization: string
+  qualification: string
 }
 
 export interface ExpandedPatient {
@@ -50,12 +50,12 @@ export interface ExpandedPatient {
   lastName: string
   phone: string
   email: string
-  address:string
+  address: string
   dob: string
   gender: string
 }
 
-export interface ExpandedUser{
+export interface ExpandedUser {
   fullname: string
   _id: string
   roles: string
@@ -64,12 +64,12 @@ export interface ExpandedUser{
 }
 
 
-export interface ExpandedPage{
+export interface ExpandedPage {
   page: string
   _id: string
 }
 
-export interface ExpandedRole extends Omit<Role, "selectedForUser">{}
+export interface ExpandedRole extends Omit<Role, "selectedForUser"> { }
 
 export interface Name {
   first: string
@@ -89,13 +89,21 @@ export interface MedicalHistory {
 }
 
 export interface Appointment {
-  _id:string,
+  _id: string,
   doctor_id: string
   text: string,
-  patient_id:string,
-  room_id:string
-  start:string
-  end:string
+  patient_id: string,
+  room_id: string
+  start: string
+  end: string
+}
+
+export interface DisplayAppointment {
+  id: string,
+  doctor_id: string
+  text: string,
+  patient_id: string,
+  date: Date
 }
 
 export interface User {
@@ -103,6 +111,7 @@ export interface User {
   roles: string[]
   email: string
   createdAt: string
+  doctor_id: string
 }
 
 export interface Role {
@@ -118,4 +127,46 @@ export interface Action {
 
 export interface Page {
   page: string;
+}
+
+export interface Record {
+  id: string,
+  patient_id: string,
+  doctor_id: string,
+  appointment_id: string,
+  origin: Date,
+  attributes: {
+    doctor_name: string
+    patient_name: string
+    blood_pressure_systolic: Number,
+    blood_pressure_diastolic: Number,
+    pulse_oximetry_spo2: Number,
+    blood_group: string,
+    blood_antigen: string,
+    pulse_rate: Number,
+    body_temperature: Number,
+    body_height: Number,
+    body_weight: Number,
+    body_mass_index: Number
+  }
+}
+
+export interface ExpandedRecord {
+  patient_name: string,
+  patient_id: string,
+  doctor_name: string,
+  appointment_id: string,
+  appointment_reason: string,
+  appointment_date: Date,
+  origin: string,
+  blood_pressure_systolic: Number,
+  blood_pressure_diastolic: Number,
+  pulse_oximetry_spo2: Number,
+  blood_group: string,
+  blood_antigen: string,
+  pulse_rate: Number,
+  body_temperature: Number,
+  body_height: Number,
+  body_weight: Number,
+  body_mass_index: Number
 }

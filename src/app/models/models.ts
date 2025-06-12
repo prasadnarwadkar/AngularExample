@@ -21,19 +21,21 @@ export interface FieldOldValueNewValue {
 }
 
 export interface AuditLogRequest {
-  email: string;
+  email: string,
   action: string,
   pageName: string,
   entity:string,
   valueChanged:FieldOldValueNewValue,
-  createdAt: Date
+  createdAt: Date,
+  entity_id:string
 }
 
 export interface AuditLog extends Omit<AuditLogRequest,"valueChanged">{
   field:string,
   oldvalue:string,
   newvalue:string,
-  createdAtDate:string
+  createdAtDate:string,
+  entity_id:string
 }
 
 export interface PermissionRequest extends Omit<Permission,"actions"| "email">{
@@ -51,6 +53,18 @@ export type RoleAndDesc = Role & Desc
 
 export interface EmailRequest {
   email: string
+}
+
+export interface EmailAndDoctorIdRequest {
+  email: string,
+  doctor_id:string
+}
+
+export interface SendEmailRequest {
+  recipient: string,
+  cc:string,
+  subject:string,
+  text:string
 }
 
 export interface IdRequest {

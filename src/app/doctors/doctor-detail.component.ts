@@ -19,12 +19,6 @@ export class DoctorDetailComponent implements OnInit {
         oldvalue: ""
     };
 
-    onGenderChange(newValue: string) {
-        this.oldValue = this.doctor?.gender!;
-        this.newValue = newValue;
-        this.auditLogGender.newvalue = this.newValue;
-        this.auditLogGender.oldvalue = this.oldValue;
-    }
 
     updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "doctors" }
     auditLogFirstName: FieldOldValueNewValue = {
@@ -67,12 +61,16 @@ export class DoctorDetailComponent implements OnInit {
 
     async update() {
         if (await this.authService.hasPermission(this.updatePermissionRequest.action, this.updatePermissionRequest.pageName)) {
+            this.detailForm.value.name = {};
+            this.detailForm.value.name.first = this.detailForm.value.firstName
+            this.detailForm.value.name.last = this.detailForm.value.lastName
             await this.apiService.update('doctors', this.detailForm.value.id, this.detailForm.value);
             alert('Doctor details saved successfully.');
             this.router.navigate(['/doctors']);
 
             let req: AuditLogRequest = {
                 action: "update",
+                entity_id: this.doctor?.id!,
                 createdAt: new Date(),
                 email: this.user?.email!,
                 entity: "doctor",
@@ -90,6 +88,7 @@ export class DoctorDetailComponent implements OnInit {
 
             req = {
                 action: "update",
+                entity_id: this.doctor?.id!,
                 createdAt: new Date(),
                 email: this.user?.email!,
                 entity: "doctor",
@@ -108,6 +107,7 @@ export class DoctorDetailComponent implements OnInit {
             req = {
                 action: "update",
                 createdAt: new Date(),
+                entity_id: this.doctor?.id!,
                 email: this.user?.email!,
                 entity: "doctor",
                 valueChanged: {
@@ -126,6 +126,7 @@ export class DoctorDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
+                entity_id: this.doctor?.id!,
                 entity: "doctor",
                 valueChanged: {
                     field: this.auditLogPhone.field,
@@ -143,6 +144,7 @@ export class DoctorDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
+                entity_id: this.doctor?.id!,
                 entity: "doctor",
                 valueChanged: {
                     field: this.auditLogAddress.field,
@@ -160,6 +162,7 @@ export class DoctorDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
+                entity_id: this.doctor?.id!,
                 entity: "doctor",
                 valueChanged: {
                     field: this.auditLogEmail.field,
@@ -177,6 +180,7 @@ export class DoctorDetailComponent implements OnInit {
                 action: "update",
                 createdAt: new Date(),
                 email: this.user?.email!,
+                entity_id: this.doctor?.id!,
                 entity: "doctor",
                 valueChanged: {
                     field: this.auditLogGender.field,
@@ -195,49 +199,40 @@ export class DoctorDetailComponent implements OnInit {
         }
     }
     @Input() public doctor: Doctor | undefined;
-    oldValue: string = '';
-    newValue: string = '';
+
+    onGenderChange(newValue: string) {
+        this.auditLogGender.newvalue = newValue;
+        this.auditLogGender.oldvalue = this.doctor?.gender!;
+    }
 
     onFirstNameChange(newValue: string): void {
-        this.oldValue = this.doctor?.name.first!;
-        this.newValue = newValue;
-        this.auditLogFirstName.newvalue = this.newValue;
-        this.auditLogFirstName.oldvalue = this.oldValue;
+        this.auditLogFirstName.newvalue = newValue;
+        this.auditLogFirstName.oldvalue = this.doctor?.name.first!;
     }
 
     onLastNameChange(newValue: string): void {
-        this.oldValue = this.doctor?.name.last!;
-        this.newValue = newValue;
-        this.auditLogLastName.newvalue = this.newValue;
-        this.auditLogLastName.oldvalue = this.oldValue;
+        this.auditLogLastName.newvalue = newValue;
+        this.auditLogLastName.oldvalue = this.doctor?.name.last!;
     }
 
     onDobChange(newValue: string): void {
-        this.oldValue = this.doctor?.dob!;
-        this.newValue = newValue;
-        this.auditLogDob.newvalue = this.newValue;
-        this.auditLogDob.oldvalue = this.oldValue;
+        this.auditLogDob.newvalue = newValue;
+        this.auditLogDob.oldvalue = this.doctor?.dob!;
     }
 
     onPhoneChange(newValue: string): void {
-        this.oldValue = this.doctor?.contact.phone!;
-        this.newValue = newValue;
-        this.auditLogPhone.newvalue = this.newValue;
-        this.auditLogPhone.oldvalue = this.oldValue;
+        this.auditLogPhone.newvalue = newValue;
+        this.auditLogPhone.oldvalue = this.doctor?.contact?.phone!;
     }
 
     onAddressChange(newValue: string): void {
-        this.oldValue = this.doctor?.contact.address!;
-        this.newValue = newValue;
-        this.auditLogAddress.newvalue = this.newValue;
-        this.auditLogAddress.oldvalue = this.oldValue;
+        this.auditLogAddress.newvalue = newValue;
+        this.auditLogAddress.oldvalue = this.doctor?.contact?.address!;
     }
 
     onEmailChange(newValue: string): void {
-        this.oldValue = this.doctor?.contact.email!;
-        this.newValue = newValue;
-        this.auditLogEmail.newvalue = this.newValue;
-        this.auditLogEmail.oldvalue = this.oldValue;
+        this.auditLogEmail.newvalue = newValue;
+        this.auditLogEmail.oldvalue = this.doctor?.contact?.email!;
     }
 
     error: any;

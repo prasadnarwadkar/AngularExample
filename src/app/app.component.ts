@@ -4,35 +4,32 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { Observable } from "rxjs/internal/Observable";
 import { AuthService } from "./shared/services/auth/auth.service";
 import { User } from "./shared/interfaces/user.interface";
-import { merge,of } from "rxjs";
+import { merge, of } from "rxjs";
 
 @Component({
   selector: 'app-root',
   template: `
   
     
-    <hr/>
-    <app-header [user]="user$ | async"></app-header>
-    
-    <router-outlet></router-outlet>
-
-    
+    <app-header  [user]="user$ | async"></app-header>
+        
   `,
-  
+
   styleUrls: ['..//styles.scss']
 })
 export class AppComponent {
   title = 'Hospital Management System';
-	user$: Observable<User | null> = merge(
+  user$: Observable<User | null> = merge(
     this.authService.me(),
 
     this.authService.getUser()
   );
-	constructor(
+
+  constructor(
     private domSanitizer: DomSanitizer,
     private matIconRegistry: MatIconRegistry,
     private authService: AuthService
-  ){
+  ) {
     this.registerSvgIcons();
   }
 

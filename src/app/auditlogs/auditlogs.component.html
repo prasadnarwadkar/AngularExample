@@ -1,19 +1,20 @@
 
 <div class="container">
     <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <h2>Audit Logs</h2>
-            <!-- Search Bar -->
+        </div>
+        <div class="form-group col-md-5">
+             <!-- Search Bar -->
             <label class="glyphicon glyphicon-search"></label><input type="text"
                 class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterData()"
                 placeholder="Search by any field">
-
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-10" style="width: 100%;overflow-x: auto;">
             <mat-table class="mat-table" #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="email">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> User Email </mat-header-cell>
@@ -42,12 +43,17 @@
 
                 <ng-container matColumnDef="action">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
-                    <mat-cell  *matCellDef="let element"> <span>{{element.action}}</span> </mat-cell>
+                    <mat-cell  *matCellDef="let element"> <span>{{element.action}} <a routerLink={{returnEntityLink(element)}}>Click to View the entity</a></span> </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="pageName">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Page </mat-header-cell>
                     <mat-cell  *matCellDef="let element"> <span>{{element.pageName}}</span> </mat-cell>
+                </ng-container>
+
+                 <ng-container matColumnDef="entity_id">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Entity ID </mat-header-cell>
+                    <mat-cell  *matCellDef="let element"> <span>{{element.entity_id}}</span> </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="createdAt">

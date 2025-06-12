@@ -1,8 +1,7 @@
-import { Component, inject, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../services/hospital.service';
-import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Patient, ExpandedPatient, ExpandedDoctor, Doctor } from '../models/othermodels';
-import { Router } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ExpandedDoctor, Doctor } from '../models/othermodels';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,12 +10,7 @@ import { AuthService } from '../shared/services';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
 
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-}
+
 
 @Component({
   selector: 'app-doctors',
@@ -36,10 +30,10 @@ export class DoctorsComponent implements OnInit {
   ]);
 
 
-  deletePermissionRequest: PermissionRequest = { "action": "delete", "pageName": "patients" }
-  createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "patients" }
-  updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "patients" }
-  readPermissionRequest: PermissionRequest = { "action": "read", "pageName": "patients" }
+  deletePermissionRequest: PermissionRequest = { "action": "delete", "pageName": "doctors" }
+  createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "doctors" }
+  updatePermissionRequest: PermissionRequest = { "action": "update", "pageName": "doctors" }
+  readPermissionRequest: PermissionRequest = { "action": "read", "pageName": "doctors" }
 
   displayedColumns = ['firstName', 'lastName', 'phone', 'dob', 'address', 'email', 'specialization','qualification','action'];
 
@@ -137,7 +131,7 @@ export class DoctorsComponent implements OnInit {
 
   }
 
-  filterPatients() {
+  filter() {
     this.filtered = this.data.filter(patient =>
       patient.name?.first.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       patient.name?.last.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -168,7 +162,7 @@ export class DoctorsComponent implements OnInit {
   }
 
 
-  async deletePatient(id: string, e: Event) {
+  async delete(id: string, e: Event) {
     e.preventDefault();
     if (await this.authService.hasPermission(this.deletePermissionRequest.action, this.deletePermissionRequest.pageName)) {
       if (confirm("Would you like to delete this patient?")) {

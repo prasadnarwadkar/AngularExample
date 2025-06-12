@@ -6,7 +6,7 @@ import EventData = DayPilot.EventData;
 import EventId = DayPilot.EventId;
 import axios from 'axios';
 import { Appointment } from '../models/othermodels';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environment/environment.development';
 
 
 @Injectable()
@@ -18,7 +18,7 @@ export class DataService {
         console.log("Entities API Base Url is ", this.apiUrl)
     }
 
-    async getEvents(start: DayPilot.Date, end: DayPilot.Date) {
+    async getEvents() {
         return axios.get(`${this.apiUrl}/appointments`).then(res => res.data);
     }
 
@@ -28,6 +28,10 @@ export class DataService {
 
     async getEventsByDoctorId(id:string) {
         return axios.get(`${this.apiUrl}/appointments/doctor/${id}`).then(res => res.data);
+    }
+
+    async getEventsByPatientId(id:string) {
+        return axios.get(`${this.apiUrl}/appointments/patient/${id}`).then(res => res.data);
     }
 
     async updateEventById(id:string, appointment: Appointment) {

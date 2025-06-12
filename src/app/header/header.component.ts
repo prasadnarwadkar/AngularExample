@@ -1,10 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { User } from '../shared/interfaces';
 
 import { AuthService } from '../shared/services';
-import axios from 'axios';
+import { FormBuilder } from '@angular/forms';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subject, takeUntil } from 'rxjs';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-header',
@@ -12,22 +15,70 @@ import axios from 'axios';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+  currentScreenSize!: string;
+  destroyed = new Subject<void>();
+
+  displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
+
   @Input() user: User | null = null;
   @Input() title: String | null = null;
   await: any;
+  private _formBuilder = inject(FormBuilder);
+
+  options = this._formBuilder.group({
+    bottom: 0,
+    fixed: false,
+    top: 0,
+  });
 
   constructor(private router: Router, private authService: AuthService) {
+    inject(BreakpointObserver)
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(result => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
 
+            if (this.sidenav) {
+              switch (this.currentScreenSize) {
+                case "XSmall":
+                  this.sidenav.close()
+                  break;
+                case "Small":
+                  this.sidenav.close()
+                  break;
+                case "Medium":
+                  this.sidenav.open()
+                  break;
+                case "Large":
+                  this.sidenav.open()
+                  break;
+                default:
+                  break;
+              }
+            }
+
+          }
+        }
+      });
   }
 
   ngOnInit() {
-    // @ts-ignore
-    google.accounts.id.initialize({
-      client_id: "<google_client_id>",
-      auto_select: false,
-      cancel_on_tap_outside: true,
 
-    });
   }
 
   async logout(): Promise<void> {
@@ -35,7 +86,7 @@ export class HeaderComponent {
 
       let result = await this.authService.signOut();
       console.log("revoking google auth")
-      
+
       // @ts-ignore
       google.accounts.id.disableAutoSelect();
 

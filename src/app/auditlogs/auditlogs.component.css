@@ -61,9 +61,6 @@ button[disabled], button[disabled]:hover {
    color: #e1e1e1;
 }
 
-.mat-table{
-  background-color: cyan;
-}
 
 .bold-header {
   font-weight: bold;
@@ -89,4 +86,8 @@ button[disabled], button[disabled]:hover {
 .mat-column-createdAt {
    word-break: break-word;
    min-width: 200px;
+}
+
+.mat-table{
+  overflow: auto;
 }

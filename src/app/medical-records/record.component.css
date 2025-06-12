@@ -42,10 +42,10 @@ button {
   min-width: 300px;
 }
 
-.mat-table {
+/* .mat-table {
   overflow: auto;
   max-height: 500px;
-}
+} */
 
 .mat-header-cell.mat-sort-header-sorted {
   color: black;
@@ -60,6 +60,28 @@ button[disabled], button[disabled]:hover {
    pointer-events: none;
    color: #e1e1e1;
 }
+
+.mat-column-email {
+   word-break: break-word;
+}
+
+.mat-column-firstName {
+   word-break: break-word;
+}
+
+.mat-column-lastName {
+   word-break: break-word;
+}
+
+.mat-column-address {
+   word-break: break-word;
+}
+
+.mat-column-patient_name {
+   word-break: break-word;
+   width:200px;
+}
+
 
 .mat-table{
   overflow: auto;

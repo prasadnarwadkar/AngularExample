@@ -1,22 +1,26 @@
 <div class="container">
     <div class="row">
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <h2>Doctors</h2>
+
+        </div>
+        <div class="form-group col-md-5">
             <!-- Search Bar -->
             <label class="glyphicon glyphicon-search"></label><input type="text"
-                class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterPatients()"
+                class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filter()"
                 placeholder="Search by name or phone">
-
+        </div>
+        <div class="form-group col-md-4">
+            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
+                routerLink="/newdoctor">Register A
+                New Doctor</a>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-md-10" style="width: 100%;overflow-x: auto;">
-            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary" routerLink="/newdoctor">Register A
-                New Doctor</a>
-            <hr />
             <mat-table class="mat-table responsive-table" #table [dataSource]="dataSource2" matSort="sort">
                 <ng-container matColumnDef="firstName">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> First Name
@@ -52,13 +56,15 @@
                     <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
                 </ng-container>
 
-                 <ng-container matColumnDef="specialization">
-                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Specialization</mat-header-cell>
+                <ng-container matColumnDef="specialization">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header>
+                        Specialization</mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.specialization}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="qualification">
-                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Qualification</mat-header-cell>
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header>
+                        Qualification</mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.qualification}} </mat-cell>
                 </ng-container>
 
@@ -66,7 +72,7 @@
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> </mat-header-cell>
                     <mat-cell *matCellDef="let element"> <a class="btn btn-danger"
                             [myDisableIfUnauthorized]="deletePermissionRequest"
-                            (click)="deletePatient(element.id, $event)" routerLink="/patients">Delete</a> </mat-cell>
+                            (click)="delete(element.id, $event)" routerLink="/doctors">Delete</a> </mat-cell>
                 </ng-container>
 
                 <mat-header-row class="bold-header" *matHeaderRowDef="displayedColumns"></mat-header-row>

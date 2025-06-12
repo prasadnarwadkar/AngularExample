@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { v4 } from 'uuid'
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environment/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -22,22 +22,24 @@ export class ApiService {
   }
 
   async create(endpoint: string, data: any) {
-    data.name = { "first": data.firstName, "last": data.lastName }
-    data.contact = { "phone": data.phone, "email": data.email, "address": data.address }
-    if (!data.id)
+    if (endpoint == 'patients' || endpoint == 'doctors') {
+      data.name = { "first": data.firstName, "last": data.lastName }
+      data.contact = { "phone": data.phone, "email": data.email, "address": data.address }
+    }
+    if (!data.id || data?.id?.length < 1)
       data.id = v4()
     return axios.post(`${this.apiUrl}/${endpoint}`, data).then(res => res.data);
   }
 
   async update(endpoint: string, id: string, data: any) {
-    data.name = { "first": data.firstName, "last": data.lastName }
-    data.contact = { "phone": data.phone, "email": data.email, "address": data.address }
+    if (endpoint == 'patients' || endpoint == 'doctors') {
+      data.name = { "first": data.firstName, "last": data.lastName }
+      data.contact = { "phone": data.phone, "email": data.email, "address": data.address }
+    }
     return axios.put(`${this.apiUrl}/${endpoint}/${id}`, data).then(res => res.data);
   }
 
   async delete(endpoint: string, id: string) {
     return axios.delete(`${this.apiUrl}/${endpoint}/${id}`).then(res => res.data);
   }
-
-
 }

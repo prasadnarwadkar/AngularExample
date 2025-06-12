@@ -19,6 +19,12 @@ import { AuditLogsComponent } from './auditlogs/auditlogs.component';
 import { DoctorsComponent } from './doctors/doctor.component';
 import { DoctorDetailComponent } from './doctors/doctor-detail.component';
 import { DoctorDetailNewComponent } from './doctors/doctor-detail-new.component';
+import { SendEmailComponent } from './users/send-email.component';
+import { DoctorManageScheduleComponent } from './doctors/doctor-manageschedule.component';
+import { HelpComponent } from './help/help.component';
+import { RecordDetailNewComponent } from './medical-records/record-detail-new.component';
+import { RecordComponent } from './medical-records/record.component';
+import { RecordDetailComponent } from './medical-records/record-detail.component';
 
 const routes: Routes = [
   {
@@ -45,10 +51,16 @@ const routes: Routes = [
   { path: 'newroleactionmap', component: RoleActionMapNewComponent,canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
+  { path: 'sendemail', component: SendEmailComponent },
   { path: 'auditlogs', component: AuditLogsComponent,canActivate: [AuthGuard] },
   { path: 'doctor-detail/:id', component: DoctorDetailComponent,canActivate: [AuthGuard] },
   { path: 'doctors', component: DoctorsComponent,canActivate: [AuthGuard] },
   { path: 'newdoctor', component: DoctorDetailNewComponent,canActivate: [AuthGuard] },
+  { path: 'manageschedule', component: DoctorManageScheduleComponent,canActivate: [AuthGuard] },
+  { path: 'help', component: HelpComponent },
+   { path: 'record-detail/:id', component: RecordDetailComponent,canActivate: [AuthGuard] },
+  { path: 'records', component: RecordComponent,canActivate: [AuthGuard] },
+  { path: 'newrecord', component: RecordDetailNewComponent,canActivate: [AuthGuard] },
 ];
 
 @NgModule({

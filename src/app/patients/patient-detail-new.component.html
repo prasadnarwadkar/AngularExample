@@ -17,7 +17,6 @@
                                 style="width: 200px;" required>
                         </div>
                     </div>
-                    <hr />
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="dob">Birth Date</label>
@@ -52,16 +51,18 @@
                                 placeholder="Email" style="width: 300px;">
                         </div>
                     </div>
-                    <hr />
                     <div class="row">
                         <div class="col-md-3 btn-group">
                             <button [myDisableIfUnauthorized]="createPermissionRequest" data-testid="save-button"
                                 type="submit" class="btn btn-primary">Save</button>
                         </div>
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="cancel-button"
+                                type="button" routerLink="/patients" class="btn btn-danger">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </form>
-            <a routerLink="/patients">Cancel</a>
         </div>
     </div>
 </div>

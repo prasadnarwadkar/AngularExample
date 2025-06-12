@@ -2,22 +2,24 @@
     <div class="row">
 
         <div class="col-md-8">
-            <h3>Create a New Role Action Map</h3>
+            <h3>Create a New Role Permission</h3>
             <form [formGroup]="roleActionMapDetailNewForm" [noValidate]="false" (ngSubmit)="create()">
                 <div class="container">
                     <div class="row">
                         <div class="form-group col-md-4">
                             <h4><label for="role">Select Role:</label></h4>
-                            <mat-selection-list (selectionChange)="onRoleSelectionChange($event)" formControlName="role" id="role" [multiple]="false" #role>
+                            <mat-selection-list (selectionChange)="onRoleSelectionChange($event)" formControlName="role"
+                                id="role" [multiple]="false" #role>
                                 <mat-list-option *ngFor="let role of roles">
                                     {{role.role}}
                                 </mat-list-option>
                             </mat-selection-list>
-                            
+
                         </div>
                         <div class="form-group col-md-4">
                             <h4><label for="pageName">Select Page:</label></h4>
-                            <mat-selection-list (selectionChange)="onPageSelectionChange($event)" formControlName="pageName" id="pageName" [multiple]="false" #pageName>
+                            <mat-selection-list (selectionChange)="onPageSelectionChange($event)"
+                                formControlName="pageName" id="pageName" [multiple]="false" #pageName>
                                 <mat-list-option *ngFor="let page of pages">
                                     {{page.page}}
                                 </mat-list-option>
@@ -32,10 +34,10 @@
                                     {{action}}
                                 </mat-list-option>
                             </mat-selection-list>
-                           
+
                         </div>
                         <div class="form-group col-md-4">
-                             <h4>All Roles:</h4>
+                            <h4>All Roles:</h4>
                             <mat-selection-list #allOfTheActions
                                 (selectionChange)="onAllActionsListSelectionChange($event)">
                                 <mat-list-option [selected]="action.selected" *ngFor="let action of allActions">
@@ -45,15 +47,17 @@
 
                         </div>
                     </div>
-                    <hr />
                     <div class="row">
                         <div class="col-md-3 btn-group">
                             <button data-testid="save-button" type="submit" class="btn btn-primary">Save</button>
                         </div>
+                        <div class="col-md-3 btn-group">
+                            <button data-testid="cancel-button" class="btn btn-danger" routerLink="/roleactionmaps">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </form>
-            <a routerLink="/roleactionmaps">Cancel</a>
+
         </div>
     </div>
 </div>

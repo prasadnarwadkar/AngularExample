@@ -10,6 +10,12 @@ import { v4 } from 'uuid'
     selector: 'calendar-component',
     template: `
       <div class="column-left">
+        <div class="space">
+    Week:
+    <button class="btn btn-small btn-success" (click)="goPrevWeek()">Previous</button>
+    |
+    <button class="btn btn-small btn-success" (click)="goNxtWeek()">Next</button>
+</div>
           <daypilot-navigator [config]="navigatorConfig" [date]="date"></daypilot-navigator>
       </div>
       <div class="column-main">
@@ -40,6 +46,23 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         return this.calendarConfig.startDate as DayPilot.Date;
     }
 
+    addDays(date: Date, days: number): Date {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+
+    async goPrevWeek() {
+        this.calendar.control.startDate = new DayPilot.Date(this.addDays(new Date(this.calendar.control.startDate?.toString()!), -7))
+        this.calendar.control.update()
+    }
+
+    async goNxtWeek() {
+        this.calendar.control.startDate = new DayPilot.Date(this.addDays(new Date(this.calendar.control.startDate?.toString()!), 7))
+        this.calendar.control.update()
+    }
+
     set date(val: DayPilot.Date) {
         this.calendarConfig.startDate = val;
     }
@@ -52,8 +75,8 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
     calendarConfig: DayPilot.CalendarConfig = {
         startDate: DayPilot.Date.today(),
-        eventMoveHandling:"Disabled",
-        eventResizeHandling:"Disabled",
+        eventMoveHandling: "Disabled",
+        eventResizeHandling: "Disabled",
         viewType: "Week",
         eventDeleteHandling: "Update",
         onEventDeleted: async args => {
@@ -76,6 +99,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
             const form = [
                 { name: `Dr. ${this.doctorIncharge.name.first}  ${this.doctorIncharge.name.last}`, id: "doctorName", disabled: true },
                 { name: "Reason", id: "text" },
+                { name: "Notes", id: "notes", type: "textarea" },
                 { name: "Start", id: "start", type: "datetime" },
                 { name: "End", id: "end", type: "datetime" },
                 { name: "Patient", id: "patient_id", options: myoptions },
@@ -90,7 +114,8 @@ export class CalendarComponent implements OnInit, AfterViewInit {
                 text: thisAppointment.text,
                 doctor_id: this.doctor_id,
                 room_id: "1",
-                _id: thisAppointment._id
+                _id: thisAppointment._id,
+                notes: thisAppointment.notes
             };
 
             const modal = await DayPilot.Modal.form(form, data);
@@ -122,6 +147,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
             const form = [
                 { name: `Dr. ${this.doctorIncharge.name.first}  ${this.doctorIncharge.name.last}`, id: "doctorName", disabled: true },
                 { name: "Reason", id: "text" },
+                { name: "Notes", id: "notes", type: "textarea" },
                 { name: "Start", id: "start", type: "datetime" },
                 { name: "End", id: "end", type: "datetime" },
                 { name: "Patient", id: "patient_id", options: myoptions },

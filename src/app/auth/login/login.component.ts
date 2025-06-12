@@ -42,7 +42,9 @@ export class LoginComponent {
                 picture: googleUser.picture,
                 token: "",
                 enabled: false,
-                picData: new ArrayBuffer(0)
+                picData: new ArrayBuffer(0),
+                doctor_id: '',
+                name: { first: "", last: "" }
               }
               try {
                 // Create local user for this google user
@@ -68,7 +70,7 @@ export class LoginComponent {
     }
   }
 
-  ngOnInit() {
+  googleLoginInit() {
     // @ts-ignore
     google.accounts.id.initialize({
       client_id: "<google_client_id>",
@@ -85,6 +87,10 @@ export class LoginComponent {
     );
     // @ts-ignore
     google.accounts.id.prompt((notification: PromptMomentNotification) => { });
+  }
+
+  ngOnInit() {
+
 
     let user: User;
 
@@ -106,13 +112,19 @@ export class LoginComponent {
     });
   }
 
-  async doLogin()
-  {
+  async doLogin() {
     let result = await this.login();
 
-    if (result == true)
-    {
-      this.router.navigateByUrl('/');
+    if (result == true) {
+      this.authService.getUser().subscribe(async x => {
+        if (x?.roles?.includes("doctor")) {
+          this.router.navigateByUrl('/manageschedule');
+          return
+        }
+        else {
+          this.router.navigateByUrl('/');
+        }
+      });
     }
   }
 

@@ -41,6 +41,14 @@ import { DayPilotCalendarComponent, DayPilotModule, DayPilotNavigatorComponent }
 import { CalendarComponent } from './doctors/calendar.component';
 import { DataService } from './services/Dataservice';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { SendEmailComponent } from './users/send-email.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DoctorManageScheduleComponent } from './doctors/doctor-manageschedule.component';
+import { HelpComponent } from './help/help.component';
+import { RecordComponent } from './medical-records/record.component';
+import { RecordDetailNewComponent } from './medical-records/record-detail-new.component';
+import { RecordDetailComponent } from './medical-records/record-detail.component';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -64,11 +72,17 @@ export function appInitializerFactory(authService: AuthService) {
     RoleActionMapNewComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    SendEmailComponent,
     AuditLogsComponent,
     DoctorDetailComponent,
     DoctorsComponent,
     DoctorDetailNewComponent,
-    CalendarComponent
+    CalendarComponent,
+    DoctorManageScheduleComponent,
+    HelpComponent,
+    RecordComponent,
+    RecordDetailNewComponent,
+    RecordDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +97,8 @@ export function appInitializerFactory(authService: AuthService) {
     BrowserModule,
     FormsModule,
     MatToolbarModule,
+    MatSidenavModule,
+    MatFormFieldModule,
     HttpClientModule,
     ReactiveFormsModule,
     MatIconModule,

@@ -7,13 +7,34 @@
                 <div class="container">
                     <div class="row">
                         <div class="form-group col-md-4">
-                            <label for="fullname">Full Name</label>
-                            <input class="form-control" formControlName="fullname" id="fullname" placeholder="Full Name"
+                            <label for="first">First or Given Name</label>
+                            <input class="form-control" formControlName="first" id="first" placeholder="First Name"
+                                required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="last">Last Name</label>
+                            <input class="form-control" formControlName="last" id="last" placeholder="Last Name"
                                 required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="email">Email</label>
-                            <input class="form-control" type="email" formControlName="email" id="email" placeholder="Email" readonly>
+                            <input class="form-control" type="email" formControlName="email" id="email"
+                                placeholder="Email" readonly>
+                        </div>
+
+                    </div>
+                    <div class="row" *ngIf="!originalRoles?.includes('doctor')">
+                        <div class="form-group col-md-4">
+                            <button data-testid="save-button" type="button" (click)="assignDoctorRole()"
+                                class="btn btn-primary">Assign A Doctor's role to this user</button>
+                            <h4>Select Doctor:</h4>
+                            <select #doctorSelectElement class="form-control" type="select" id="doctorSelect" title="Select a Doctor"
+                            
+                            (change)="onDocListSelectionChange($event)">
+                                <option value={{doctor?.id}} *ngFor="let doctor of doctors">
+                                   Dr. {{doctor?.name?.first}} {{doctor.name.last}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -42,10 +63,12 @@
                         <div class="col-md-3 btn-group">
                             <button data-testid="save-button" type="submit" class="btn btn-primary">Save</button>
                         </div>
+                        <div class="col-md-3 btn-group">
+                            <button routerLink="/users" data-testid="cancel-button" type="submit" class="btn btn-danger">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </form>
-            <a routerLink="/users">Cancel</a>
         </div>
     </div>
 </div>
