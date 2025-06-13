@@ -42,9 +42,7 @@
 
                 <ng-container matColumnDef="action">
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger"
-                            [myDisableIfUnauthorized]="deletePermissionRequest" (click)="delete(element.id, $event)"
-                            href="#">Delete</a> </mat-cell>
+                    <mat-cell *matCellDef="let element"></mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -92,7 +92,8 @@ export class RoleActionMapDetailComponent implements OnInit {
                     _id: "",
                     role: "",
                     pageName: "",
-                    actions: []
+                    actions: [],
+                    id:""
                 }
             }
         }
@@ -115,7 +116,8 @@ export class RoleActionMapDetailComponent implements OnInit {
                     _id: "",
                     role: "",
                     pageName: "",
-                    actions: []
+                    actions: [],
+                    id:""
                 }
             }
         }

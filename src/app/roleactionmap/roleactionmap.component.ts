@@ -77,22 +77,12 @@ export class RoleActionMapComponent implements OnInit {
       pageName: p.pageName,
       role: p.role,
       actions: p.actions,
-      _id: p._id
+      _id: p._id,
+      id: p.id
     }));
 
     this.dataSource2 = new MatTableDataSource<RoleActionMap>(expandedList);
     this.dataSource2.paginator = this.paginator
     this.dataSource2.sort = this.sort;
-  }
-
-
-  async delete(id: string, e: Event) {
-    e.preventDefault();
-    if (await this.authService.hasPermission(this.deletePermissionRequest.action, this.deletePermissionRequest.pageName)) {
-      if (confirm("Would you like to delete this role action map?")) {
-        //todo
-      }
-    }
-    this.loadData();
   }
 }

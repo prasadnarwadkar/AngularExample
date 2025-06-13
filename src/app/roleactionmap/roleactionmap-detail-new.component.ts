@@ -16,7 +16,8 @@ export class RoleActionMapNewComponent implements OnInit {
     roleActionMap: RoleActionMapNew = {
         actions: [],
         pageName: '',
-        role: ''
+        role: '',
+        id:''
     };
 
     allActions: Action[] = [{

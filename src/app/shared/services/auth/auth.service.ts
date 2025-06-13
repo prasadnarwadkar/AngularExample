@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
+import { v4 } from 'uuid';
 import { Observable, BehaviorSubject, EMPTY, of } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 
@@ -149,12 +149,15 @@ export class AuthService {
   }
 
   async createRoleActionMap(roleActionMap: RoleActionMapNew) {
+    roleActionMap.id = v4()
     return this.apiClient.post(`${this.authApiExternal}auth/roleactions`, roleActionMap).then(res => res.data);
   }
 
   async deleteUser(id: string) {
     return this.apiClient.delete(`${this.authApiExternal}auth/users/${id}`).then(res => res.data);
   }
+
+
 
   async disableUser(id: string) {
     return this.apiClient.delete(`${this.authApiExternal}auth/users/disable/${id}`).then(res => res.data);

@@ -24,7 +24,8 @@ export interface RoleActionMap {
   _id: string
   pageName: string
   role: string
-  actions: string[]
+  actions: string[],
+  id:string
 }
 
 export interface RoleActionMapNew extends Omit<RoleActionMap, "_id"> { }
