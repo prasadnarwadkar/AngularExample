@@ -173,6 +173,7 @@ export class PatientsComponent implements OnInit {
         await this.apiService.delete('patients', id);
       }
     }
-    this.loadPatients();
+    await this.loadPatients();
+    this.setDataSource(this.patients)
   }
 }

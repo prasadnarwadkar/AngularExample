@@ -165,10 +165,11 @@ export class DoctorsComponent implements OnInit {
   async delete(id: string, e: Event) {
     e.preventDefault();
     if (await this.authService.hasPermission(this.deletePermissionRequest.action, this.deletePermissionRequest.pageName)) {
-      if (confirm("Would you like to delete this patient?")) {
-        await this.apiService.delete('patients', id);
+      if (confirm("Would you like to delete this doctor?")) {
+        await this.apiService.delete('doctors', id);
       }
     }
-    this.loadData();
+    await this.loadData();
+    this.setDataSource(this.data)
   }
 }

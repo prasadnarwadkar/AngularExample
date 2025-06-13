@@ -7,6 +7,12 @@ import { environment } from 'src/environment/environment.development';
   providedIn: 'root'
 })
 export class ApiService {
+  // Create an Axios instance
+    apiClient = axios.create({
+        headers: {
+            'api-key': ''
+        },
+    });
   private apiUrl = environment.apiBaseUrl
 
   constructor() {
@@ -14,11 +20,11 @@ export class ApiService {
   }
 
   async getAll(endpoint: string) {
-    return axios.get(`${this.apiUrl}/${endpoint}`).then(res => res.data);
+    return this.apiClient.get(`${this.apiUrl}/${endpoint}`).then(res => res.data);
   }
 
   async getOne(endpoint: string, id: string) {
-    return axios.get(`${this.apiUrl}/${endpoint}/${id}`).then(res => res.data);
+    return this.apiClient.get(`${this.apiUrl}/${endpoint}/${id}`).then(res => res.data);
   }
 
   async create(endpoint: string, data: any) {
@@ -28,7 +34,7 @@ export class ApiService {
     }
     if (!data.id || data?.id?.length < 1)
       data.id = v4()
-    return axios.post(`${this.apiUrl}/${endpoint}`, data).then(res => res.data);
+    return this.apiClient.post(`${this.apiUrl}/${endpoint}`, data).then(res => res.data);
   }
 
   async update(endpoint: string, id: string, data: any) {
@@ -36,10 +42,10 @@ export class ApiService {
       data.name = { "first": data.firstName, "last": data.lastName }
       data.contact = { "phone": data.phone, "email": data.email, "address": data.address }
     }
-    return axios.put(`${this.apiUrl}/${endpoint}/${id}`, data).then(res => res.data);
+    return this.apiClient.put(`${this.apiUrl}/${endpoint}/${id}`, data).then(res => res.data);
   }
 
   async delete(endpoint: string, id: string) {
-    return axios.delete(`${this.apiUrl}/${endpoint}/${id}`).then(res => res.data);
+    return this.apiClient.delete(`${this.apiUrl}/${endpoint}/${id}`).then(res => res.data);
   }
 }

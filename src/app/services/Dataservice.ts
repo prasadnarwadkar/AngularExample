@@ -11,6 +11,12 @@ import { environment } from 'src/environment/environment.development';
 
 @Injectable()
 export class DataService {
+    // Create an Axios instance
+    apiClient = axios.create({
+        headers: {
+            'api-key': ''
+        },
+    });
 
     private apiUrl = environment.apiBaseUrl
 
@@ -19,31 +25,31 @@ export class DataService {
     }
 
     async getEvents() {
-        return axios.get(`${this.apiUrl}/appointments`).then(res => res.data);
+        return this.apiClient.get(`${this.apiUrl}/appointments`).then(res => res.data);
     }
 
-    async getEventById(id:string) {
-        return axios.get(`${this.apiUrl}/appointments/${id}`).then(res => res.data[0]);
+    async getEventById(id: string) {
+        return this.apiClient.get(`${this.apiUrl}/appointments/${id}`).then(res => res.data[0]);
     }
 
-    async getEventsByDoctorId(id:string) {
-        return axios.get(`${this.apiUrl}/appointments/doctor/${id}`).then(res => res.data);
+    async getEventsByDoctorId(id: string) {
+        return this.apiClient.get(`${this.apiUrl}/appointments/doctor/${id}`).then(res => res.data);
     }
 
-    async getEventsByPatientId(id:string) {
-        return axios.get(`${this.apiUrl}/appointments/patient/${id}`).then(res => res.data);
+    async getEventsByPatientId(id: string) {
+        return this.apiClient.get(`${this.apiUrl}/appointments/patient/${id}`).then(res => res.data);
     }
 
-    async updateEventById(id:string, appointment: Appointment) {
-        return axios.put(`${this.apiUrl}/appointments/${id}`,appointment).then(res => res.data);
+    async updateEventById(id: string, appointment: Appointment) {
+        return this.apiClient.put(`${this.apiUrl}/appointments/${id}`, appointment).then(res => res.data);
     }
 
     createEvent(params: CreateEventParams): Promise<any> {
-        return axios.post(`${this.apiUrl}/appointments`, params).then(res => res.data);
+        return this.apiClient.post(`${this.apiUrl}/appointments`, params).then(res => res.data);
     }
 
     deleteEvent(id: EventId) {
-        return axios.delete(`${this.apiUrl}/appointments/${id}`).then(res => res.data);
+        return this.apiClient.delete(`${this.apiUrl}/appointments/${id}`).then(res => res.data);
     }
 }
 

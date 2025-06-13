@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiService } from '../services/hospital.service';
 import { AuthService } from '../shared/services';
 import { PermissionRequest } from '../models/models';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'doctor-detail-new',
@@ -14,11 +15,13 @@ export class DoctorDetailNewComponent implements OnInit {
     detailNewForm: FormGroup;
     createPermissionRequest: PermissionRequest = { "action": "create", "pageName": "doctors" }
     
+    
     constructor(
         private router: Router,
         private apiService: ApiService,
         private authService: AuthService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private _snackBar: MatSnackBar
     ) {
         this.detailNewForm = this.fb.group({
             firstName: [''],
@@ -46,6 +49,10 @@ export class DoctorDetailNewComponent implements OnInit {
 
                 try {
                     await this.apiService.create("doctors", this.detailNewForm.value).then((res) => {
+                        alert('Doctor details saved successfully')
+                        this._snackBar.open('Doctor details saved successfully', '', {
+                            duration: 2000,
+                        });
                         this.router.navigate(['/doctors']);
                     });
                 }

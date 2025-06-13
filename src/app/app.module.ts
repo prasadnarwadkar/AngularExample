@@ -49,6 +49,10 @@ import { HelpComponent } from './help/help.component';
 import { RecordComponent } from './medical-records/record.component';
 import { RecordDetailNewComponent } from './medical-records/record-detail-new.component';
 import { RecordDetailComponent } from './medical-records/record-detail.component';
+import { BillingComponent } from './billing/billing.component';
+import { BillingDetailComponent } from './billing/billing-detail.component';
+import { BillingDetailNewComponent } from './billing/billing-detail-new.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 export function appInitializerFactory(authService: AuthService) {
   return () => authService.checkTheUserOnTheFirstLoad();
@@ -82,7 +86,10 @@ export function appInitializerFactory(authService: AuthService) {
     HelpComponent,
     RecordComponent,
     RecordDetailNewComponent,
-    RecordDetailComponent
+    RecordDetailComponent,
+    BillingComponent,
+    BillingDetailComponent,
+    BillingDetailNewComponent
   ],
   imports: [
     BrowserModule,
@@ -106,7 +113,8 @@ export function appInitializerFactory(authService: AuthService) {
     MatListModule,
     MatGridListModule,
     MatExpansionModule,
-    DayPilotModule
+    DayPilotModule,
+    MatSnackBarModule
   ],
   providers: [ SocialAuthService, 
     {

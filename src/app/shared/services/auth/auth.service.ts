@@ -15,6 +15,12 @@ import { environment } from 'src/environment/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // Create an Axios instance
+  apiClient = axios.create({
+    headers: {
+      'api-key': ''
+    },
+  });
   private user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   private authApiExternal = environment.authApiExternal
@@ -41,7 +47,7 @@ export class AuthService {
   }
 
   async getAllUsers() {
-    return axios.get(`${this.authApiExternal}auth/users`).then(res => res.data);
+    return this.apiClient.get(`${this.authApiExternal}auth/users`).then(res => res.data);
   }
 
   async getAllPages() {
@@ -56,109 +62,110 @@ export class AuthService {
       { page: 'roleactionmaps' },
       { page: 'auditlogs' },
       { page: 'doctors' },
-      { page: 'records' }
+      { page: 'records' },
+      { page: 'bills' }
     ]
   }
 
   async createPage(page: string) {
     var roleObj: Page = { page: page }
 
-    return axios.post(`${this.authApiExternal}auth/pages`, roleObj).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}auth/pages`, roleObj).then(res => res.data);
   }
 
   async getAllRoles() {
-    return axios.get(`${this.authApiExternal}auth/roles`).then(res => res.data);
+    return this.apiClient.get(`${this.authApiExternal}auth/roles`).then(res => res.data);
   }
 
   async getAllAuditLogs() {
-    return axios.get(`${this.authApiExternal}auth/auditlogs`).then(res => res.data);
+    return this.apiClient.get(`${this.authApiExternal}auth/auditlogs`).then(res => res.data);
   }
 
   async getAllRoleActionmaps() {
-    return axios.get(`${this.authApiExternal}auth/roleactions`).then(res => res.data);
+    return this.apiClient.get(`${this.authApiExternal}auth/roleactions`).then(res => res.data);
   }
 
   async createRole(role: RoleRequest) {
     var roleObj: RoleRequest = { role: role.role, desc: role.desc }
 
-    return axios.post(`${this.authApiExternal}auth/roles`, roleObj).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}auth/roles`, roleObj).then(res => res.data);
   }
 
   async createAuditLog(auditLog: AuditLogRequest) {
 
     if (auditLog?.valueChanged?.newvalue != auditLog?.valueChanged?.oldvalue) {
-      return axios.post(`${this.authApiExternal}auth/auditlogs`, auditLog).then(res => res.data);
+      return this.apiClient.post(`${this.authApiExternal}auth/auditlogs`, auditLog).then(res => res.data);
     }
   }
 
   async forgotPassword(email: string) {
     var emailObj: EmailRequest = { email: email }
 
-    return axios.post(`${this.authApiExternal}forgot-password`, emailObj).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}forgot-password`, emailObj).then(res => res.data);
   }
 
   async assignDocRoleToUser(emailAndDoctorId: EmailAndDoctorIdRequest) {
     var emailObj: EmailAndDoctorIdRequest = { email: emailAndDoctorId.email, doctor_id: emailAndDoctorId.doctor_id }
 
-    return axios.post(`${this.authApiExternal}assignDocRoleToUser`, emailObj).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}assignDocRoleToUser`, emailObj).then(res => res.data);
   }
 
   async sendEmail(recipient: string, cc: string, subject: string, text: string) {
     var emailObj: SendEmailRequest = { recipient: recipient, cc: cc, subject: subject, text: text }
 
-    return axios.post(`${this.authApiExternal}sendEmail`, emailObj).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}sendEmail`, emailObj).then(res => res.data);
   }
 
   async getProfilePic(id: string) {
     var obj: IdRequest = { id: id }
 
-    return axios.post(`${this.authApiExternal}getProfilePic`, obj).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}getProfilePic`, obj).then(res => res.data);
   }
 
   async uploadProfilePic(formData: FormData) {
-    return axios.post(`${this.authApiExternal}uploadProfilePic2`, formData).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}uploadProfilePic2`, formData).then(res => res.data);
   }
 
   async resetPassword(token: string, password: string) {
     var obj: PasswordRequest = { password: password }
 
-    return axios.post(`${this.authApiExternal}reset-password/${token}`, obj).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}reset-password/${token}`, obj).then(res => res.data);
   }
 
   async getUserById(id: string) {
-    return axios.get(`${this.authApiExternal}auth/users/${id}`).then(res => res.data);
+    return this.apiClient.get(`${this.authApiExternal}auth/users/${id}`).then(res => res.data);
   }
 
   async getRoleActionsByRoleAndPage(role: string, page: string) {
-    return axios.get(`${this.authApiExternal}auth/roleactions/${role}/${page}`).then(res => res.data);
+    return this.apiClient.get(`${this.authApiExternal}auth/roleactions/${role}/${page}`).then(res => res.data);
   }
 
   async updateUser(id: string, user: User) {
-    return axios.put(`${this.authApiExternal}auth/users/${id}`, user).then(res => res.data);
+    return this.apiClient.put(`${this.authApiExternal}auth/users/${id}`, user).then(res => res.data);
   }
 
   async updateRoleActionMap(id: string, roleActionMap: RoleActionMap) {
-    return axios.put(`${this.authApiExternal}auth/roleactions/${id}`, roleActionMap).then(res => res.data);
+    return this.apiClient.put(`${this.authApiExternal}auth/roleactions/${id}`, roleActionMap).then(res => res.data);
   }
 
   async createRoleActionMap(roleActionMap: RoleActionMapNew) {
-    return axios.post(`${this.authApiExternal}auth/roleactions`, roleActionMap).then(res => res.data);
+    return this.apiClient.post(`${this.authApiExternal}auth/roleactions`, roleActionMap).then(res => res.data);
   }
 
   async deleteUser(id: string) {
-    return axios.delete(`${this.authApiExternal}auth/users/${id}`).then(res => res.data);
+    return this.apiClient.delete(`${this.authApiExternal}auth/users/${id}`).then(res => res.data);
   }
 
   async disableUser(id: string) {
-    return axios.delete(`${this.authApiExternal}auth/users/disable/${id}`).then(res => res.data);
+    return this.apiClient.delete(`${this.authApiExternal}auth/users/disable/${id}`).then(res => res.data);
   }
 
   async enableUser(id: string) {
-    return axios.delete(`${this.authApiExternal}auth/users/enable/${id}`).then(res => res.data);
+    return this.apiClient.delete(`${this.authApiExternal}auth/users/enable/${id}`).then(res => res.data);
   }
 
   async deleteRole(id: string) {
-    return axios.delete(`${this.authApiExternal}auth/roles/${id}`).then(res => res.data);
+    return this.apiClient.delete(`${this.authApiExternal}auth/roles/${id}`).then(res => res.data);
   }
 
   async login(email: string, password: string): Promise<Observable<User>> {
@@ -166,14 +173,14 @@ export class AuthService {
     try {
 
 
-      let authLoginResponse = await axios.post<AuthResponse>(`${this.authApiExternal}auth/login`, { email, password }).then(res => res.data);
+      let authLoginResponse = await this.apiClient.post<AuthResponse>(`${this.authApiExternal}auth/login`, { email, password }).then(res => res.data);
       authLoginResponse.user.picData = new ArrayBuffer(0)
       this.setUser(authLoginResponse.user);
       this.tokenStorage.saveToken(authLoginResponse.token);
       console.log('login: user token length: ', authLoginResponse.token.length);
       this.tokenStorage.saveUser(authLoginResponse.user);
 
-      result = await axios.post(`${this.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
+      result = await this.apiClient.post(`${this.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
       let permission: Permission[] = result as unknown as Permission[];
       this.tokenStorage.saveUserActionsPermitted(permission);
       userToReturn = authLoginResponse.user;
@@ -222,7 +229,7 @@ export class AuthService {
         tap(async ({ token, user }) => {
           this.setUser(user);
 
-          let result = await axios.post(`${this.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
+          let result = await this.apiClient.post(`${this.authApiExternal}auth/getpermissions`, { email, password }).then(res => res.data);
           let permission: Permission[] = result as unknown as Permission[];
           this.tokenStorage.saveUserActionsPermitted(permission);
           this.tokenStorage.saveToken(token);
@@ -318,7 +325,7 @@ export class AuthService {
     console.log('registerwithoutlogin')
     let token = this.tokenStorage.getToken()
     let url = `${this.authApiExternal}auth/registerwithoutlogin`
-    let result = await axios.post(url, {
+    let result = await this.apiClient.post(url, {
       fullname, email, password, repeatPassword, picture
     }, {
       headers: {
@@ -342,7 +349,7 @@ export class AuthService {
       console.log('registerwithoutlogin: user token length: ', user.token.length)
       this.tokenStorage.saveUser(user)
 
-      let permissionsByRole = await axios.post(`${this.authApiExternal}auth/getpermissionsbyrole`, user.roles).then(res => res.data);
+      let permissionsByRole = await this.apiClient.post(`${this.authApiExternal}auth/getpermissionsbyrole`, user.roles).then(res => res.data);
       this.tokenStorage.saveUserActionsPermitted(permissionsByRole)
     }
     else {
@@ -350,7 +357,7 @@ export class AuthService {
       console.log('registerwithoutlogin: user token length: ', result?.data?.token!.length)
 
 
-      let permissionsByRole = await axios.post(`${this.authApiExternal}auth/getpermissionsbyrole`, result?.data?.user?.roles!).then(res => res.data);
+      let permissionsByRole = await this.apiClient.post(`${this.authApiExternal}auth/getpermissionsbyrole`, result?.data?.user?.roles!).then(res => res.data);
 
       this.tokenStorage.saveUserActionsPermitted(permissionsByRole)
     }
@@ -367,7 +374,7 @@ export class AuthService {
 
   async signOut(): Promise<any> {
     let token = this.tokenStorage.getToken()
-    let result = await axios.post(`${this.authApiExternal}auth/logout`, {}, {
+    let result = await this.apiClient.post(`${this.authApiExternal}auth/logout`, {}, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json, text/plain, */*',

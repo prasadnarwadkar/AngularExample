@@ -129,6 +129,37 @@ export interface Page {
   page: string;
 }
 
+export interface BillLineItem {
+  amount: Number,
+  description: string,
+  id:string
+}
+
+export interface Bill {
+  id: string,
+  patient_id: string,
+  doctor_id: string,
+  appointment_id: string,
+  origin: Date,
+  status: string,
+  total:Number,
+  items: BillLineItem[]
+}
+
+export interface ExpandedBill {
+  id: string,
+  doctor_id: string,
+  origin: Date,
+  status: string,
+  total:Number,
+  patient_name: string,
+  patient_id: string,
+  doctor_name: string,
+  appointment_id: string,
+  appointment_reason: string,
+  appointment_date: Date,
+}
+
 export interface Record {
   id: string,
   patient_id: string,

@@ -1,0 +1,94 @@
+<div class="container">
+    <div class="row">
+        <h3>Register A New Bill</h3>
+    </div>
+</div>
+
+<form [formGroup]="detailNewForm" [noValidate]="false" (ngSubmit)="save()">
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-md-4">
+                <h4>Select Patient:</h4>
+                <select #patientSelectElement class="form-control" type="select" id="patientSelect"
+                    title="Select a Patient" (change)="onPatientListSelectionChange($event)">
+                    <option value={{patient?.id}} *ngFor="let patient of patients">
+                        {{patient?.name?.first}} {{patient.name.last}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <h4>Select Appointment:</h4>
+                <select #apptSelectElement class="form-control" type="select" id="appointmentSelect"
+                    title="Select Appointment" (change)="onApptListSelectionChange($event)">
+                    <option value={{appt?.id}} *ngFor="let appt of appointments">
+                        {{appt?.text}} on {{appt.date}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <h4>Select Bill Status:</h4>
+                <select class="form-control" formControlName="status" type="select" id="status"
+                    title="Select Bill Status">
+                    <option value="Paid">
+                        Paid
+                    </option>
+                    <option value="Unpaid">
+                        Unpaid
+                    </option>
+                </select>
+            </div>
+
+
+        </div>
+        <div class="col-md-10" style="width: 100%;overflow-x: auto;">
+            <button type="button" class="btn btn-success" (click)="addBillLineItem()">Add a New Bill line item</button>
+            <h5>Line items:</h5>
+            <mat-table class="mat-table responsive-table" #table [dataSource]="billLineItemsSrc" matSort="sort">
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Amount
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.amount}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="id">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <button type="button" class="btn btn-danger"
+                            (click)="deleteBillLineItem(element.id, $event)">Delete</button> </mat-cell>
+                </ng-container>
+
+                <mat-header-row class="bold-header" *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" [attr.colspan]="displayedColumns?.length">
+                        No data matching the filter.
+                    </td>
+                </tr>
+            </mat-table>
+
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>
+            <div class="row">
+                <div class="col-md-3 btn-group">
+                    <button [myDisableIfUnauthorized]="createPermissionRequest" data-testid="save-button" type="submit"
+                        class="btn btn-primary">Save</button>
+                </div>
+                <div class="col-md-3 btn-group">
+                    <button routerLink="/records" data-testid="cancel-button" type="button"
+                        class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

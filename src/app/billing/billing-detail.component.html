@@ -1,0 +1,103 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <h3>Bill for {{patient_name}}</h3> Bill dated <h4 *ngIf="bill?.origin">{{convertDateToLocale(bill.origin)}}</h4>
+            <h6 class="text text-alert">Appointment and Patient cannot be modified once the bill is created. If the bill status is 'Paid', its status cannot be changed and no other changes are allowed.</h6>
+        </div>
+    </div>
+
+
+
+    <form [formGroup]="detailForm" [noValidate]="false" (ngSubmit)="update()">
+        <div class="container">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <h4>Patient:</h4>
+                    <p>{{patient_name}}</p>
+                </div>
+                <div class="form-group col-md-4">
+                    <h4> Appointment:</h4>
+                    <p> {{appointment_text}}</p>                           
+                </div>
+                 <div class="form-group col-md-4">
+                    <h4> Doctor:</h4>
+                    <p> {{doctor_name}}</p>                           
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="total">Total</label>
+                    <input formControlName="total" id="total" class="form-control"
+                        type="number" readonly>
+                </div>
+                
+                <div class="form-group col-md-3">
+                <h4 *ngIf="bill?.status == 'Paid'">Bill Status:</h4>
+                <p *ngIf="bill?.status === 'Paid'">Paid</p>
+                <h4 *ngIf="bill?.status == 'Unpaid'">Select Bill Status:</h4>
+                <select *ngIf="bill?.status !== 'Paid'" formControlName="status" class="form-control" type="select" id="status"
+                    title="Select Bill Status">
+                    <option value="Paid">
+                        Paid
+                    </option>
+                    <option value="Unpaid">
+                        Unpaid
+                    </option>
+                </select>
+            </div>
+              
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button *ngIf="bill && bill.status == 'Unpaid'" type="button" class="btn btn-success" (click)="addBillLineItem()">Add a New Bill line item</button>
+                </div>
+                
+            <h5>Line items:</h5>
+            <mat-table class="mat-table responsive-table" #table [dataSource]="billLineItemsSrc" matSort="sort">
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Amount
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.amount}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <button type="button" class="btn btn-danger"
+                          *ngIf="bill.status == 'Unpaid'"  (click)="deleteBillLineItem(element.id, $event)">Delete</button> </mat-cell>
+                </ng-container>
+
+                <mat-header-row class="bold-header" *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                        No data matching the filter.
+                    </td>
+                </tr>
+            </mat-table>
+
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>
+            </div>
+           
+            <div class="row">
+                <div class="col-md-3 btn-group" *ngIf="bill && bill.status == 'Unpaid'">
+                    <button [myDisableIfUnauthorized]="updatePermissionRequest" data-testid="save-button" type="submit"
+                        class="btn btn-primary">Save</button>
+                </div>
+                <div class="col-md-3 btn-group">
+                    <button routerLink="/bills" data-testid="cancel-button" type="button"
+                        class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>

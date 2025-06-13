@@ -1,0 +1,83 @@
+<div class="container">
+    <div class="row">
+
+        <div class="form-group col-md-3">
+            <h2>Billing</h2>
+
+        </div>
+        <div class="form-group col-md-5">
+            <!-- Search Bar -->
+            <label class="glyphicon glyphicon-search"></label><input type="text"
+                class="form-control glyphicon glyphicon-search" [(ngModel)]="searchTerm" (input)="filterPatients()"
+                placeholder="Search by name or phone">
+        </div>
+        <div class="form-group col-md-4">
+            <a [myDisableIfUnauthorized]="createPermissionRequest" class="btn btn-primary"
+                routerLink="/newbill">Register A New Bill</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10" style="width: 100%;overflow-x: auto;">
+            <mat-table class="mat-table responsive-table" #table [dataSource]="dataSource2" matSort="sort">
+                <ng-container matColumnDef="patient_name">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Patient
+                    </mat-header-cell>
+                    <mat-cell  *matCellDef="let element"> <a [myDisableIfUnauthorized]="updatePermissionRequest"
+                            class="btn btn-primary"
+                            routerLink="/bill-detail/{{element.id}}">{{element.patient_name}}</a>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="total">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Total</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.total}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="doctor_name">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Doctor's name</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.doctor_name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="appointment_reason">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Appointment reason</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.appointment_reason}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="appointment_date">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Appointment Date</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.appointment_date}} </mat-cell>
+                </ng-container>
+               
+                <ng-container matColumnDef="origin">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> Date</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{convertDateToLocale(element.origin)}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="action">
+                    <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> <a class="btn btn-danger"
+                            [myDisableIfUnauthorized]="deletePermissionRequest"
+                            (click)="delete(element.id, $event)" routerLink="/records">Delete</a> </mat-cell>
+                </ng-container>
+
+                <mat-header-row class="bold-header" *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                        No data matching the filter.
+                    </td>
+                </tr>
+            </mat-table>
+
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>
+        </div>
+
+    </div>
+</div>

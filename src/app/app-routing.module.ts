@@ -25,11 +25,14 @@ import { HelpComponent } from './help/help.component';
 import { RecordDetailNewComponent } from './medical-records/record-detail-new.component';
 import { RecordComponent } from './medical-records/record.component';
 import { RecordDetailComponent } from './medical-records/record-detail.component';
+import { BillingDetailNewComponent } from './billing/billing-detail-new.component';
+import { BillingComponent } from './billing/billing.component';
+import { BillingDetailComponent } from './billing/billing-detail.component';
 
 const routes: Routes = [
   {
     path: 'auth',
-    
+
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
   {
@@ -37,35 +40,38 @@ const routes: Routes = [
     canActivate: [OnlyAdminUsersGuard],
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
   },
-  { path: '',   redirectTo: '/patients', pathMatch: 'full' },
-  { path: 'patient-detail/:id', component: PatientDetailComponent,canActivate: [AuthGuard] },
+  { path: '', redirectTo: '/patients', pathMatch: 'full' },
+  { path: 'patient-detail/:id', component: PatientDetailComponent, canActivate: [AuthGuard] },
   { path: 'counter-component', component: CounterComponent },
-  { path: 'patients', component: PatientsComponent,canActivate: [AuthGuard] },
-  { path: 'newpatient', component: PatientDetailNewComponent,canActivate: [AuthGuard] },
-  { path: 'users', component: UsersComponent,canActivate: [AuthGuard] },
-  { path: 'user-detail/:id', component: UserDetailComponent,canActivate: [AuthGuard] },
-  { path: 'roles', component: RolesComponent,canActivate: [AuthGuard] },
-  { path: 'role-detail/new', component: RoleDetailComponent,canActivate: [AuthGuard] },
-  { path: 'roleactionmaps-detail/:role/:page', component: RoleActionMapDetailComponent,canActivate: [AuthGuard] },
-  { path: 'roleactionmaps', component: RoleActionMapComponent,canActivate: [AuthGuard] },
-  { path: 'newroleactionmap', component: RoleActionMapNewComponent,canActivate: [AuthGuard] },
+  { path: 'patients', component: PatientsComponent, canActivate: [AuthGuard] },
+  { path: 'newpatient', component: PatientDetailNewComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+  { path: 'user-detail/:id', component: UserDetailComponent, canActivate: [AuthGuard] },
+  { path: 'roles', component: RolesComponent, canActivate: [AuthGuard] },
+  { path: 'role-detail/new', component: RoleDetailComponent, canActivate: [AuthGuard] },
+  { path: 'roleactionmaps-detail/:role/:page', component: RoleActionMapDetailComponent, canActivate: [AuthGuard] },
+  { path: 'roleactionmaps', component: RoleActionMapComponent, canActivate: [AuthGuard] },
+  { path: 'newroleactionmap', component: RoleActionMapNewComponent, canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   { path: 'sendemail', component: SendEmailComponent },
-  { path: 'auditlogs', component: AuditLogsComponent,canActivate: [AuthGuard] },
-  { path: 'doctor-detail/:id', component: DoctorDetailComponent,canActivate: [AuthGuard] },
-  { path: 'doctors', component: DoctorsComponent,canActivate: [AuthGuard] },
-  { path: 'newdoctor', component: DoctorDetailNewComponent,canActivate: [AuthGuard] },
-  { path: 'manageschedule', component: DoctorManageScheduleComponent,canActivate: [AuthGuard] },
+  { path: 'auditlogs', component: AuditLogsComponent, canActivate: [AuthGuard] },
+  { path: 'doctor-detail/:id', component: DoctorDetailComponent, canActivate: [AuthGuard] },
+  { path: 'doctors', component: DoctorsComponent, canActivate: [AuthGuard] },
+  { path: 'newdoctor', component: DoctorDetailNewComponent, canActivate: [AuthGuard] },
+  { path: 'manageschedule', component: DoctorManageScheduleComponent, canActivate: [AuthGuard] },
   { path: 'help', component: HelpComponent },
-   { path: 'record-detail/:id', component: RecordDetailComponent,canActivate: [AuthGuard] },
-  { path: 'records', component: RecordComponent,canActivate: [AuthGuard] },
-  { path: 'newrecord', component: RecordDetailNewComponent,canActivate: [AuthGuard] },
+  { path: 'record-detail/:id', component: RecordDetailComponent, canActivate: [AuthGuard] },
+  { path: 'records', component: RecordComponent, canActivate: [AuthGuard] },
+  { path: 'newrecord', component: RecordDetailNewComponent, canActivate: [AuthGuard] },
+  { path: 'bill-detail/:id', component: BillingDetailComponent, canActivate: [AuthGuard] },
+  { path: 'bills', component: BillingComponent, canActivate: [AuthGuard] },
+  { path: 'newbill', component: BillingDetailNewComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers:[OnlyAdminUsersGuard]
+  providers: [OnlyAdminUsersGuard]
 })
 export class AppRoutingModule { }

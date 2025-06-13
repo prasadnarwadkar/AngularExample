@@ -67,7 +67,7 @@ export class AuditLogsComponent implements OnInit {
                 this.displayedColumns = ['entity', 'field', 'oldvalue', 'newvalue', 'createdAt', 'pageName'];
                 break;
               case "Large":
-                this.displayedColumns = ['email', 'entity', 'createdAt', 'pageName', 'action', 'field', 'oldvalue', 'newvalue', 'entity_id'];
+                this.displayedColumns = ['email', 'entity', 'createdAt', 'pageName', 'action', 'field', 'oldvalue', 'newvalue'];
                 break;
               default:
                 break;
