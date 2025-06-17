@@ -63,7 +63,7 @@
                     <mat-header-cell class="bold-header" *matHeaderCellDef mat-sort-header> </mat-header-cell>
                     <mat-cell *matCellDef="let element"> <a class="btn btn-danger"
                             [myDisableIfUnauthorized]="deletePermissionRequest"
-                            (click)="delete(element.id, $event)" routerLink="/records">Delete</a> </mat-cell>
+                            (click)="delete(element.id, $event)" routerLink="/bills">Delete</a> </mat-cell>
                 </ng-container>
 
                 <mat-header-row class="bold-header" *matHeaderRowDef="displayedColumns"></mat-header-row>

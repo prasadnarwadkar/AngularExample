@@ -15,37 +15,86 @@
       <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu">
         <mat-icon *ngIf="!user.picture && !user.picData">account_circle</mat-icon><img *ngIf="user.picData" id="image"
           alt="Dynamic Image" width="64px" height="64px" src="data:image/png;base64,{{ user.picData }}" /><img
-          *ngIf="user.picture" alt="user image" src={{user.picture}} width="64" height="64" /><span *ngIf="user.name">Welcome, {{ user.name.first }} {{ user.name.last  }}</span><span *ngIf="!user.name && user.fullname">Welcome, {{user.fullname}}</span>
+          *ngIf="user.picture" alt="user image" src={{user.picture}} width="64" height="64" /><span
+          *ngIf="user.name">Welcome, {{ user.name.first }} {{ user.name.last }}</span><span
+          *ngIf="!user.name && user.fullname">Welcome, {{user.fullname}}</span>
       </a>
       <mat-menu #menu="matMenu">
 
         <button mat-menu-item (click)="logout()">Sign Out</button>
+        <div *ngIf="!isExpanded">
+          <a mat-menu-item  routerLink="/" routerLinkActive="active"><mat-icon>home</mat-icon>
+          <span>Home</span></a>
+        <a mat-menu-item  *ngIf="user?.roles?.includes('nurse') || user?.roles?.includes('admin')" routerLink="/bills"
+          routerLinkActive="active"><mat-icon>money</mat-icon>
+          <span >Manage Billing</span></a>
+        <a mat-menu-item  *ngIf="user?.isAdmin" routerLink="/doctors"
+          routerLinkActive="active"><mat-icon>local_hospital</mat-icon>
+          <span>Manage Doctors</span></a>
+        <a mat-menu-item *ngIf="user?.roles?.includes('nurse') || user?.roles?.includes('admin')" routerLink="/records"
+          routerLinkActive="active"><mat-icon>fiber_smart_record</mat-icon>
+          <span >Manage Records</span></a>
+        <a mat-menu-item routerLink="/patients" routerLinkActive="active"><mat-icon>person_outline</mat-icon>
+          <span>Manage Patients</span></a>
+        <a mat-menu-item *ngIf="user?.isAdmin" routerLink="/users"
+          routerLinkActive="active"><mat-icon>supervised_user_circle</mat-icon>
+          <span>Manage Users</span></a>
+        <a mat-menu-item *ngIf="user?.isAdmin" routerLink="/roles"
+          routerLinkActive="active"><mat-icon>card_membership</mat-icon>
+          <span>Manage Roles</span></a>
+        <a mat-menu-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps"
+          routerLinkActive="active"><mat-icon>perm_data_setting</mat-icon>
+          <span>Manage Permissions</span></a>
+        <a mat-menu-item *ngIf="user?.roles?.includes('doctor')" routerLink="/manageschedule"
+          routerLinkActive="active"><mat-icon>calendar_today</mat-icon>
+          <span>Manage My Schedule</span></a>
+        <a mat-menu-item *ngIf="user?.isAdmin" routerLink="/auditlogs"
+          routerLinkActive="active"><mat-icon>track_changes</mat-icon>
+          <span>Manage Audit Logs</span></a>
+        </div>
       </mat-menu>
     </div>
   </mat-toolbar>
 
   <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="side">
+    <mat-sidenav #sidenav mode="side" opened="isExpanded" [style.width]="sidenavWidth" [style.height]="'100%'">
+      <button matButton mat-button (click)="toggleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
       <mat-nav-list>
-        <a mat-list-item routerLink="/" routerLinkActive="active">Home</a>
-        <a mat-list-item *ngIf="user?.roles?.includes('nurse') || user?.roles?.includes('admin')" routerLink="/bills" routerLinkActive="active">Manage Billing</a>
-        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/doctors" routerLinkActive="active">Manage Doctors</a>
-        <a mat-list-item *ngIf="user?.roles?.includes('nurse') || user?.roles?.includes('admin')" routerLink="/records" routerLinkActive="active">Manage Records</a>
-        <a mat-list-item routerLink="/patients" routerLinkActive="active">Manage Patients</a>
-        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/users" routerLinkActive="active">Manage Users</a>
-        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/roles" routerLinkActive="active">Manage Roles</a>
-        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps" routerLinkActive="active">Manage
-          Permissions</a>
+        <a mat-list-item routerLink="/" routerLinkActive="active"><mat-icon>home</mat-icon>
+          <span *ngIf="isExpanded">Home</span></a>
+        <a mat-list-item *ngIf="user?.roles?.includes('nurse') || user?.roles?.includes('admin')" routerLink="/bills"
+          routerLinkActive="active"><mat-icon>money</mat-icon>
+          <span *ngIf="isExpanded">Manage Billing</span></a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/doctors"
+          routerLinkActive="active"><mat-icon>local_hospital</mat-icon>
+          <span *ngIf="isExpanded">Manage Doctors</span></a>
+        <a mat-list-item *ngIf="user?.roles?.includes('nurse') || user?.roles?.includes('admin')" routerLink="/records"
+          routerLinkActive="active"><mat-icon>fiber_smart_record</mat-icon>
+          <span *ngIf="isExpanded">Manage Records</span></a>
+        <a mat-list-item routerLink="/patients" routerLinkActive="active"><mat-icon>person_outline</mat-icon>
+          <span *ngIf="isExpanded">Manage Patients</span></a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/users"
+          routerLinkActive="active"><mat-icon>supervised_user_circle</mat-icon>
+          <span *ngIf="isExpanded">Manage Users</span></a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/roles"
+          routerLinkActive="active"><mat-icon>card_membership</mat-icon>
+          <span *ngIf="isExpanded">Manage Roles</span></a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/roleactionmaps"
+          routerLinkActive="active"><mat-icon>perm_data_setting</mat-icon>
+          <span *ngIf="isExpanded">Manage Permissions</span></a>
         <a mat-list-item *ngIf="user?.roles?.includes('doctor')" routerLink="/manageschedule"
-          routerLinkActive="active">Manage
-          My Schedule</a>
-        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/auditlogs" routerLinkActive="active">Manage Audit Logs</a>
+          routerLinkActive="active"><mat-icon>calendar_today</mat-icon>
+          <span *ngIf="isExpanded">Manage My Schedule</span></a>
+        <a mat-list-item *ngIf="user?.isAdmin" routerLink="/auditlogs"
+          routerLinkActive="active"><mat-icon>track_changes</mat-icon>
+          <span *ngIf="isExpanded">Manage Audit Logs</span></a>
       </mat-nav-list>
     </mat-sidenav>
-    <mat-sidenav-content>
-      <button matButton (click)="sidenav.toggle()"><mat-icon color="">menu</mat-icon></button>
+    <div>
       <router-outlet></router-outlet>
-    </mat-sidenav-content>
+    </div>
   </mat-sidenav-container>
 
   <div class="fixed-toolbar">

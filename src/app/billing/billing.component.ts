@@ -156,11 +156,11 @@ export class BillingComponent implements OnInit {
       const patient = (await this.apiService.getOne("patients", p.patient_id))[0];
       const doctor = (await this.apiService.getOne("doctors", p.doctor_id))[0];
       const appointment = (await this.apiService.getOne("appointments", p.appointment_id))[0];
-      console.log(doctor.name.first + " " + doctor.name.last)
+      console.log(doctor?.name?.first! + " " + doctor?.name?.last!)
       return {
-        patient_name: patient.name?.first + " " + patient.name?.last?.toString()[0],
+        patient_name: patient?.name?.first + " " + patient?.name?.last?.toString()[0],
         patient_id: p.patient_id,
-        doctor_name: doctor.name.first + " " + doctor.name.last,
+        doctor_name: doctor?.name?.first + " " + doctor?.name?.last,
         doctor_id: p.doctor_id,
         appointment_id: p.appointment_id,
         appointment_reason: appointment.text,

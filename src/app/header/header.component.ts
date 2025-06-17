@@ -18,6 +18,8 @@ export class HeaderComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   currentScreenSize!: string;
   destroyed = new Subject<void>();
+  isExpanded = false;
+  sidenavWidth = '100px'
 
   displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
@@ -26,6 +28,18 @@ export class HeaderComponent {
     [Breakpoints.Large, 'Large'],
     [Breakpoints.XLarge, 'XLarge'],
   ]);
+
+  toggleSideNav() {
+    this.isExpanded = !this.isExpanded;
+
+    if (this.isExpanded)
+    {
+      this.sidenavWidth = '300px'
+    }
+    else{
+      this.sidenavWidth = '100px'
+    }
+  }
 
   @Input() user: User | null = null;
   @Input() title: String | null = null;
@@ -57,15 +71,19 @@ export class HeaderComponent {
               switch (this.currentScreenSize) {
                 case "XSmall":
                   this.sidenav.close()
+                  this.isExpanded = false
                   break;
                 case "Small":
                   this.sidenav.close()
+                  this.isExpanded = false
                   break;
                 case "Medium":
                   this.sidenav.open()
+                  this.isExpanded = true
                   break;
                 case "Large":
                   this.sidenav.open()
+                  this.isExpanded = true
                   break;
                 default:
                   break;

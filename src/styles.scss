@@ -15,3 +15,11 @@ body {
     font-family: 'Exo', sans-serif;
   }
 }
+
+::ng-deep .mat-sidenav-container {
+  height: 100vh !important;
+}
+
+::ng-deep .mat-sidenav {
+  height: 100%;
+}
