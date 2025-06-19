@@ -8,6 +8,7 @@ import { FormBuilder } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +16,10 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  @ViewChild('rightMenuTrigger') rightMenuTrigger!: MatMenuTrigger;
   @ViewChild('sidenav') sidenav!: MatSidenav;
   currentScreenSize!: string;
   destroyed = new Subject<void>();
-  isExpanded = false;
   sidenavWidth = '100px'
 
   displayNameMap = new Map([
@@ -29,16 +30,12 @@ export class HeaderComponent {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
-  toggleSideNav() {
-    this.isExpanded = !this.isExpanded;
-
-    if (this.isExpanded)
-    {
-      this.sidenavWidth = '300px'
-    }
-    else{
-      this.sidenavWidth = '100px'
-    }
+  openMenu() {
+    this.rightMenuTrigger.openMenu();
+  }
+  
+  closeMenu() {
+    this.rightMenuTrigger.closeMenu();
   }
 
   @Input() user: User | null = null;
@@ -71,19 +68,15 @@ export class HeaderComponent {
               switch (this.currentScreenSize) {
                 case "XSmall":
                   this.sidenav.close()
-                  this.isExpanded = false
                   break;
                 case "Small":
                   this.sidenav.close()
-                  this.isExpanded = false
                   break;
                 case "Medium":
                   this.sidenav.open()
-                  this.isExpanded = true
                   break;
                 case "Large":
                   this.sidenav.open()
-                  this.isExpanded = true
                   break;
                 default:
                   break;
